@@ -1,0 +1,23 @@
+{
+  "name": "atlas-axiom-repo",
+  "version": "1.0.0",
+  "description": "Private Signal Brief for Investors",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve .",
+    "collect": "python scripts/main_generator.py",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "investment",
+    "signal",
+    "briefing",
+    "finance"
+  ],
+  "author": "AtlasAxiom",
+  "license": "UNLICENSED",
+  "dependencies": {},
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}

@@ -1,0 +1,35 @@
+name: Hourly Hot Signal Update
+
+on:
+  schedule:
+    - cron: '0 * * * *' # 매시간 정각 실행
+  workflow_dispatch:    # 수동 실행 가능
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Libraries
+        run: pip install feedparser requests
+
+      - name: Run Robot
+        run: python scripts/main_generator.py
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "AtlasBot"
+          git config --global user.email "bot@atlasaxiom.com"
+          git add data/hot_cards.json
+          git commit -m "Update Hot Cards" || echo "No changes"
+          git push

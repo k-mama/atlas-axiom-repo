@@ -1,0 +1,38 @@
+name: Weekly Deep Report (North America)
+
+# 미국 월요일 장 시작 3시간 전 (ET 월요일 06:00)
+# UTC 11:00 -> 한국 월요일 저녁 8시경
+on:
+  schedule:
+    - cron: '0 11 * * 1'
+  workflow_dispatch:      # 수동 실행 버튼
+
+permissions:
+  contents: write
+
+jobs:
+  generate-deep-dive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Libraries
+        run: pip install feedparser requests
+
+      # 주간 리포트 생성
+      - name: Run Weekly Generator
+        run: python scripts/main_generator.py
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "AtlasBot"
+          git config --global user.email "bot@atlasaxiom.com"
+          git add data/*.json
+          git commit -m "Weekly Deep Report (NA Focus)" || echo "No changes to commit"
+          git push

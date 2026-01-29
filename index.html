@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AtlasAxiom | Private Signal Brief</title>
+
+  <style>
+    /* --- 디자인 스타일 (Dark Tech Theme) --- */
+    :root {
+      --bg: #0b1121;
+      --bg-grad: radial-gradient(circle at 15% 0%, #1e293b 0%, #0b1121 75%);
+      --card-bg: rgba(30, 41, 59, 0.4);
+      --card-border: rgba(148, 163, 184, 0.15);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8; /* Cyan/Sky Blue */
+      --primary-glow: rgba(56, 189, 248, 0.3);
+      --line: #334155;
+      --grid-color: rgba(255, 255, 255, 0.03);
+    }
+
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --bg-grad: radial-gradient(circle at 50% 0%, #e0f2fe 0%, #f8fafc 60%);
+      --card-bg: rgba(255, 255, 255, 0.8);
+      --card-border: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --primary: #0284c7;
+      --primary-glow: rgba(2, 132, 199, 0.15);
+      --line: #e2e8f0;
+      --grid-color: rgba(0, 0, 0, 0.04);
+    }
+
+    * { box-sizing: border-box; transition: background 0.3s ease, color 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      background-image: 
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px),
+        var(--bg-grad);
+      background-size: 30px 30px, 30px 30px, 100% 100%;
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
+
+    /* Nav */
+    .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
+    .logo { font-size: 16px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+    .logo::before { content: ''; display: inline-block; width: 12px; height: 12px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary-glow); }
+    .toggles { display: flex; gap: 10px; align-items: center; }
+    .status-pill { font-size: 12px; font-weight: 600; color: var(--primary); background: var(--card-bg); border: 1px solid var(--card-border); padding: 6px 12px; border-radius: 99px; backdrop-filter: blur(4px); }
+    
+    .icon-btn { background: transparent; border: none; cursor: pointer; color: var(--text-muted); font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 8px; }
+    .icon-btn:hover { color: var(--text-main); background: rgba(125,125,125,0.1); }
+    .icon-btn span.active { color: var(--primary); font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }
+
+    /* Hero */
+    .hero-split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-bottom: 60px; min-height: 50vh; }
+    .hero-text { text-align: left; }
+    h1 { font-size: 48px; line-height: 1.1; margin: 0 0 24px; letter-spacing: -0.03em; font-weight: 800; }
+    .highlight { background: linear-gradient(120deg, var(--primary), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px var(--primary-glow)); }
+    .sub { font-size: 18px; color: var(--text-muted); max-width: 580px; margin-bottom: 32px; line-height: 1.6; }
+    .cta-group { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    /* Buttons */
+    .btn { cursor: pointer; padding: 14px 28px; border-radius: 99px; font-size: 15px; font-weight: 700; border: none; display: inline-flex; align-items: center; justify-content: center; }
+    .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 20px var(--primary-glow); }
+    [data-theme="light"] .btn-primary { color: #fff; }
+    [data-theme="dark"] .btn-primary { color: #0f172a; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--primary-glow); }
+    .btn-secondary { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border); backdrop-filter: blur(5px); }
+    .btn-secondary:hover { border-color: var(--text-muted); transform: translateY(-2px); }
+
+    /* Cards */
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); padding: 24px; border-radius: 20px; backdrop-filter: blur(12px); display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease; }
+    .card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
+    .label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; }
+    .value { font-size: 15px; font-weight: 500; color: var(--text-main); }
+
+    /* Feature Strip */
+    .feature-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
+    .list-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 14px; color: var(--text-muted); }
+    .list-item::before { content: "•"; color: var(--primary); font-size: 18px; line-height: 1; }
+    
+    /* Footer */
+    .footer { margin-top: 80px; border-top: 1px solid var(--line); padding-top: 24px; display: flex; justify-content: space-between; color: var(--text-muted); font-size: 13px; }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
+      display: flex; justify-content: center; align-items: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal-content {
+      background: var(--card-bg); border: 1px solid var(--primary);
+      box-shadow: 0 0 30px var(--primary-glow);
+      padding: 30px; border-radius: 20px; width: 90%; max-width: 400px;
+      text-align: center; transform: scale(0.9); transition: transform 0.3s ease;
+    }
+    .modal-overlay.open .modal-content { transform: scale(1); }
+    .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
+    .modal-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
+    .input-field {
+      width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--card-border);
+      background: rgba(0,0,0,0.2); color: var(--text-main); font-size: 15px; margin-bottom: 16px; outline: none;
+    }
+    .input-field:focus { border-color: var(--primary); }
+    .close-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; }
+
+    @media (max-width: 860px) {
+      .hero-split { grid-template-columns: 1fr; gap: 30px; }
+      .feature-strip { grid-template-columns: 1fr; }
+      h1 { font-size: 36px; }
+      .wrap { padding: 20px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="wrap">
+    <div class="top">
+      <div class="logo">ATLASAXIOM</div>
+      <div class="toggles">
+        <div class="status-pill" data-i18n="status">Private Preview</div>
+        <button class="icon-btn" id="langBtn"><span class="active">EN</span> / KR</button>
+        <button class="icon-btn" id="themeBtn"><span class="active">Dark</span> / Light</button>
+      </div>
+    </div>
+
+    <div class="hero-split">
+      <div class="hero-text">
+        <h1>
+          <span data-i18n="h1a">3 minutes a day,</span><br>
+          <span class="highlight" data-i18n="h1b">highest-signal brief.</span>
+        </h1>
+        <p class="sub" data-i18n="sub">
+          Less noise, more signal. We decode what actually moves today—market, tech, creators—reframed for investors.
+        </p>
+        <div class="cta-group">
+          <button class="btn btn-primary" id="waitBtn" data-i18n="ctaWait">Join the waitlist</button>
+          <button class="btn btn-secondary" id="sampleBtn" data-i18n="ctaSample">View sample</button>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="card" id="sampleCard">
+          <div class="label" data-i18n="todayK">TODAY’S SAMPLE</div>
+          <h3 style="margin:0 0 16px; font-size:18px;" data-i18n="todayTitle">Top 3 Moves</h3>
+          <div class="list-item" data-i18n="today1">(Signal) 1 line: the price-impact point from official / major sources</div>
+          <div class="list-item" data-i18n="today2">(Signal) 1 line: the fastest-rising keyword in community/social chatter</div>
+          <div class="list-item" data-i18n="today3">(Action) 3 checkpoints to verify tomorrow</div>
+          <div style="margin-top:20px; font-size:12px; color:var(--text-muted); font-style:italic;" data-i18n="todayNote">
+            * Next: add “source links/evidence” and personalization options.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-strip">
+      <div class="card">
+        <div class="label" data-i18n="formatK">FORMAT</div>
+        <div class="value" data-i18n="formatV">Daily 1-page Brief (7 key lines + 3 checkpoints)</div>
+      </div>
+      <div class="card">
+        <div class="label" data-i18n="signalK">SIGNAL</div>
+        <div class="value" data-i18n="signalV">One-page decode: who / why / now (source transparency)</div>
+      </div>
+      <div class="card">
+        <div class="label" data-i18n="statusK">STATUS</div>
+        <div class="value" data-i18n="statusV">Small invites · quality-first · feedback-driven</div>
+      </div>
+      <div class="card">
+        <div class="label" data-i18n="pK">PRICING</div>
+        <div style="font-size:24px; font-weight:800;">$5 <span style="font-size:14px; color:var(--text-muted)">/mo</span></div>
+        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;" data-i18n="priceNote">Beta Lock</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div data-i18n="footerLeft">© AtlasAxiom · Private Preview</div>
+      <div data-i18n="footerRight">Next: Email form → GitHub → Deploy</div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="emailModal">
+    <div class="modal-content">
+      <button class="close-btn" id="closeModal">×</button>
+      <h3 class="modal-title" data-i18n="modalTitle">Join the Private List</h3>
+      <p class="modal-desc" data-i18n="modalDesc">We'll notify you when spots open up.</p>
+      
+      <form id="waitlistForm">
+        <input type="email" id="emailInput" class="input-field" placeholder="name@example.com" required aria-label="Email Address">
+        <button type="submit" class="btn btn-primary" style="width:100%" id="submitBtn">Join Now</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ⬇️ [중요] 여기에 아까 복사해둔 '진짜 구글 앱스 스크립트 주소'를 붙여넣으세요!
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuxLWJSR0awKZUTJqkRzkf6o3740FYyh5xTy8G3PIyc_u390FtE_KacM-HJu5cnCER/exec"; 
+
+    // 다국어 딕셔너리
+    const I18N = {
+      en: {
+        status: "Private Preview",
+        h1a: "3 minutes a day,",
+        h1b: "highest-signal brief.",
+        sub: "Less noise, more signal. We decode what actually moves today—market, tech, creators—reframed for investors.",
+        ctaWait: "Join the waitlist",
+        ctaSample: "View sample",
+        formatK: "FORMAT", formatV: "Daily 1-page Brief",
+        signalK: "SIGNAL", signalV: "One-page decode: Who / Why / Now",
+        statusK: "STATUS", statusV: "Invite-only · Feedback-driven",
+        todayK: "TODAY’S SAMPLE", todayTitle: "Top 3 Moves",
+        today1: "(Signal) 1 line: price-impact point from official sources",
+        today2: "(Signal) 1 line: fastest-rising keyword in chatter",
+        today3: "(Action) 3 checkpoints to verify tomorrow",
+        todayNote: "* Full version includes source links.",
+        pK: "PRICING", priceNote: "Early Beta Lock",
+        footerLeft: "© AtlasAxiom · Private Preview",
+        footerRight: "Next: Email form → GitHub → Deploy",
+        modalTitle: "Join the Private List",
+        modalDesc: "We'll notify you when spots open up.",
+        alertPay: "Next: Connect Stripe/Polar."
+      },
+      ko: {
+        status: "Private Preview",
+        h1a: "하루 3분,",
+        h1b: "고신호 브리핑.",
+        sub: "과잉 정보는 줄이고, “오늘 실제로 움직이는 신호”만 정리합니다. (시장·테크·크리에이터 이슈를 투자 관점으로 재구성)",
+        ctaWait: "대기자 명단 참여",
+        ctaSample: "샘플 보기",
+        formatK: "FORMAT", formatV: "매일 1장 브리핑",
+        signalK: "SIGNAL", signalV: "“누가/왜/지금” 한 장 요약",
+        statusK: "STATUS", statusV: "초대 전용 · 피드백 기반",
+        todayK: "오늘의 샘플", todayTitle: "Top 3 Moves",
+        today1: "(Signal) 공식 발표의 “가격 영향 포인트” 1줄",
+        today2: "(Signal) 커뮤니티 급상승 키워드 1줄",
+        today3: "(Action) 내일 확인할 체크포인트 3개",
+        todayNote: "* 정식 버전: 소스 링크 포함",
+        pK: "PRICING", priceNote: "얼리버드 가격 고정",
+        footerLeft: "© AtlasAxiom · Private Preview",
+        footerRight: "Next: 이메일 폼 → GitHub → 배포",
+        modalTitle: "비공개 리스트 가입",
+        modalDesc: "초대장이 준비되면 알림을 드립니다.",
+        alertPay: "다음: 결제(Stripe/Polar) 연결 예정"
+      }
+    };
+
+    // 저장소 (Local Storage) - 기본값 'en'으로 설정
+    const store = { get(k, d){ return localStorage.getItem(k) ?? d; }, set(k, v){ localStorage.setItem(k, v); } };
+
+    // 언어 적용 함수
+    function applyI18n(lang){
+      const dict = I18N[lang] || I18N.en;
+      document.querySelectorAll("[data-i18n]").forEach(el=>{
+        const key = el.getAttribute("data-i18n");
+        if (dict[key] !== undefined) el.textContent = dict[key];
+      });
+    }
+
+    // UI 업데이트 함수 (버튼 텍스트 변경 포함)
+    function updateUI(){
+      const lang  = store.get("atlas_lang", "en"); // 저장된 값이 없으면 'en' 사용
+      const theme = store.get("atlas_theme", "dark");
+      
+      document.documentElement.setAttribute("data-theme", theme);
+      document.documentElement.lang = (lang === "ko") ? "ko" : "en";
+      
+      // 언어 버튼 토글 시각화 (활성 언어 강조)
+      const langBtn = document.getElementById("langBtn");
+      const themeBtn = document.getElementById("themeBtn");
+      
+      if (langBtn) {
+        langBtn.innerHTML = (lang === "en") 
+          ? `<span class="active">EN</span> / KR` 
+          : `EN / <span class="active">KR</span>`;
+      }
+      
+      if (themeBtn) {
+        themeBtn.innerHTML = (theme === "dark") 
+          ? `<span class="active">Dark</span> / Light` 
+          : `Dark / <span class="active">Light</span>`;
+      }
+
+      applyI18n(lang);
+    }
+
+    // --- Modal Logic ---
+    const modal = document.getElementById("emailModal");
+    const form = document.getElementById("waitlistForm");
+    const submitBtn = document.getElementById("submitBtn");
+
+    document.getElementById("waitBtn").addEventListener("click", () => { modal.classList.add("open"); });
+    document.getElementById("closeModal").addEventListener("click", () => { modal.classList.remove("open"); });
+    modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("open"); });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("emailInput").value;
+      const lang = store.get("atlas_lang", "en");
+
+      // 버튼 상태 변경
+      const originalText = submitBtn.innerText;
+      submitBtn.innerText = lang === "ko" ? "전송 중..." : "Sending...";
+      submitBtn.disabled = true;
+
+      // 구글 시트로 전송
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "email=" + encodeURIComponent(email)
+      })
+      .then(() => {
+        submitBtn.innerText = lang === "ko" ? "완료!" : "Joined!";
+        submitBtn.style.background = "#10b981"; 
+        document.getElementById("emailInput").value = "";
+        
+        setTimeout(() => {
+          modal.classList.remove("open");
+          submitBtn.disabled = false;
+          submitBtn.innerText = originalText;
+          submitBtn.style.background = ""; 
+          alert(lang === "ko" ? "대기자 명단에 등록되었습니다!" : "You have been added to the waitlist!");
+        }, 1500);
+      })
+      .catch(err => {
+        console.error(err);
+        alert("Error. Please try again.");
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalText;
+      });
+    });
+
+    // --- Events ---
+    document.getElementById("langBtn")?.addEventListener("click", ()=>{
+      const cur = store.get("atlas_lang", "en");
+      store.set("atlas_lang", cur === "en" ? "ko" : "en");
+      updateUI();
+    });
+
+    document.getElementById("themeBtn")?.addEventListener("click", ()=>{
+      const cur = store.get("atlas_theme", "dark");
+      store.set("atlas_theme", cur === "dark" ? "light" : "dark");
+      updateUI();
+    });
+
+    document.getElementById("sampleBtn")?.addEventListener("click", ()=>{
+      document.getElementById("sampleCard")?.scrollIntoView({behavior:"smooth", block:"center"});
+    });
+
+    // 초기 실행
+    updateUI();
+  </script>
+</body>
+</html>

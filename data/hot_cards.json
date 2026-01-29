@@ -1,0 +1,27 @@
+{
+  "updated_at": "2026-01-30T12:00:00Z",
+  "cards": [
+    {
+      "id": "sample_1",
+      "type": "RISK",
+      "ticker": "TSLA",
+      "headline_en": "Tesla Robotaxi Regulatory Approval Likely Delayed",
+      "headline_kr": "테슬라 로보택시 규제 승인 지연 가능성",
+      "summary_en": "1. CA regulators demand additional safety data.\n2. Approval pace slower compared to Waymo.\n3. Testing support level at $170.",
+      "summary_kr": "1. 캘리포니아 규제 당국, 추가 안전 데이터 요구\n2. 경쟁사 Waymo 대비 승인 속도 둔화 우려\n3. 주가 $170 지지선 테스트 중",
+      "source_links": ["https://sec.gov"],
+      "trust_score": 85
+    },
+    {
+      "id": "sample_2",
+      "type": "OPPORTUNITY",
+      "ticker": "NVDA",
+      "headline_en": "NVIDIA Secures Massive Order for B100 Chips",
+      "headline_kr": "엔비디아 차세대 칩 B100 대량 수주 포착",
+      "summary_en": "1. Rumors of Meta ordering 350k additional units.\n2. Supply chain sources confirm 'Full Capacity'.\n3. Three major analysts raised price targets.",
+      "summary_kr": "1. 메타(Meta), 데이터센터용 칩 35만 개 추가 주문 루머\n2. 공급망 소식통 '생산 라인 풀가동 중'\n3. 목표 주가 상향 리포트 3건 발행",
+      "source_links": ["https://bloomberg.com"],
+      "trust_score": 92
+    }
+  ]
+}
