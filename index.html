@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AtlasAxiom | Private Signal Brief</title>
 
+  <!-- Optional: cleaner investor-style typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@450;600;700;800;900&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --bg: #0b1121;
@@ -20,6 +25,7 @@
       --danger: #ff3b30;
       --success: #10b981;
       --shadow: rgba(0,0,0,0.45);
+      --focus: rgba(56,189,248,0.32);
     }
 
     [data-theme="light"] {
@@ -34,12 +40,17 @@
       --line: #e2e8f0;
       --grid-color: rgba(0, 0, 0, 0.04);
       --shadow: rgba(0,0,0,0.18);
+      --focus: rgba(2,132,199,0.22);
     }
 
-    * { box-sizing: border-box; transition: background 0.25s ease, color 0.18s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease; }
+    * {
+      box-sizing: border-box;
+      transition: background 0.25s ease, color 0.18s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg);
       background-image:
         linear-gradient(var(--grid-color) 1px, transparent 1px),
@@ -51,11 +62,15 @@
       line-height: 1.5;
     }
 
+    a { color: inherit; text-decoration: none; }
+    button, input { font-family: inherit; }
+    :focus-visible { outline: none; box-shadow: 0 0 0 4px var(--focus); border-radius: 12px; }
+
     .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
 
     .top { display:flex; align-items:center; justify-content:space-between; margin-bottom: 40px; gap: 16px; }
     .logo {
-      font-size: 16px; font-weight: 850; letter-spacing: -0.02em;
+      font-size: 16px; font-weight: 900; letter-spacing: -0.02em;
       color: var(--text-main);
       display:flex; align-items:center; gap: 10px;
       user-select: none;
@@ -71,7 +86,7 @@
     .toggles { display:flex; gap: 12px; align-items:center; position: relative; }
     .status-pill {
       font-size: 12px;
-      font-weight: 650;
+      font-weight: 700;
       color: var(--primary);
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -83,7 +98,7 @@
     .status-pill .ver {
       margin-left: 8px;
       color: var(--text-muted);
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.02em;
     }
 
@@ -127,6 +142,7 @@
       color: var(--text-muted);
       letter-spacing: .10em;
       text-transform: uppercase;
+      font-weight: 800;
     }
     .menuItem {
       width: 100%;
@@ -140,10 +156,10 @@
       justify-content: space-between;
       cursor: pointer;
       font-size: 14px;
-      font-weight: 650;
+      font-weight: 700;
     }
     .menuItem:hover { background: rgba(125,125,125,0.10); border-color: rgba(125,125,125,0.12); }
-    .check { opacity: 0; color: var(--primary); display:flex; align-items:center; gap: 8px; font-weight: 800; }
+    .check { opacity: 0; color: var(--primary); display:flex; align-items:center; gap: 8px; font-weight: 900; }
     .menuItem.active .check { opacity: 1; }
 
     .hero-split {
@@ -155,14 +171,13 @@
       min-height: 50vh;
     }
 
-    h1 { font-size: 50px; line-height: 1.08; margin: 0 0 18px; letter-spacing: -0.035em; font-weight: 900; }
+    h1 { font-size: 52px; line-height: 1.06; margin: 0 0 18px; letter-spacing: -0.04em; font-weight: 900; }
 
-    /* ✅ highlight: 표준 속성 + 웹킷 호환 (요청 반영) */
     .highlight {
-      color: transparent;
       background: linear-gradient(120deg, var(--primary), #a78bfa);
       background-clip: text;
       -webkit-background-clip: text;
+      color: transparent;
       -webkit-text-fill-color: transparent;
       filter: drop-shadow(0 0 14px var(--primary-glow));
     }
@@ -212,7 +227,7 @@
       padding: 14px 28px;
       border-radius: 999px;
       font-size: 15px;
-      font-weight: 800;
+      font-weight: 900;
       border: none;
       display:inline-flex;
       align-items:center;
@@ -259,7 +274,7 @@
     }
     .label {
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing: 0.11em;
       color: var(--primary);
       text-transform: uppercase;
@@ -268,7 +283,7 @@
     .updated {
       font-size: 12px;
       color: var(--text-muted);
-      font-weight: 650;
+      font-weight: 700;
       letter-spacing: 0.01em;
       white-space: nowrap;
     }
@@ -282,14 +297,14 @@
       transform: translateY(-1px);
     }
 
-    .value { font-size: 15px; font-weight: 550; color: var(--text-main); }
+    .value { font-size: 15px; font-weight: 600; color: var(--text-main); }
 
     .term {
       border-bottom: 1px dashed var(--primary);
       cursor: help;
       position: relative;
       color: var(--text-main);
-      font-weight: 750;
+      font-weight: 800;
     }
 
     .term::after {
@@ -354,7 +369,7 @@
       color: var(--text-muted);
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      font-weight: 800;
+      font-weight: 900;
     }
 
     .feature-strip { display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
@@ -540,8 +555,7 @@
         <div class="card" id="sampleCard">
           <div class="labelRow">
             <div class="label" data-i18n="todayK">TODAY’S SAMPLE</div>
-            <!-- ✅ meta.json 기반으로 JS가 덮어씀 -->
-            <div class="updated" id="updatedText"><span class="dot"></span>Loading...</div>
+            <div class="updated" id="updatedText" aria-live="polite"><span class="dot"></span>Loading update status…</div>
           </div>
 
           <h3 style="margin:0 0 10px; font-size:18px;" data-i18n="todayTitle">Top 3 Moves</h3>
@@ -581,7 +595,7 @@
       <div class="card">
         <div class="label" data-i18n="pK">PRICING</div>
         <div style="font-size:24px; font-weight:900;">
-          $5 <span style="font-size:14px; color:var(--text-muted); font-weight:700;">/mo</span>
+          $5 <span style="font-size:14px; color:var(--text-muted); font-weight:800;">/mo</span>
         </div>
         <div style="font-size:12px; color:var(--text-muted); margin-top:4px;" data-i18n="priceNote">Early beta lock</div>
       </div>
@@ -618,7 +632,17 @@
   </div>
 
   <script>
+    // =========================
+    // Config
+    // =========================
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuxLWJSR0awKZUTJqkRzkf6o3740FYyh5xTy8G3PIyc_u390FtE_KacM-HJu5cnCER/exec";
+
+    // meta.json is in /data/meta.json
+    const META_URL = "data/meta.json";
+
+    // meta.json 기반만으로 "Updated Xm ago" 표시
+    let lastUpdatedISO = null;     // meta.last_success_utc (ISO)
+    let metaLoadedOnce = false;
 
     const moonSVG = `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -679,14 +703,18 @@
         langKR: "Korean",
         errEmpty: "Please enter your email address.",
         errInvalid: "Please enter a valid email address.",
+        errNetwork: "Error. Please try again.",
         sending: "Sending...",
         joined: "Joined!",
         joinedAlert: "You have been added to the waitlist!",
+
+        updatedLoading: "Loading update status…",
+        updatedUnavailable: "Update status unavailable",
+        updatedNever: "Not updated yet",
         updatedJustNow: "Updated just now",
         updatedMinAgo: (m) => `Updated ${m}m ago`,
         updatedHrAgo: (h) => `Updated ${h}h ago`,
-        waitingFirstUpdate: "Waiting for first update",
-        updatedUnknown: "Updated —"
+        updatedDayAgo: (d) => `Updated ${d}d ago`
       },
       ko: {
         status: `Private Preview <span class="ver">v0.1</span>`,
@@ -727,14 +755,18 @@
         langKR: "한국어",
         errEmpty: "이메일 주소를 입력해주세요.",
         errInvalid: "올바른 이메일 주소 형식으로 입력해주세요.",
+        errNetwork: "오류가 발생했습니다. 다시 시도해주세요.",
         sending: "전송 중...",
         joined: "완료!",
         joinedAlert: "대기자 명단에 등록되었습니다!",
+
+        updatedLoading: "업데이트 상태 불러오는 중…",
+        updatedUnavailable: "업데이트 상태를 불러올 수 없음",
+        updatedNever: "아직 업데이트 없음",
         updatedJustNow: "방금 업데이트",
         updatedMinAgo: (m) => `${m}분 전 업데이트`,
         updatedHrAgo: (h) => `${h}시간 전 업데이트`,
-        waitingFirstUpdate: "업데이트 대기 중",
-        updatedUnknown: "업데이트 —"
+        updatedDayAgo: (d) => `${d}일 전 업데이트`
       }
     };
 
@@ -743,84 +775,9 @@
       set(k, v){ localStorage.setItem(k, v); }
     };
 
-    // ================================
-    // ✅ META.JSON 기반 "Updated ~ ago"
-    // ================================
-    const META_URL = "data/meta.json";
-    let metaLastSuccessISO = null;
-
-    function withNoCache(url){
-      const sep = url.includes("?") ? "&" : "?";
-      return `${url}${sep}_=${Date.now()}`;
-    }
-
-    async function fetchMetaLastSuccess(){
-      try{
-        const res = await fetch(withNoCache(META_URL), { cache: "no-store" });
-        if (!res.ok) throw new Error(`meta fetch failed: ${res.status}`);
-        const meta = await res.json();
-        metaLastSuccessISO = meta?.last_success_utc || null;
-        return metaLastSuccessISO;
-      }catch(_){
-        metaLastSuccessISO = null;
-        return null;
-      }
-    }
-
-    function toHumanUpdatedTextFromDiff(msDiff){
-      const lang = store.get("atlas_lang", "en");
-      const dict = I18N[lang] || I18N.en;
-
-      const sec = Math.floor(msDiff / 1000);
-      if (sec < 60) return dict.updatedJustNow;
-
-      const min = Math.floor(sec / 60);
-      if (min < 60) return dict.updatedMinAgo(min);
-
-      const hr = Math.floor(min / 60);
-      return dict.updatedHrAgo(hr);
-    }
-
-    function renderUpdatedLabel(){
-      const el = document.getElementById("updatedText");
-      if (!el) return;
-
-      const lang = store.get("atlas_lang", "en");
-      const dict = I18N[lang] || I18N.en;
-
-      if (!metaLastSuccessISO){
-        el.innerHTML = `<span class="dot"></span>${dict.waitingFirstUpdate}`;
-        return;
-      }
-
-      const last = new Date(metaLastSuccessISO).getTime();
-      if (Number.isNaN(last)){
-        el.innerHTML = `<span class="dot"></span>${dict.updatedUnknown}`;
-        return;
-      }
-
-      const now = Date.now();
-      const diff = Math.max(0, now - last);
-      el.innerHTML = `<span class="dot"></span>${toHumanUpdatedTextFromDiff(diff)}`;
-    }
-
-    async function initUpdatedLabel(){
-      await fetchMetaLastSuccess();
-      renderUpdatedLabel();
-    }
-
-    // - 30초마다 "N분 전" 텍스트만 갱신
-    setInterval(renderUpdatedLabel, 30000);
-
-    // - 60초마다 meta.json 다시 읽어서 갱신(캐시 무력화)
-    setInterval(async () => {
-      await fetchMetaLastSuccess();
-      renderUpdatedLabel();
-    }, 60000);
-
-    // ================================
-    // UI/UX 기존 로직
-    // ================================
+    // =========================
+    // Tooltips
+    // =========================
     function attachTooltipEvents(){
       document.querySelectorAll(".term").forEach(item => {
         item.onclick = (e) => {
@@ -833,6 +790,9 @@
     }
     document.addEventListener("click", () => { document.querySelectorAll(".term").forEach(t => t.classList.remove("active")); });
 
+    // =========================
+    // i18n + theme
+    // =========================
     function applyI18n(lang){
       const dict = I18N[lang] || I18N.en;
       document.querySelectorAll("[data-i18n]").forEach(el => {
@@ -840,7 +800,7 @@
         if (dict[key] !== undefined) el.innerHTML = dict[key];
       });
       attachTooltipEvents();
-      renderUpdatedLabel(); // ✅ 언어 바꾸면 Updated 문구도 즉시 해당 언어로
+      refreshUpdatedText();
     }
 
     function applyTheme(theme){
@@ -864,6 +824,81 @@
       });
     }
 
+    // =========================
+    // Updated label (meta.json 기반)
+    // =========================
+    function dictNow(){
+      const lang = store.get("atlas_lang", "en");
+      return I18N[lang] || I18N.en;
+    }
+
+    function setUpdatedLabel(text){
+      const el = document.getElementById("updatedText");
+      if (!el) return;
+      el.innerHTML = `<span class="dot"></span>${text}`;
+    }
+
+    function toHumanUpdatedText(msDiff){
+      const dict = dictNow();
+      const sec = Math.floor(msDiff / 1000);
+
+      if (sec < 0) return dict.updatedJustNow;
+      if (sec < 60) return dict.updatedJustNow;
+
+      const min = Math.floor(sec / 60);
+      if (min < 60) return dict.updatedMinAgo(min);
+
+      const hr = Math.floor(min / 60);
+      if (hr < 24) return dict.updatedHrAgo(hr);
+
+      const day = Math.floor(hr / 24);
+      return dict.updatedDayAgo(day);
+    }
+
+    function refreshUpdatedText(){
+      const dict = dictNow();
+
+      if (!metaLoadedOnce) {
+        setUpdatedLabel(dict.updatedLoading);
+        return;
+      }
+
+      if (!lastUpdatedISO) {
+        setUpdatedLabel(dict.updatedNever);
+        return;
+      }
+
+      const last = new Date(lastUpdatedISO).getTime();
+      if (!Number.isFinite(last)) {
+        setUpdatedLabel(dict.updatedUnavailable);
+        return;
+      }
+
+      const now = Date.now();
+      const diff = Math.max(0, now - last);
+      setUpdatedLabel(toHumanUpdatedText(diff));
+    }
+
+    async function fetchMeta(){
+      const dict = dictNow();
+      try{
+        const url = `${META_URL}?cb=${Date.now()}`;
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const meta = await res.json();
+
+        lastUpdatedISO = meta?.last_success_utc || null;
+        metaLoadedOnce = true;
+        refreshUpdatedText();
+      } catch(e){
+        metaLoadedOnce = true;
+        if (!lastUpdatedISO) setUpdatedLabel(dict.updatedUnavailable);
+      }
+    }
+
+    // =========================
+    // Language menu handling
+    // =========================
     const langBtn = document.getElementById("langBtn");
     const langMenu = document.getElementById("langMenu");
 
@@ -883,7 +918,24 @@
       }
     });
 
-    // === Modal logic ===
+    langBtn?.addEventListener("click", (e) => { e.stopPropagation(); toggleLangMenu(); });
+
+    document.querySelectorAll("#langMenu .menuItem")?.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const lang = btn.getAttribute("data-lang") || "en";
+        applyLanguage(lang);
+        closeLangMenu();
+      });
+    });
+
+    document.getElementById("themeBtn")?.addEventListener("click", () => {
+      const cur = store.get("atlas_theme", "dark");
+      applyTheme(cur === "dark" ? "light" : "dark");
+    });
+
+    // =========================
+    // Modal logic
+    // =========================
     const modal = document.getElementById("emailModal");
     const form = document.getElementById("waitlistForm");
     const submitBtn = document.getElementById("submitBtn");
@@ -912,7 +964,7 @@
     function hideError(){ emailError.textContent = ""; emailError.classList.remove("show"); }
 
     function resetSubmitButton(){
-      const dict = I18N[store.get("atlas_lang","en")] || I18N.en;
+      const dict = dictNow();
       submitBtn.disabled = false;
       submitBtn.style.background = "";
       submitBtn.textContent = dict.submitBtn;
@@ -932,27 +984,11 @@
       document.getElementById("sampleCard")?.scrollIntoView({ behavior: "smooth", block: "center" });
     });
 
-    langBtn?.addEventListener("click", (e) => { e.stopPropagation(); toggleLangMenu(); });
-
-    document.querySelectorAll("#langMenu .menuItem")?.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const lang = btn.getAttribute("data-lang") || "en";
-        applyLanguage(lang);
-        closeLangMenu();
-      });
-    });
-
-    document.getElementById("themeBtn")?.addEventListener("click", () => {
-      const cur = store.get("atlas_theme", "dark");
-      applyTheme(cur === "dark" ? "light" : "dark");
-    });
-
     form?.addEventListener("submit", (e) => {
       e.preventDefault();
       hideError();
 
-      const lang = store.get("atlas_lang", "en");
-      const dict = I18N[lang] || I18N.en;
+      const dict = dictNow();
       const email = String(emailInput?.value || "").trim();
 
       if (!email) return showError(dict.errEmpty);
@@ -971,10 +1007,11 @@
       .then(() => {
         submitBtn.textContent = dict.joined;
         submitBtn.style.background = "var(--success)";
-        emailInput.value = "";
 
-        // ✅ 여기서 "업데이트 시간"을 가짜로 바꾸지 않음.
-        // (업데이트는 meta.json의 last_success_utc 기준)
+        emailInput.classList.add("success-flash");
+        setTimeout(() => emailInput.classList.remove("success-flash"), 650);
+
+        emailInput.value = "";
 
         setTimeout(() => {
           closeModal();
@@ -985,12 +1022,14 @@
         }, 900);
       })
       .catch(() => {
-        showError("Error. Please try again.");
+        showError(dict.errNetwork);
         resetSubmitButton();
       });
     });
 
+    // =========================
     // Init
+    // =========================
     const initLang = store.get("atlas_lang", "en");
     const initTheme = store.get("atlas_theme", "dark");
     applyTheme(initTheme);
@@ -999,8 +1038,10 @@
     const themeBtn = document.getElementById("themeBtn");
     if (themeBtn && !themeBtn.innerHTML) themeBtn.innerHTML = (initTheme === "dark") ? sunSVG : moonSVG;
 
-    // ✅ meta.json 기반 Updated 라벨 시작
-    initUpdatedLabel();
+    // meta.json fetch + periodic refresh
+    fetchMeta();
+    setInterval(refreshUpdatedText, 30000);
+    setInterval(fetchMeta, 60000);
   </script>
 </body>
 </html>

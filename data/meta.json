@@ -21,7 +21,8 @@
     "hot_cards_path": "data/hot_cards.json",
     "briefing_am_path": "data/briefing_am.json",
     "briefing_pm_path": "data/briefing_pm.json",
-    "watchlist_meta_path": "data/watchlist_meta.json"
+    "watchlist_meta_path": "data/watchlist_meta.json",
+    "meta_path": "data/meta.json"
   },
 
   "stats": {

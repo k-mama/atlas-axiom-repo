@@ -1,697 +1,530 @@
 # scripts/main_generator.py
+# AtlasAxiom Pipeline Orchestrator (repo-structure aligned)
+#
+# - Reads collectors in:   scripts/collectors/*.py
+# - Reads processors in:   scripts/processors/*.py
+# - Writes outputs into:   data/*.json
+# - Updates:              data/meta.json  (last_success_utc is used by index.html)
+#
+# 실행(레포 루트에서):
+#   python scripts/main_generator.py --run-type hourly-hot
+#   python scripts/main_generator.py --run-type daily-briefing
+#
+# 주의:
+# - 원문(게시글/기사/본문/자막) "저장"은 하지 않음.
+# - 저장 파일에는 링크 + 신호필드 + 우리 문장(요약/인사이트)만 들어가게 설계.
+
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
-import re
+import random
 import sys
+import time
+import traceback
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
+import importlib.util
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Path setup (stable regardless of working directory)
-# ──────────────────────────────────────────────────────────────────────────────
-SCRIPTS_DIR = Path(__file__).resolve().parent
-REPO_ROOT = SCRIPTS_DIR.parent
+
+# -------------------------
+# Paths (repo-aligned)
+# -------------------------
+SCRIPTS_DIR = Path(__file__).resolve().parent               # .../scripts
+REPO_ROOT = SCRIPTS_DIR.parent                              # repo root
 DATA_DIR = REPO_ROOT / "data"
 
-# Make imports work when running from repo root OR scripts dir
-sys.path.insert(0, str(SCRIPTS_DIR))
+META_PATH = DATA_DIR / "meta.json"
+HOT_PATH = DATA_DIR / "hot_cards.json"
+BRIEF_AM_PATH = DATA_DIR / "briefing_am.json"
+BRIEF_PM_PATH = DATA_DIR / "briefing_pm.json"
+WATCHLIST_META_PATH = DATA_DIR / "watchlist_meta.json"
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Optional imports (collectors / processors)
-# ──────────────────────────────────────────────────────────────────────────────
-def _safe_import():
-    collectors = {}
-    processors = {}
-    errors = []
-
-    try:
-        from collectors.official_rss import fetch_official_news  # type: ignore
-        collectors["official_rss"] = fetch_official_news
-    except Exception as e:
-        errors.append(f"collectors.official_rss: {e}")
-
-    try:
-        from collectors.reddit_api import fetch_reddit_buzz  # type: ignore
-        collectors["reddit_api"] = fetch_reddit_buzz
-    except Exception as e:
-        errors.append(f"collectors.reddit_api: {e}")
-
-    try:
-        from collectors.youtube_rss import fetch_youtube_videos  # type: ignore
-        collectors["youtube_rss"] = fetch_youtube_videos
-    except Exception as e:
-        errors.append(f"collectors.youtube_rss: {e}")
-
-    # processors (optional)
-    try:
-        from processors.ai_summarizer import summarize_news  # type: ignore
-        processors["ai_summarizer"] = summarize_news
-    except Exception as e:
-        # Not fatal – we’ll fallback to heuristic card text
-        errors.append(f"processors.ai_summarizer: {e}")
-
-    try:
-        from processors.risk_checker import run_risk_check  # type: ignore
-        processors["risk_checker"] = run_risk_check
-    except Exception as e:
-        errors.append(f"processors.risk_checker: {e}")
-
-    return collectors, processors, errors
+# Optional config place (you already have it): src/sources.json
+SOURCES_JSON_PATH = REPO_ROOT / "src" / "sources.json"
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Policy constants (Signal-only storage)
-# ──────────────────────────────────────────────────────────────────────────────
-SCHEMA_VERSION = "2026-01-30"
-TARGET_TICKERS = ["NVDA", "MSFT", "GOOGL", "AMD", "TSLA"]
-TICKER_ALIASES = {
-    "GOOG": "GOOGL",
-}
-MAX_CARDS_DEFAULT = 12
+# -------------------------
+# Meta defaults
+# -------------------------
+DEFAULT_META: Dict[str, Any] = {
+    "meta_version": "1.0",
+    "service": "AtlasAxiom",
+    "channel": "us-stocks-ai",
+    "primary_tickers": ["NVDA", "MSFT", "GOOGL", "AMD", "TSLA"],
 
-# fields allowed inside "signal" object (strict)
-ALLOWED_SIGNAL_FIELDS = {
-    "source_type",       # news/youtube/social/forum
-    "source_name",       # CNBC/Reuters/SEC/Reddit etc
-    "url",               # link only
-    "timestamp",         # ISO8601 Z
-    "tickers",           # list
-    "entities",          # list
-    "keywords_top",      # list (<=5)
-    "sentiment",         # pos/neg/neutral
-    "intensity",         # 0~100
-    "velocity",          # numeric or null
-    "topic_cluster",     # string
-    "confidence",        # 0~1
+    "success": False,
+    "last_attempt_utc": None,
+    "last_success_utc": None,
+
+    "run": {
+        "run_id": None,
+        "run_type": None,
+        "environment": None,
+        "started_utc": None,
+        "finished_utc": None,
+        "duration_ms": None
+    },
+
+    "outputs": {
+        "hot_cards_path": "data/hot_cards.json",
+        "briefing_am_path": "data/briefing_am.json",
+        "briefing_pm_path": "data/briefing_pm.json",
+        "watchlist_meta_path": "data/watchlist_meta.json",
+        "meta_path": "data/meta.json"
+    },
+
+    "stats": {
+        "collected_total": 0,
+        "signals_total": 0,
+        "cards_total": 0,
+        "entities_total": 0,
+        "tickers_total": 0
+    },
+
+    "sources": [
+        {"id": "official_rss", "tier": "A", "enabled": True, "status": "unknown", "items_collected": 0, "last_run_utc": None},
+        {"id": "youtube_rss",  "tier": "A", "enabled": True, "status": "unknown", "items_collected": 0, "last_run_utc": None},
+        {"id": "reddit_api",   "tier": "B", "enabled": True, "status": "unknown", "items_collected": 0, "last_run_utc": None},
+    ],
+
+    "risk_policy": {
+        "raw_content_storage": "forbidden",
+        "allowed_fields": [
+            "source_type", "source_name", "url", "timestamp",
+            "tickers", "entities", "keywords_top", "sentiment",
+            "intensity", "velocity", "topic_cluster", "confidence"
+        ],
+        "notes": "Store signals only. Never archive full post/article text, images, or transcripts. For Tier B/C store link + signal fields only."
+    },
+
+    "errors": []
 }
 
-# Hard remove any potentially “content-like” fields from raw items before any save.
-CONTENT_LIKE_KEYS = {
-    "title", "headline", "content", "text", "body", "description", "summary",
-    "transcript", "raw", "html", "markdown", "article", "post", "message",
-    "selftext", "comment", "captions",
-}
 
-STOPWORDS = {
-    "the","a","an","and","or","to","of","in","for","on","at","by","with","from",
-    "is","are","was","were","be","been","it","this","that","as","will","its",
-    "we","you","they","their","our","your",
-}
+# -------------------------
+# Utilities
+# -------------------------
+def utc_now_iso() -> str:
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
-TOPIC_RULES = [
-    ("earnings", {"earnings","guidance","revenue","eps","margin","q1","q2","q3","q4"}),
-    ("rates", {"fed","cpi","inflation","rates","yield","treasury","powell"}),
-    ("ai", {"ai","gpu","nvidia","model","inference","training","llm","datacenter","cuda"}),
-    ("ev", {"ev","autonomy","fsd","robotaxi","delivery","battery","charging"}),
-    ("regulation", {"sec","doj","ftc","antitrust","lawsuit","regulation","ban"}),
-    ("m&a", {"acquisition","merger","m&a","buyout","deal"}),
-]
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Helpers
-# ──────────────────────────────────────────────────────────────────────────────
-def utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+def safe_mkdir(p: Path) -> None:
+    p.mkdir(parents=True, exist_ok=True)
 
-def iso_z(dt: datetime) -> str:
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=timezone.utc)
-    return dt.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
 
-def parse_dt_any(value: Any) -> Optional[datetime]:
-    if not value:
+def atomic_write_json(path: Path, data: Any) -> bool:
+    try:
+        safe_mkdir(path.parent)
+        tmp = path.with_suffix(path.suffix + ".tmp")
+        with tmp.open("w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        tmp.replace(path)
+        return True
+    except Exception:
+        return False
+
+
+def load_json(path: Path) -> Optional[Any]:
+    if not path.exists():
         return None
-    if isinstance(value, datetime):
-        return value if value.tzinfo else value.replace(tzinfo=timezone.utc)
-    s = str(value).strip()
-    # Try ISO
     try:
-        if s.endswith("Z"):
-            return datetime.fromisoformat(s.replace("Z", "+00:00")).astimezone(timezone.utc)
-        return datetime.fromisoformat(s).astimezone(timezone.utc)
+        with path.open("r", encoding="utf-8") as f:
+            return json.load(f)
     except Exception:
-        pass
-    # Try RFC-ish / loose
-    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d"):
-        try:
-            return datetime.strptime(s, fmt).replace(tzinfo=timezone.utc)
-        except Exception:
-            continue
+        return None
+
+
+def merge_meta(existing: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    if not isinstance(existing, dict):
+        return json.loads(json.dumps(DEFAULT_META))  # deep copy
+    # shallow merge with defaults; keep unknown keys too
+    meta = json.loads(json.dumps(DEFAULT_META))
+    meta.update(existing)
+    # ensure nested keys exist
+    meta.setdefault("run", DEFAULT_META["run"])
+    meta.setdefault("stats", DEFAULT_META["stats"])
+    meta.setdefault("outputs", DEFAULT_META["outputs"])
+    meta.setdefault("sources", DEFAULT_META["sources"])
+    meta.setdefault("errors", [])
+    meta.setdefault("risk_policy", DEFAULT_META["risk_policy"])
+    return meta
+
+
+def append_error(meta: Dict[str, Any], stage: str, err: Exception, keep_last: int = 50) -> None:
+    e = {
+        "utc": utc_now_iso(),
+        "stage": stage,
+        "type": err.__class__.__name__,
+        "message": str(err),
+    }
+    meta.setdefault("errors", [])
+    meta["errors"].append(e)
+    meta["errors"] = meta["errors"][-keep_last:]
+
+
+def load_module_from_path(module_name: str, file_path: Path):
+    spec = importlib.util.spec_from_file_location(module_name, str(file_path))
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Cannot load module spec: {module_name} from {file_path}")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)  # type: ignore
+    return mod
+
+
+def resolve_callable(mod: Any, candidates: List[str]) -> Optional[Callable]:
+    for name in candidates:
+        fn = getattr(mod, name, None)
+        if callable(fn):
+            return fn
     return None
 
-def stable_json_dumps(obj: Any) -> str:
-    return json.dumps(obj, ensure_ascii=False, indent=2, sort_keys=True)
 
-def write_json_if_changed(path: Path, obj: Any) -> bool:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    new_txt = stable_json_dumps(obj)
-    if path.exists():
-        old_txt = path.read_text(encoding="utf-8")
-        if old_txt == new_txt:
-            return False
-    tmp = path.with_suffix(path.suffix + ".tmp")
-    tmp.write_text(new_txt, encoding="utf-8")
-    tmp.replace(path)
-    return True
+def strip_raw_content_fields(item: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    저장용 구조에서 원문성 필드(본문/설명/전체텍스트 등)는 제거.
+    (메모리 내 처리에는 있을 수 있으나, data/*.json에는 남기지 않는 방향)
+    """
+    banned_keys = {
+        "text", "content", "body", "full_text", "selftext",
+        "description", "summary", "transcript", "html",
+        "title"  # 타이틀도 '콘텐츠'로 볼 수 있어 저장본에서는 제거(엄격 모드)
+    }
+    return {k: v for k, v in item.items() if k not in banned_keys}
 
-def sha256_short(s: str) -> str:
-    return hashlib.sha256(s.encode("utf-8")).hexdigest()[:12]
 
-def normalize_url(u: str) -> str:
-    u = (u or "").strip()
-    # normalize common trackers
-    u = re.sub(r"[?&](utm_[^=]+|fbclid|gclid)=[^&]+", "", u, flags=re.I)
-    u = u.replace("??", "?").rstrip("?&")
-    return u
-
-def extract_tickers(text: str) -> List[str]:
-    # $TSLA or TSLA (up to 5 chars)
-    candidates = set(re.findall(r"\$?([A-Z]{1,5})\b", text or ""))
-    out = []
-    for c in candidates:
-        if c in TICKER_ALIASES:
-            c = TICKER_ALIASES[c]
-        if c in TARGET_TICKERS:
-            out.append(c)
-    out.sort()
-    return out
-
-def extract_keywords(text: str, k: int = 5) -> List[str]:
-    words = re.findall(r"[A-Za-z0-9]{3,}", (text or "").lower())
-    words = [w for w in words if w not in STOPWORDS]
-    if not words:
+def to_list(x: Any) -> List[Any]:
+    if x is None:
         return []
-    freq: Dict[str, int] = {}
-    for w in words:
-        freq[w] = freq.get(w, 0) + 1
-    ranked = sorted(freq.items(), key=lambda x: (-x[1], x[0]))
-    return [w for (w, _) in ranked[:k]]
+    if isinstance(x, list):
+        return x
+    return [x]
 
-def classify_topic(keywords: List[str], entities: List[str], tickers: List[str]) -> str:
-    bag = set([k.lower() for k in keywords] + [e.lower() for e in entities] + [t.lower() for t in tickers])
-    for topic, keys in TOPIC_RULES:
-        if bag.intersection(keys):
-            return topic
-    return "general"
 
-def infer_source_type(raw: Dict[str, Any], default: str) -> str:
-    v = (raw.get("source_type") or raw.get("type") or raw.get("kind") or "").lower()
-    if v in {"news","youtube","social","forum"}:
-        return v
-    return default
+def unique_upper_tickers(items: List[Dict[str, Any]]) -> List[str]:
+    s = set()
+    for it in items:
+        for t in to_list(it.get("tickers")):
+            if isinstance(t, str) and t.strip():
+                s.add(t.strip().upper())
+    return sorted(s)
 
-def infer_source_name(raw: Dict[str, Any], default: str) -> str:
-    return str(raw.get("source_name") or raw.get("source") or raw.get("site") or raw.get("publisher") or default)
 
-def infer_sentiment(raw: Dict[str, Any]) -> str:
-    v = (raw.get("sentiment") or "neutral").lower()
-    return v if v in {"pos","neg","neutral"} else "neutral"
+def unique_entities(items: List[Dict[str, Any]]) -> List[str]:
+    s = set()
+    for it in items:
+        for e in to_list(it.get("entities")):
+            if isinstance(e, str) and e.strip():
+                s.add(e.strip())
+    return sorted(s)
 
-def infer_intensity(raw: Dict[str, Any], source_type: str) -> int:
-    # If collector already computed:
-    if isinstance(raw.get("intensity"), (int, float)):
-        return int(max(0, min(100, raw["intensity"])))
-    # Otherwise infer from available engagement signals:
-    up = raw.get("upvotes") or raw.get("score") or 0
-    cm = raw.get("comments") or raw.get("num_comments") or 0
-    vw = raw.get("views") or raw.get("view_count") or 0
-    try:
-        up = float(up); cm = float(cm); vw = float(vw)
-    except Exception:
-        up = cm = vw = 0.0
-    base = 15.0
-    if source_type in {"news"}:
-        base = 25.0
-    elif source_type in {"youtube"}:
-        base = 18.0
-    elif source_type in {"social","forum"}:
-        base = 12.0
-    score = base + (up * 0.08) + (cm * 0.30) + (vw * 0.00002)
-    return int(max(0, min(100, score)))
 
-def infer_velocity(raw: Dict[str, Any]) -> Optional[float]:
-    v = raw.get("velocity")
-    if isinstance(v, (int, float)):
-        return float(v)
-    # try common fields
-    for key in ("velocity_pct", "growth", "growth_rate", "spike"):
-        vv = raw.get(key)
-        if isinstance(vv, (int, float)):
-            return float(vv)
+def compute_stats(raw_items: List[Dict[str, Any]], cards: List[Dict[str, Any]]) -> Dict[str, Any]:
+    # "signals_total"은 저장 가능한 필드로 정규화된 개수라고 보고 raw_items와 동일 카운트 사용
+    tickers = unique_upper_tickers(raw_items)
+    entities = unique_entities(raw_items)
+    return {
+        "collected_total": len(raw_items),
+        "signals_total": len(raw_items),
+        "cards_total": len(cards),
+        "entities_total": len(entities),
+        "tickers_total": len(tickers),
+    }
+
+
+def read_sources_config() -> Optional[Dict[str, Any]]:
+    if SOURCES_JSON_PATH.exists():
+        data = load_json(SOURCES_JSON_PATH)
+        if isinstance(data, dict):
+            return data
     return None
 
-def tier_from_source(source_type: str, source_name: str) -> str:
-    # Simple & safe rule:
-    if source_type == "news":
-        return "A"
-    if source_type in {"youtube"}:
-        # official channels are Tier A-ish, but we still treat as B unless collector tags it
-        return "B"
-    if source_type in {"social","forum"}:
-        return "B"
-    return "C"
 
-def confidence_from_tier(tier: str) -> float:
-    if tier == "A":
-        return 0.85
-    if tier == "B":
-        return 0.65
-    return 0.40
+# -------------------------
+# Collector orchestration
+# -------------------------
+@dataclass
+class SourceRunResult:
+    source_id: str
+    ok: bool
+    items: List[Dict[str, Any]]
+    error: Optional[str] = None
 
-def make_signal_id(url: str, source_name: str) -> str:
-    return sha256_short(f"{normalize_url(url)}|{source_name}")
 
-def sanitize_for_storage(signal: Dict[str, Any]) -> Dict[str, Any]:
-    # Keep only allowed signal fields, enforce types, trim sizes.
-    out: Dict[str, Any] = {}
-    for k in ALLOWED_SIGNAL_FIELDS:
-        if k in signal:
-            out[k] = signal[k]
-    # Enforce constraints:
-    out["tickers"] = list(dict.fromkeys(out.get("tickers") or []))[:10]
-    out["entities"] = list(dict.fromkeys(out.get("entities") or []))[:20]
-    out["keywords_top"] = list(dict.fromkeys(out.get("keywords_top") or []))[:5]
-    out["intensity"] = int(max(0, min(100, int(out.get("intensity") or 0))))
+def run_collector(source_id: str, file_name: str, fn_candidates: List[str], sources_cfg: Optional[Dict[str, Any]]) -> SourceRunResult:
+    """
+    - source_id: meta.json sources[].id 와 동일 키
+    - file_name: scripts/collectors/ 아래 파일
+    """
     try:
-        out["confidence"] = float(out.get("confidence") or 0)
-    except Exception:
-        out["confidence"] = 0.0
-    out["confidence"] = max(0.0, min(1.0, out["confidence"]))
-    out["sentiment"] = out.get("sentiment") if out.get("sentiment") in {"pos","neg","neutral"} else "neutral"
-    # velocity can be None
-    if out.get("velocity") is not None:
+        path = SCRIPTS_DIR / "collectors" / file_name
+        mod = load_module_from_path(f"collectors.{source_id}", path)
+        fn = resolve_callable(mod, fn_candidates)
+        if fn is None:
+            raise AttributeError(f"No callable found in {file_name}. Tried: {fn_candidates}")
+
+        # 함수 시그니처 다양성 흡수: (sources_cfg) 받을 수도/안 받을 수도
         try:
-            out["velocity"] = float(out["velocity"])
-        except Exception:
-            out["velocity"] = None
-    return out
+            if sources_cfg is not None:
+                out = fn(sources_cfg)
+            else:
+                out = fn()
+        except TypeError:
+            out = fn()
 
-def score_signal(signal: Dict[str, Any], now: datetime) -> float:
-    ts = parse_dt_any(signal.get("timestamp"))
-    age_h = 24.0
-    if ts:
-        age_h = max(0.1, (now - ts).total_seconds() / 3600.0)
-    recency = 1.0 / (1.0 + (age_h / 12.0))  # faster decay
-    intensity = float(signal.get("intensity") or 0) / 100.0
-    conf = float(signal.get("confidence") or 0)
-    vel = signal.get("velocity")
-    vel_boost = 1.0
-    if isinstance(vel, (int, float)):
-        vel_boost = 1.0 + min(1.5, max(0.0, float(vel) / 300.0))  # 300% spike -> +1.0
-    return intensity * conf * recency * vel_boost
+        items = []
+        for x in to_list(out):
+            if isinstance(x, dict):
+                items.append(x)
+            else:
+                # dict 아닌 경우 최소 래핑
+                items.append({"url": str(x), "timestamp": utc_now_iso(), "source_name": source_id, "source_type": "unknown"})
+        return SourceRunResult(source_id=source_id, ok=True, items=items)
 
-def default_checkpoints(topic: str, tickers: List[str]) -> List[str]:
-    t = (tickers[0] if tickers else "ticker")
-    if topic == "earnings":
-        return [
-            f"{t} guidance changes 여부(다음 업데이트)",
-            "옵션 IV/프리마켓 반응 체크",
-            "동일 섹터 동반 움직임(동일 키워드) 확인",
-        ]
-    if topic == "rates":
-        return [
-            "오늘/내일 매크로 캘린더(CPI/Fed/채권) 확인",
-            "장기금리/달러 변동과 동행 여부",
-            "성장주/AI 대형주 동반 리스크 점검",
-        ]
-    if topic == "ai":
-        return [
-            "공식 발표(리포/블로그/공시)로 확인",
-            "관련 공급망/동종(AMD/MSFT/GOOGL 등) 반응 비교",
-            "GPU/데이터센터 수요 신호(가이던스/발주) 추적",
-        ]
-    if topic == "ev":
-        return [
-            "생산/인도/가격변경 같은 공식 신호 확인",
-            "규제/리콜/사고 이슈의 2차 확산 여부",
-            "관련 밸류체인(배터리/충전) 동반 움직임 확인",
-        ]
-    if topic == "regulation":
-        return [
-            "공식 문서(기관/법원/공시) 1차 확인",
-            "‘합의/조사/소송’ 단계 구분해서 추적",
-            "동일 섹터 규제 확장 가능성 점검",
-        ]
-    if topic == "m&a":
-        return [
-            "공식 공시/보도자료 존재 여부 확인",
-            "조건(가격/지분/규제심사) 핵심 변수 체크",
-            "유사 딜 사례와 시장 반응 비교",
-        ]
-    return [
-        "공식 소스에서 1차 확인",
-        "커뮤니티 키워드 상승 지속 여부",
-        "내일 검증할 체크포인트 3개 유지",
+    except Exception as e:
+        return SourceRunResult(source_id=source_id, ok=False, items=[], error=f"{e.__class__.__name__}: {e}")
+
+
+def update_meta_source(meta: Dict[str, Any], source_id: str, ok: bool, count: int) -> None:
+    now = utc_now_iso()
+    for s in meta.get("sources", []):
+        if s.get("id") == source_id:
+            s["status"] = "ok" if ok else "error"
+            s["items_collected"] = int(count)
+            s["last_run_utc"] = now
+            break
+
+
+# -------------------------
+# Processor orchestration
+# -------------------------
+def run_ai_summarizer(raw_items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    processors/ai_summarizer.py 를 가능한 이름 후보로 호출.
+    실패 시, 최소 fallback 카드 생성.
+    """
+    try:
+        path = SCRIPTS_DIR / "processors" / "ai_summarizer.py"
+        mod = load_module_from_path("processors.ai_summarizer", path)
+        fn = resolve_callable(mod, ["summarize_news", "summarize_signals", "build_cards", "generate_cards"])
+        if fn is None:
+            raise AttributeError("No summarizer function found (summarize_news / summarize_signals / build_cards / generate_cards)")
+
+        out = fn(raw_items)
+        cards: List[Dict[str, Any]] = []
+        for c in to_list(out):
+            if isinstance(c, dict):
+                cards.append(c)
+        return cards
+
+    except Exception:
+        # fallback: 원문 없이(키워드/티커 기반) 안전 카드
+        cards = []
+        for i, it in enumerate(raw_items[:12], start=1):
+            tickers = unique_upper_tickers([it])
+            kw = to_list(it.get("keywords_top"))[:5]
+            url = it.get("url")
+            cards.append({
+                "id": f"fallback-{i}",
+                "tier": "signal",
+                "tickers": tickers,
+                "headline": f"Signal detected for {', '.join(tickers) if tickers else 'market'}",
+                "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+                "keywords": kw,
+                "sources": [url] if isinstance(url, str) else [],
+                "confidence": float(it.get("confidence", 0.5)) if isinstance(it.get("confidence", 0.5), (int, float)) else 0.5
+            })
+        return cards
+
+
+def run_risk_checker(cards: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    processors/risk_checker.py 를 가능한 이름 후보로 호출.
+    실패 시 pass-through.
+    """
+    try:
+        path = SCRIPTS_DIR / "processors" / "risk_checker.py"
+        mod = load_module_from_path("processors.risk_checker", path)
+        fn = resolve_callable(mod, ["run_risk_check", "risk_check", "filter_cards", "sanitize_cards"])
+        if fn is None:
+            raise AttributeError("No risk checker function found (run_risk_check / risk_check / filter_cards / sanitize_cards)")
+        out = fn(cards)
+        safe_cards: List[Dict[str, Any]] = []
+        for c in to_list(out):
+            if isinstance(c, dict):
+                safe_cards.append(c)
+        return safe_cards
+    except Exception:
+        return cards
+
+
+# -------------------------
+# Output builders (simple, safe)
+# -------------------------
+def build_hot_cards_payload(cards: List[Dict[str, Any]], meta: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "updated_at_utc": utc_now_iso(),
+        "channel": meta.get("channel", "us-stocks-ai"),
+        "cards": cards
+    }
+
+
+def build_briefing_payload(cards: List[Dict[str, Any]], label: str) -> Dict[str, Any]:
+    """
+    AM/PM 브리핑은 (핫카드 상위 몇개) + 체크포인트 형태로 가볍게 생성
+    """
+    top = cards[:7]
+    checkpoints = [
+        "Check official filings / press releases for confirmation",
+        "Watch pre-market / after-hours reaction and volume",
+        "Track follow-through keywords velocity in the next cycle"
     ]
-
-def heuristic_insight(signal: Dict[str, Any]) -> Dict[str, Any]:
-    tickers = signal.get("tickers") or []
-    topic = signal.get("topic_cluster") or "general"
-    kws = signal.get("keywords_top") or []
-    src = signal.get("source_name") or "source"
-
-    # headline should be OUR wording (no source title)
-    headline = " · ".join([t for t in tickers[:2]]) if tickers else "Market"
-    if kws:
-        headline = f"{headline}: {topic} signal ({kws[0]})"
-    else:
-        headline = f"{headline}: {topic} signal"
-
-    angle = f"{src} 기반 신호 + 커뮤니티/공식 흐름을 분리해 확인"
-    checkpoints = default_checkpoints(topic, tickers)
-
     return {
-        "headline": headline,
-        "angle": angle,
-        "checkpoints": checkpoints[:3],
-        "tags": list(dict.fromkeys((tickers + [topic])[:8])),
+        "updated_at_utc": utc_now_iso(),
+        "label": label,
+        "top_cards": top,
+        "checkpoints": checkpoints
     }
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Pipeline
-# ──────────────────────────────────────────────────────────────────────────────
-def call_collector(fn, **kwargs) -> List[Dict[str, Any]]:
-    # collectors may accept (tickers=...) or not
-    try:
-        return fn(**kwargs)  # type: ignore
-    except TypeError:
-        try:
-            return fn()  # type: ignore
-        except Exception:
-            return []
-    except Exception:
-        return []
-
-def normalize_raw_item(raw: Dict[str, Any], default_source_type: str, default_source_name: str, collected_at: datetime) -> Optional[Dict[str, Any]]:
-    if not isinstance(raw, dict):
-        return None
-
-    # We can USE text for extraction, but we will NEVER STORE it.
-    # For keyword/ticker extraction, we may look at title/headline if present.
-    title_like = str(raw.get("title") or raw.get("headline") or "")
-    url = str(raw.get("url") or raw.get("link") or raw.get("permalink") or "").strip()
-    if not url:
-        return None
-    url = normalize_url(url)
-
-    source_type = infer_source_type(raw, default_source_type)
-    source_name = infer_source_name(raw, default_source_name)
-    tier = tier_from_source(source_type, source_name)
-
-    ts = (
-        parse_dt_any(raw.get("timestamp"))
-        or parse_dt_any(raw.get("published_at"))
-        or parse_dt_any(raw.get("published"))
-        or parse_dt_any(raw.get("date"))
-        or collected_at
-    )
-
-    # tickers/entities/keywords extraction
-    tickers = raw.get("tickers")
-    if not isinstance(tickers, list):
-        tickers = extract_tickers(title_like)
-
-    # If collector provides entities, use them. Otherwise derive minimal.
-    entities = raw.get("entities")
-    if not isinstance(entities, list):
-        entities = []
-        # Add tickers as entities (safe, not content)
-        for t in tickers:
-            entities.append(t)
-
-    keywords = raw.get("keywords_top")
-    if not isinstance(keywords, list):
-        keywords = extract_keywords(title_like, k=5)
-
-    topic = raw.get("topic_cluster")
-    if not isinstance(topic, str) or not topic.strip():
-        topic = classify_topic(keywords, entities, tickers)
-
-    sentiment = infer_sentiment(raw)
-    intensity = infer_intensity(raw, source_type)
-    velocity = infer_velocity(raw)
-    confidence = float(raw.get("confidence") or confidence_from_tier(tier))
-
-    signal = {
-        "source_type": source_type,
-        "source_name": source_name,
-        "url": url,
-        "timestamp": iso_z(ts),
-        "tickers": tickers,
-        "entities": entities,
-        "keywords_top": keywords,
-        "sentiment": sentiment,
-        "intensity": intensity,
-        "velocity": velocity,
-        "topic_cluster": topic,
-        "confidence": confidence,
-    }
-
-    return sanitize_for_storage(signal)
-
-def build_signals(collectors: Dict[str, Any]) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
-    collected_at = utc_now()
-    raw_counts = {}
-    raw_all: List[Tuple[str, Dict[str, Any]]] = []
-
-    # Collect (Tier A/B sources)
-    if "official_rss" in collectors:
-        items = call_collector(collectors["official_rss"], tickers=TARGET_TICKERS)
-        raw_counts["official_rss"] = len(items)
-        for it in items:
-            raw_all.append(("news", it))
-
-    if "reddit_api" in collectors:
-        items = call_collector(collectors["reddit_api"], tickers=TARGET_TICKERS)
-        raw_counts["reddit_api"] = len(items)
-        for it in items:
-            raw_all.append(("forum", it))
-
-    if "youtube_rss" in collectors:
-        items = call_collector(collectors["youtube_rss"], tickers=TARGET_TICKERS)
-        raw_counts["youtube_rss"] = len(items)
-        for it in items:
-            raw_all.append(("youtube", it))
-
-    # Normalize + dedupe by URL
-    dedup: Dict[str, Dict[str, Any]] = {}
-    for default_type, raw in raw_all:
-        default_name = {
-            "news": "Official RSS",
-            "forum": "Reddit",
-            "youtube": "YouTube RSS",
-        }.get(default_type, "Source")
-
-        norm = normalize_raw_item(raw, default_type, default_name, collected_at)
-        if not norm:
-            continue
-
-        # keep only our target tickers OR market-wide topics if empty tickers (optional)
-        tickers = norm.get("tickers") or []
-        if tickers:
-            # already filtered by extract_tickers, but keep safe
-            tickers = [t for t in tickers if t in TARGET_TICKERS]
-            norm["tickers"] = tickers
-
-        key = normalize_url(norm["url"])
-        # If duplicate, keep the higher intensity one
-        if key in dedup:
-            if (norm.get("intensity") or 0) > (dedup[key].get("intensity") or 0):
-                dedup[key] = norm
-        else:
-            dedup[key] = norm
-
-    signals = list(dedup.values())
-    stats = {
-        "collected_at_utc": iso_z(collected_at),
-        "raw_counts": raw_counts,
-        "signals_count": len(signals),
-    }
-    return signals, stats
-
-def build_cards(
-    signals: List[Dict[str, Any]],
-    processors: Dict[str, Any],
-    max_cards: int
-) -> List[Dict[str, Any]]:
-    now = utc_now()
-
-    scored = []
-    for s in signals:
-        scored.append((score_signal(s, now), s))
-    scored.sort(key=lambda x: x[0], reverse=True)
-
-    top = [s for _, s in scored[:max_cards]]
-
-    # 1) Create base cards (heuristic)
-    cards = []
-    for s in top:
-        card_id = make_signal_id(s["url"], s["source_name"])
-        cards.append({
-            "id": card_id,
-            "signal": s,
-            "insight": heuristic_insight(s),
-            "score": round(score_signal(s, now), 6),
-        })
-
-    # 2) Optional AI summarizer can overwrite/augment insight safely
-    if "ai_summarizer" in processors:
-        try:
-            # Provide ONLY signal fields (no raw content)
-            safe_payload = [c["signal"] for c in cards]
-            ai_result = processors["ai_summarizer"](safe_payload)  # type: ignore
-
-            # If ai_summarizer returns list aligned with inputs:
-            if isinstance(ai_result, list) and len(ai_result) == len(cards):
-                for i, r in enumerate(ai_result):
-                    if isinstance(r, dict):
-                        # allow only these insight keys
-                        allowed = {"headline", "angle", "checkpoints", "tags"}
-                        merged = dict(cards[i]["insight"])
-                        for k in allowed:
-                            if k in r:
-                                merged[k] = r[k]
-                        # normalize checkpoints/tags
-                        if isinstance(merged.get("checkpoints"), list):
-                            merged["checkpoints"] = merged["checkpoints"][:3]
-                        if isinstance(merged.get("tags"), list):
-                            merged["tags"] = merged["tags"][:8]
-                        cards[i]["insight"] = merged
-        except Exception:
-            pass
-
-    # 3) Optional risk checker (final sanitization/filters)
-    if "risk_checker" in processors:
-        try:
-            checked = processors["risk_checker"](cards)  # type: ignore
-            if isinstance(checked, list):
-                cards = checked
-        except Exception:
-            pass
-
-    return cards
-
-def build_briefing(cards: List[Dict[str, Any]], slot: str) -> Dict[str, Any]:
-    # Minimal AM/PM wrapper so front-end can fetch
+def build_watchlist_meta(meta: Dict[str, Any]) -> Dict[str, Any]:
     return {
-        "schema_version": SCHEMA_VERSION,
-        "slot": slot,
-        "generated_at_utc": iso_z(utc_now()),
-        "top": cards[:7],  # daily 1-page brief target
-    }
-
-def make_meta(run_kind: str, stats: Dict[str, Any], cards_count: int, success: bool, extra_errors: List[str]) -> Dict[str, Any]:
-    now = utc_now()
-    return {
-        "schema_version": SCHEMA_VERSION,
-        "run_kind": run_kind,
-        "success": bool(success),
-        "last_success_utc": iso_z(now) if success else None,
-        "generated_at_utc": iso_z(now),
-        "generated_epoch_ms": int(now.timestamp() * 1000),
-        "items": {
-            "signals": int(stats.get("signals_count") or 0),
-            "cards": int(cards_count),
-        },
-        "collectors": stats.get("raw_counts") or {},
-        "git": {
-            "sha": os.getenv("GITHUB_SHA"),
-            "run_id": os.getenv("GITHUB_RUN_ID"),
-            "workflow": os.getenv("GITHUB_WORKFLOW"),
-        },
-        "notes": "signal-only storage (no original content persisted)",
-        "errors": extra_errors[:12],
+        "updated_at_utc": utc_now_iso(),
+        "primary_tickers": meta.get("primary_tickers", ["NVDA", "MSFT", "GOOGL", "AMD", "TSLA"]),
+        "notes": "Placeholder. Extend with per-ticker thresholds, alert rules, and source mappings."
     }
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# CLI / Main
-# ──────────────────────────────────────────────────────────────────────────────
-def main():
-    parser = argparse.ArgumentParser(description="AtlasAxiom main generator (signal-only).")
-    parser.add_argument("mode", choices=["hot", "briefing", "all"], help="what to generate")
-    parser.add_argument("--slot", choices=["am", "pm"], default="am", help="briefing slot when mode=briefing")
-    parser.add_argument("--max-cards", type=int, default=MAX_CARDS_DEFAULT, help="max cards for hot feed")
+# -------------------------
+# Main
+# -------------------------
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--run-type", default="manual", choices=["manual", "hourly-hot", "daily-briefing", "weekly-deep"])
+    parser.add_argument("--env", default=os.getenv("ATLAS_ENV", "local"))
+    parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
-    collectors, processors, import_errors = _safe_import()
+    started_ts = time.time()
+    started_utc = utc_now_iso()
 
-    # Run
-    success = True
-    extra_errors = list(import_errors)
+    safe_mkdir(DATA_DIR)
 
-    signals: List[Dict[str, Any]] = []
-    stats: Dict[str, Any] = {}
-    try:
-        signals, stats = build_signals(collectors)
-    except Exception as e:
-        success = False
-        extra_errors.append(f"build_signals: {e}")
-        signals, stats = [], {"raw_counts": {}, "signals_count": 0}
+    # load meta (or create)
+    meta = merge_meta(load_json(META_PATH))
 
-    # Cards
-    cards: List[Dict[str, Any]] = []
-    if success:
-        try:
-            cards = build_cards(signals, processors, max_cards=args.max_cards)
-        except Exception as e:
-            success = False
-            extra_errors.append(f"build_cards: {e}")
-            cards = []
+    # run id
+    run_id = f"{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}-{random.randint(1000,9999)}"
 
-    # Output paths
-    hot_path = DATA_DIR / "hot_cards.json"
-    meta_path = DATA_DIR / "meta.json"
-    briefing_am_path = DATA_DIR / "briefing_am.json"
-    briefing_pm_path = DATA_DIR / "briefing_pm.json"
+    # meta: start
+    meta["last_attempt_utc"] = started_utc
+    meta["success"] = False
+    meta["run"] = meta.get("run", {})
+    meta["run"]["run_id"] = run_id
+    meta["run"]["run_type"] = args.run_type
+    meta["run"]["environment"] = args.env
+    meta["run"]["started_utc"] = started_utc
+    meta["run"]["finished_utc"] = None
+    meta["run"]["duration_ms"] = None
 
-    # Always write meta (even if fail) so UI can reflect status
-    run_kind = args.mode if args.mode != "briefing" else f"briefing_{args.slot}"
-    meta = make_meta(run_kind, stats, len(cards), success, extra_errors)
+    all_errors: List[Tuple[str, str]] = []  # (stage, message)
 
-    # Generate outputs per mode
-    wrote_any = False
+    sources_cfg = read_sources_config()
 
-    if args.mode in {"hot", "all"}:
-        hot_payload = {
-            "schema_version": SCHEMA_VERSION,
-            "generated_at_utc": iso_z(utc_now()),
-            "updated_at_utc": meta.get("last_success_utc"),  # what UI should use
-            "cards": cards,
-        }
-        wrote_any |= write_json_if_changed(hot_path, hot_payload)
+    # --- 1) Collect ---
+    collected: List[Dict[str, Any]] = []
+    collector_specs = [
+        ("official_rss", "official_rss.py", ["fetch_official_news", "fetch_official_rss", "fetch_items"]),
+        ("youtube_rss",  "youtube_rss.py",  ["fetch_youtube_videos", "fetch_youtube_rss", "fetch_items"]),
+        ("reddit_api",   "reddit_api.py",   ["fetch_reddit_buzz", "fetch_reddit", "fetch_items"]),
+    ]
 
-    if args.mode in {"briefing", "all"}:
-        slot = args.slot
-        briefing = build_briefing(cards, slot=slot)
-        if slot == "am":
-            wrote_any |= write_json_if_changed(briefing_am_path, briefing)
+    for source_id, file_name, fn_candidates in collector_specs:
+        res = run_collector(source_id, file_name, fn_candidates, sources_cfg)
+        update_meta_source(meta, source_id, res.ok, len(res.items))
+        if res.ok:
+            collected.extend(res.items)
         else:
-            wrote_any |= write_json_if_changed(briefing_pm_path, briefing)
+            all_errors.append((f"collect:{source_id}", res.error or "unknown error"))
 
-    wrote_any |= write_json_if_changed(meta_path, meta)
+    # normalize signals for storage-safe stats (remove raw content fields)
+    storage_safe_signals = [strip_raw_content_fields(it if isinstance(it, dict) else {}) for it in collected]
+
+    # --- 2) Process ---
+    process_ok = True
+    try:
+        draft_cards = run_ai_summarizer(collected)  # summarizer may use raw in-memory fields
+        final_cards = run_risk_checker(draft_cards)
+    except Exception as e:
+        process_ok = False
+        final_cards = []
+        all_errors.append(("process", f"{e.__class__.__name__}: {e}"))
+        # keep traceback for debugging in logs only (meta에는 메시지만)
+        print("PROCESS ERROR:\n", traceback.format_exc())
+
+    # --- 3) Save outputs ---
+    save_ok = True
+    try:
+        hot_payload = build_hot_cards_payload(final_cards, meta)
+        am_payload = build_briefing_payload(final_cards, "AM")
+        pm_payload = build_briefing_payload(final_cards, "PM")
+        watch_payload = build_watchlist_meta(meta)
+
+        if not args.dry_run:
+            ok1 = atomic_write_json(HOT_PATH, hot_payload)
+            ok2 = atomic_write_json(BRIEF_AM_PATH, am_payload)
+            ok3 = atomic_write_json(BRIEF_PM_PATH, pm_payload)
+            ok4 = atomic_write_json(WATCHLIST_META_PATH, watch_payload)
+            save_ok = bool(ok1 and ok2 and ok3 and ok4)
+        else:
+            print("(dry-run) outputs not written")
+
+    except Exception as e:
+        save_ok = False
+        all_errors.append(("save", f"{e.__class__.__name__}: {e}"))
+        print("SAVE ERROR:\n", traceback.format_exc())
+
+    # --- 4) Finalize meta ---
+    finished_utc = utc_now_iso()
+    duration_ms = int((time.time() - started_ts) * 1000)
+
+    meta["run"]["finished_utc"] = finished_utc
+    meta["run"]["duration_ms"] = duration_ms
+
+    meta["stats"] = compute_stats(storage_safe_signals, final_cards)
+
+    # success rule: saved + processed + at least 1 collected item
+    overall_success = bool(save_ok and process_ok and (len(collected) > 0))
+    meta["success"] = overall_success
+    if overall_success:
+        meta["last_success_utc"] = finished_utc
+
+    # attach errors
+    for stage, msg in all_errors:
+        try:
+            append_error(meta, stage, Exception(msg), keep_last=50)
+        except Exception:
+            pass
+
+    if not args.dry_run:
+        okm = atomic_write_json(META_PATH, meta)
+        if not okm:
+            print("WARN: meta.json write failed")
+            overall_success = False
 
     # Console summary
-    print("🚀 AtlasAxiom Generator")
-    print(f" - mode: {args.mode} (slot={args.slot})")
-    print(f" - signals: {stats.get('signals_count', 0)} | cards: {len(cards)} | success: {success}")
-    print(f" - wrote files: {'YES' if wrote_any else 'NO (unchanged)'}")
-    if extra_errors:
-        # show only first few
-        print(" - notes/errors:")
-        for m in extra_errors[:6]:
-            print(f"   • {m}")
+    print(f"[AtlasAxiom] run_id={run_id} run_type={args.run_type} env={args.env}")
+    print(f"[AtlasAxiom] collected={len(collected)} cards={len(final_cards)} save_ok={save_ok} process_ok={process_ok} success={overall_success}")
+    if all_errors:
+        print("[AtlasAxiom] errors:")
+        for s, m in all_errors:
+            print(f" - {s}: {m}")
 
-    # Exit code for CI
-    if not success:
-        sys.exit(2)
+    return 0 if overall_success else 2
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

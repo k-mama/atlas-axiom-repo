@@ -1,0 +1,101 @@
+{
+  "version": "1.0",
+  "service": "AtlasAxiom",
+  "channel": "us-stocks-ai",
+  "primary_tickers": ["NVDA", "MSFT", "GOOGL", "AMD", "TSLA"],
+
+  "policy": {
+    "store_raw_content": false,
+    "store_links_only_for_social": true,
+    "notes": "Signals only. Never store full article/post text, images, or transcripts."
+  },
+
+  "ui_defaults": {
+    "focus_mode": "signals_first",
+    "show_updated_badge": true,
+    "default_sections": ["Hot Cards", "Briefing AM", "Briefing PM"]
+  },
+
+  "sources": [
+    {
+      "id": "official_rss",
+      "tier": "A",
+      "enabled": true,
+      "source_type": "news",
+      "source_name": "Official/Institutional RSS",
+      "status": "unknown",
+
+      "feeds": [
+        {
+          "name": "SEC EDGAR (Atom - current filings)",
+          "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&count=40&output=atom"
+        },
+        {
+          "name": "NVIDIA Blog (placeholder)",
+          "url": "https://blogs.nvidia.com/feed/"
+        },
+        {
+          "name": "Microsoft Official Blog (placeholder)",
+          "url": "https://blogs.microsoft.com/feed/"
+        },
+        {
+          "name": "Google Blog (placeholder)",
+          "url": "https://blog.google/feed/"
+        },
+        {
+          "name": "AMD Newsroom (placeholder)",
+          "url": "https://www.amd.com/en/rss.xml"
+        },
+        {
+          "name": "Tesla (placeholder)",
+          "url": "https://www.tesla.com/blog/rss"
+        }
+      ],
+
+      "output_mode": "signals_only"
+    },
+
+    {
+      "id": "youtube_rss",
+      "tier": "A",
+      "enabled": true,
+      "source_type": "youtube",
+      "source_name": "Official YouTube Channels",
+      "status": "unknown",
+
+      "channels": [
+        { "name": "NVIDIA", "url": "https://www.youtube.com/@NVIDIA" },
+        { "name": "Microsoft", "url": "https://www.youtube.com/@Microsoft" },
+        { "name": "Google", "url": "https://www.youtube.com/@Google" },
+        { "name": "AMD", "url": "https://www.youtube.com/@AMD" },
+        { "name": "Tesla", "url": "https://www.youtube.com/@Tesla" }
+      ],
+
+      "output_mode": "signals_only"
+    },
+
+    {
+      "id": "reddit_api",
+      "tier": "B",
+      "enabled": true,
+      "source_type": "forum",
+      "source_name": "Reddit Buzz (links-only)",
+      "status": "unknown",
+
+      "subreddits": [
+        "stocks",
+        "investing",
+        "wallstreetbets",
+        "StockMarket",
+        "technology",
+        "MachineLearning",
+        "artificial"
+      ],
+
+      "query_terms": ["NVDA", "MSFT", "GOOGL", "AMD", "TSLA", "AI", "earnings", "guidance", "datacenter"],
+
+      "storage_rule": "links_only",
+      "output_mode": "signals_only"
+    }
+  ]
+}
