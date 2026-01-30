@@ -1,47 +1,11 @@
 {
-  "updated_at": "2026-01-01T00:00:00Z",
-  "supported_assets": [
-    {
-      "ticker": "TSLA",
-      "name_en": "Tesla Inc.",
-      "name_kr": "테슬라",
-      "sector": "Consumer Cyclical"
-    },
-    {
-      "ticker": "NVDA",
-      "name_en": "NVIDIA Corp.",
-      "name_kr": "엔비디아",
-      "sector": "Technology"
-    },
-    {
-      "ticker": "AAPL",
-      "name_en": "Apple Inc.",
-      "name_kr": "애플",
-      "sector": "Technology"
-    },
-    {
-      "ticker": "MSFT",
-      "name_en": "Microsoft Corp.",
-      "name_kr": "마이크로소프트",
-      "sector": "Technology"
-    },
-    {
-      "ticker": "BTC",
-      "name_en": "Bitcoin",
-      "name_kr": "비트코인",
-      "sector": "Crypto"
-    },
-    {
-      "ticker": "ETH",
-      "name_en": "Ethereum",
-      "name_kr": "이더리움",
-      "sector": "Crypto"
-    },
-    {
-      "ticker": "PLTR",
-      "name_en": "Palantir Technologies",
-      "name_kr": "팔란티어",
-      "sector": "Technology"
-    }
-  ]
+  "updated_at_utc": "2026-01-30T22:35:43Z",
+  "primary_tickers": [
+    "NVDA",
+    "MSFT",
+    "GOOGL",
+    "AMD",
+    "TSLA"
+  ],
+  "notes": "Placeholder. Extend with per-ticker thresholds, alert rules, and source mappings."
 }

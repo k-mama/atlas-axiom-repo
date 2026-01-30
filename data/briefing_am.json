@@ -1,31 +1,81 @@
 {
-  "updated_at": "2026-01-30T07:00:00Z",
-  "market_status": "PRE_MARKET",
-  "sentiment_score": 65,
-  "sentiment_label_en": "Cautiously Optimistic",
-  "sentiment_label_kr": "조심스러운 낙관",
-  "cards": [
+  "updated_at_utc": "2026-01-30T22:35:43Z",
+  "label": "AM",
+  "top_cards": [
     {
-      "id": "am_1",
-      "type": "STRATEGY",
-      "ticker": "MACRO",
-      "headline_en": "CPI Data Release in 1 Hour",
-      "headline_kr": "1시간 뒤 소비자물가지수(CPI) 발표",
-      "summary_en": "1. Expected 3.2% YoY. Higher print could trigger sell-off.\n2. Bond yields rising in pre-market.\n3. Strategy: Wait for volatility to settle before entry.",
-      "summary_kr": "1. 전년 대비 3.2% 예상. 상회 시 매도세 출회 가능.\n2. 프리마켓 국채 금리 상승 중.\n3. 전략: 변동성 진정 후 진입 추천.",
-      "source_links": ["https://bls.gov"],
-      "trust_score": 98
+      "id": "fallback-1",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
     },
     {
-      "id": "am_2",
-      "type": "OPPORTUNITY",
-      "ticker": "AAPL",
-      "headline_en": "Apple Upgraded by Morgan Stanley",
-      "headline_kr": "모건스탠리, 애플 투자의견 상향",
-      "summary_en": "1. Target price raised to $210.\n2. Citing strong Vision Pro pre-orders.\n3. Stock up 1.5% in pre-market.",
-      "summary_kr": "1. 목표 주가 $210로 상향 조정.\n2. 비전 프로 사전 예약 호조 언급.\n3. 프리마켓 주가 1.5% 상승 중.",
-      "source_links": ["https://morganstanley.com"],
-      "trust_score": 90
+      "id": "fallback-2",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
+    },
+    {
+      "id": "fallback-3",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
+    },
+    {
+      "id": "fallback-4",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
+    },
+    {
+      "id": "fallback-5",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
+    },
+    {
+      "id": "fallback-6",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
+    },
+    {
+      "id": "fallback-7",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
     }
+  ],
+  "checkpoints": [
+    "Check official filings / press releases for confirmation",
+    "Watch pre-market / after-hours reaction and volume",
+    "Track follow-through keywords velocity in the next cycle"
   ]
 }

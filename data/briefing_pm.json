@@ -1,31 +1,81 @@
 {
-  "updated_at": "2026-01-30T17:00:00Z",
-  "market_status": "AFTER_HOURS",
-  "sentiment_score": 40,
-  "sentiment_label_en": "Bearish Close",
-  "sentiment_label_kr": "하락 마감",
-  "cards": [
+  "updated_at_utc": "2026-01-30T22:35:43Z",
+  "label": "PM",
+  "top_cards": [
     {
-      "id": "pm_1",
-      "type": "REVIEW",
-      "ticker": "MKT",
-      "headline_en": "Tech Sell-off Drags S&P 500 Down",
-      "headline_kr": "기술주 매도세로 S&P 500 하락 마감",
-      "summary_en": "1. NASDAQ dropped 1.2% led by semiconductor weakness.\n2. Late-day selling pressure increased.\n3. Key support at 4,900 defended.",
-      "summary_kr": "1. 반도체 약세 주도로 나스닥 1.2% 하락.\n2. 장 막판 매도 압력 증가.\n3. 주요 지지선 4,900포인트는 방어 성공.",
-      "source_links": ["https://cnbc.com"],
-      "trust_score": 95
+      "id": "fallback-1",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
     },
     {
-      "id": "pm_2",
-      "type": "RISK",
-      "ticker": "AMD",
-      "headline_en": "AMD Earnings Miss Guidance",
-      "headline_kr": "AMD 실적 가이던스 하회",
-      "summary_en": "1. Q4 Revenue met expectations, but Q1 guidance weak.\n2. Stock down 6% in after-hours trading.\n3. Watch for sympathy drop in NVDA tomorrow.",
-      "summary_kr": "1. 4분기 매출은 부합했으나 1분기 전망치 실망.\n2. 시간외 거래에서 주가 6% 급락 중.\n3. 내일 엔비디아 동반 하락 주의.",
-      "source_links": ["https://ir.amd.com"],
-      "trust_score": 99
+      "id": "fallback-2",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
+    },
+    {
+      "id": "fallback-3",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
+    },
+    {
+      "id": "fallback-4",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
+    },
+    {
+      "id": "fallback-5",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
+    },
+    {
+      "id": "fallback-6",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
+    },
+    {
+      "id": "fallback-7",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
     }
+  ],
+  "checkpoints": [
+    "Check official filings / press releases for confirmation",
+    "Watch pre-market / after-hours reaction and volume",
+    "Track follow-through keywords velocity in the next cycle"
   ]
 }

@@ -2,21 +2,24 @@
   "meta_version": "1.0",
   "service": "AtlasAxiom",
   "channel": "us-stocks-ai",
-  "primary_tickers": ["NVDA", "MSFT", "GOOGL", "AMD", "TSLA"],
-
-  "success": false,
-  "last_attempt_utc": null,
-  "last_success_utc": null,
-
+  "primary_tickers": [
+    "NVDA",
+    "MSFT",
+    "GOOGL",
+    "AMD",
+    "TSLA"
+  ],
+  "success": true,
+  "last_attempt_utc": "2026-01-30T22:35:42Z",
+  "last_success_utc": "2026-01-30T22:35:43Z",
   "run": {
-    "run_id": null,
-    "run_type": null,
-    "environment": null,
-    "started_utc": null,
-    "finished_utc": null,
-    "duration_ms": null
+    "run_id": "20260130T223542Z-6476",
+    "run_type": "manual",
+    "environment": "local",
+    "started_utc": "2026-01-30T22:35:42Z",
+    "finished_utc": "2026-01-30T22:35:43Z",
+    "duration_ms": 1235
   },
-
   "outputs": {
     "hot_cards_path": "data/hot_cards.json",
     "briefing_am_path": "data/briefing_am.json",
@@ -24,42 +27,39 @@
     "watchlist_meta_path": "data/watchlist_meta.json",
     "meta_path": "data/meta.json"
   },
-
   "stats": {
-    "collected_total": 0,
-    "signals_total": 0,
-    "cards_total": 0,
+    "collected_total": 10,
+    "signals_total": 10,
+    "cards_total": 10,
     "entities_total": 0,
     "tickers_total": 0
   },
-
   "sources": [
     {
       "id": "official_rss",
       "tier": "A",
       "enabled": true,
-      "status": "unknown",
-      "items_collected": 0,
-      "last_run_utc": null
+      "status": "ok",
+      "items_collected": 6,
+      "last_run_utc": "2026-01-30T22:35:42Z"
     },
     {
       "id": "youtube_rss",
       "tier": "A",
       "enabled": true,
-      "status": "unknown",
-      "items_collected": 0,
-      "last_run_utc": null
+      "status": "ok",
+      "items_collected": 4,
+      "last_run_utc": "2026-01-30T22:35:43Z"
     },
     {
       "id": "reddit_api",
       "tier": "B",
       "enabled": true,
-      "status": "unknown",
+      "status": "ok",
       "items_collected": 0,
-      "last_run_utc": null
+      "last_run_utc": "2026-01-30T22:35:43Z"
     }
   ],
-
   "risk_policy": {
     "raw_content_storage": "forbidden",
     "allowed_fields": [
@@ -78,6 +78,5 @@
     ],
     "notes": "Store signals only. Never archive full post/article text, images, or transcripts. For Tier B/C store link + signal fields only."
   },
-
   "errors": []
 }
