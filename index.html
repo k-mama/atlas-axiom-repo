@@ -6,7 +6,6 @@
   <title>AtlasAxiom | Private Signal Brief</title>
 
   <style>
-    /* --- 1. 디자인 변수 (Dark Tech Theme) --- */
     :root {
       --bg: #0b1121;
       --bg-grad: radial-gradient(circle at 15% 0%, #1e293b 0%, #0b1121 75%);
@@ -14,16 +13,20 @@
       --card-border: rgba(148, 163, 184, 0.15);
       --text-main: #f1f5f9;
       --text-muted: #94a3b8;
-      --primary: #38bdf8; /* Cyan/Sky Blue */
+      --primary: #38bdf8;
       --primary-glow: rgba(56, 189, 248, 0.3);
       --line: #334155;
       --grid-color: rgba(255, 255, 255, 0.03);
+
+      --menu-bg: rgba(15, 23, 42, 0.95);
+      --menu-border: rgba(56, 189, 248, 0.25);
+      --menu-hover: rgba(56, 189, 248, 0.12);
     }
 
     [data-theme="light"] {
       --bg: #f8fafc;
       --bg-grad: radial-gradient(circle at 50% 0%, #e0f2fe 0%, #f8fafc 60%);
-      --card-bg: rgba(255, 255, 255, 0.8);
+      --card-bg: rgba(255, 255, 255, 0.85);
       --card-border: #cbd5e1;
       --text-main: #0f172a;
       --text-muted: #64748b;
@@ -31,15 +34,19 @@
       --primary-glow: rgba(2, 132, 199, 0.15);
       --line: #e2e8f0;
       --grid-color: rgba(0, 0, 0, 0.04);
+
+      --menu-bg: rgba(255,255,255,0.98);
+      --menu-border: rgba(2, 132, 199, 0.25);
+      --menu-hover: rgba(2, 132, 199, 0.10);
     }
 
-    * { box-sizing: border-box; transition: background 0.3s ease, color 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; }
+    * { box-sizing: border-box; transition: background 0.25s ease, color 0.2s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease; }
 
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg);
-      background-image: 
+      background-image:
         linear-gradient(var(--grid-color) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-color) 1px, transparent 1px),
         var(--bg-grad);
@@ -51,25 +58,90 @@
 
     .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
 
-    /* --- 2. 상단 네비게이션 & 아이콘 --- */
+    /* Top */
     .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
     .logo { font-size: 16px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
     .logo::before { content: ''; display: inline-block; width: 12px; height: 12px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary-glow); }
-    
+
     .toggles { display: flex; gap: 12px; align-items: center; }
-    .status-pill { font-size: 12px; font-weight: 600; color: var(--primary); background: var(--card-bg); border: 1px solid var(--card-border); padding: 6px 12px; border-radius: 99px; backdrop-filter: blur(4px); margin-right: 8px;}
-    
-    /* 아이콘 버튼 스타일 */
-    .icon-btn { 
-      background: transparent; border: none; cursor: pointer; color: var(--text-muted); 
-      padding: 8px; border-radius: 50%; 
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s ease;
+    .status-pill {
+      font-size: 12px; font-weight: 600; color: var(--primary);
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      padding: 6px 12px; border-radius: 999px; backdrop-filter: blur(6px);
+      margin-right: 4px;
     }
-    .icon-btn:hover { color: var(--text-main); background: rgba(125,125,125,0.1); transform: scale(1.1); }
+
+    /* Icon Button */
+    .icon-btn {
+      background: transparent; border: none; cursor: pointer; color: var(--text-muted);
+      padding: 8px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .icon-btn:hover { color: var(--text-main); background: rgba(125,125,125,0.10); transform: scale(1.06); }
     .icon-btn svg { width: 20px; height: 20px; stroke-width: 2px; }
 
-    /* --- 3. Hero 섹션 --- */
+    /* Language (Globe + label + menu) */
+    .lang-wrap { position: relative; }
+    .lang-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .lang-btn:hover { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-glow); }
+    .lang-btn svg { width: 18px; height: 18px; }
+    .lang-label { min-width: 22px; text-align: center; }
+
+    .lang-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      min-width: 180px;
+      background: var(--menu-bg);
+      border: 1px solid var(--menu-border);
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+      padding: 8px;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+      z-index: 999;
+    }
+    .lang-wrap.open .lang-menu {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .lang-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 10px;
+      border-radius: 10px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 650;
+      text-align: left;
+    }
+    .lang-item:hover { background: var(--menu-hover); }
+    .lang-item small { color: var(--text-muted); font-weight: 600; }
+    .lang-check { opacity: 0; }
+    .lang-item[aria-checked="true"] .lang-check { opacity: 1; color: var(--primary); }
+
+    /* Hero */
     .hero-split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-bottom: 60px; min-height: 50vh; }
     .hero-text { text-align: left; }
     h1 { font-size: 48px; line-height: 1.1; margin: 0 0 24px; letter-spacing: -0.03em; font-weight: 800; }
@@ -77,111 +149,118 @@
     .sub { font-size: 18px; color: var(--text-muted); max-width: 580px; margin-bottom: 32px; line-height: 1.6; }
     .cta-group { display: flex; gap: 12px; flex-wrap: wrap; }
 
-    /* 버튼 스타일 */
-    .btn { cursor: pointer; padding: 14px 28px; border-radius: 99px; font-size: 15px; font-weight: 700; border: none; display: inline-flex; align-items: center; justify-content: center; }
+    .btn { cursor: pointer; padding: 14px 28px; border-radius: 999px; font-size: 15px; font-weight: 800; border: none; display: inline-flex; align-items: center; justify-content: center; }
     .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 20px var(--primary-glow); }
-    [data-theme="light"] .btn-primary { color: #fff; }
     [data-theme="dark"] .btn-primary { color: #0f172a; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--primary-glow); }
-    .btn-secondary { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border); backdrop-filter: blur(5px); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px var(--primary-glow); }
+    .btn-secondary { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border); backdrop-filter: blur(6px); }
     .btn-secondary:hover { border-color: var(--text-muted); transform: translateY(-2px); }
 
-    /* 카드 스타일 */
-    .card { background: var(--card-bg); border: 1px solid var(--card-border); padding: 24px; border-radius: 20px; backdrop-filter: blur(12px); display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease; }
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); padding: 24px; border-radius: 20px; backdrop-filter: blur(12px); display: flex; flex-direction: column; }
     .card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
-    .label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; }
-    .value { font-size: 15px; font-weight: 500; color: var(--text-main); }
 
-    /* --- 4. 툴팁(용어 설명) 스타일 (Mobile Friendly) --- */
+    .label { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; }
+    .value { font-size: 15px; font-weight: 600; color: var(--text-main); }
+
+    /* Tooltip terms */
     .term {
-      border-bottom: 1px dashed var(--primary); /* 점선 밑줄 */
+      border-bottom: 1px dashed var(--primary);
       cursor: help;
       position: relative;
       color: var(--text-main);
-      font-weight: 600;
+      font-weight: 800;
     }
-    
-    /* 설명 말풍선 */
     .term::after {
-      content: attr(data-desc); /* HTML 속성에서 설명 가져오기 */
+      content: attr(data-desc);
       position: absolute;
-      bottom: 130%; /* 글자 위로 띄우기 */
+      bottom: 130%;
       left: 50%;
       transform: translateX(-50%);
-      
-      width: 200px;
-      padding: 10px;
+      width: 220px;
+      padding: 10px 12px;
       background: rgba(15, 23, 42, 0.95);
       color: #fff;
       font-size: 13px;
       line-height: 1.4;
-      font-weight: 400;
+      font-weight: 600;
       border: 1px solid var(--primary);
-      border-radius: 8px;
+      border-radius: 10px;
       text-align: center;
       z-index: 100;
       white-space: normal;
-      
-      /* 기본: 숨김 */
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.2s ease, visibility 0.2s ease;
+      transition: opacity 0.18s ease, visibility 0.18s ease;
       pointer-events: none;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.45);
     }
-    /* 꼬리표 */
     .term::before {
       content: '';
       position: absolute;
       bottom: 110%;
       left: 50%;
-      margin-left: -5px;
-      border-width: 5px;
+      margin-left: -6px;
+      border-width: 6px;
       border-style: solid;
       border-color: var(--primary) transparent transparent transparent;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.2s ease;
+      transition: opacity 0.18s ease;
     }
-
-    /* PC: 마우스 올림 / 모바일: 터치 활성화 */
     .term:hover::after, .term.active::after,
     .term:hover::before, .term.active::before {
       opacity: 1;
       visibility: visible;
     }
 
-    /* Feature Strip & Footer */
     .feature-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
+
     .list-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 14px; color: var(--text-muted); }
     .list-item::before { content: "•"; color: var(--primary); font-size: 18px; line-height: 1; }
-    
+
     .footer { margin-top: 80px; border-top: 1px solid var(--line); padding-top: 24px; display: flex; justify-content: space-between; color: var(--text-muted); font-size: 13px; }
 
     /* Modal */
     .modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
+      position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.70);
+      backdrop-filter: blur(6px);
       display: flex; justify-content: center; align-items: center;
-      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
       z-index: 1000;
     }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
     .modal-content {
-      background: var(--card-bg); border: 1px solid var(--primary);
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--primary);
       box-shadow: 0 0 30px var(--primary-glow);
-      padding: 30px; border-radius: 20px; width: 90%; max-width: 400px;
-      text-align: center; transform: scale(0.9); transition: transform 0.3s ease;
+      padding: 30px; border-radius: 20px; width: 92%; max-width: 420px;
+      text-align: center;
+      transform: scale(0.95);
+      transition: transform 0.25s ease;
     }
     .modal-overlay.open .modal-content { transform: scale(1); }
-    .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
-    .modal-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
+    .modal-title { font-size: 20px; font-weight: 900; margin-bottom: 10px; color: var(--text-main); }
+    .modal-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; font-weight: 650; }
     .input-field {
-      width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--card-border);
-      background: rgba(0,0,0,0.2); color: var(--text-main); font-size: 15px; margin-bottom: 16px; outline: none;
+      width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--card-border);
+      background: rgba(0,0,0,0.18); color: var(--text-main); font-size: 15px; margin-bottom: 16px; outline: none;
     }
-    .input-field:focus { border-color: var(--primary); }
-    .close-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 18px; }
+    [data-theme="light"] .input-field { background: rgba(2,132,199,0.05); }
+    .input-field:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-glow); }
+    .close-btn {
+      position: absolute; top: 12px; right: 12px;
+      width: 38px; height: 38px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 20px;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .close-btn:hover { color: var(--text-main); border-color: var(--primary); }
 
     @media (max-width: 860px) {
       .hero-split { grid-template-columns: 1fr; gap: 30px; }
@@ -193,23 +272,38 @@
 </head>
 
 <body>
-
   <div class="wrap">
     <div class="top">
       <div class="logo">ATLASAXIOM</div>
+
       <div class="toggles">
         <div class="status-pill" data-i18n="status">Private Preview</div>
-        
-        <button class="icon-btn" id="langBtn" aria-label="Change Language">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-          </svg>
-        </button>
 
-        <button class="icon-btn" id="themeBtn" aria-label="Toggle Theme">
+        <!-- (NEW) Globe + current language label + menu -->
+        <div class="lang-wrap" id="langWrap">
+          <button class="lang-btn" id="langBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="langMenu">
+            <!-- globe -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <span class="lang-label" id="langLabel">EN</span>
           </button>
+
+          <div class="lang-menu" id="langMenu" role="menu" aria-label="Language menu">
+            <button class="lang-item" type="button" role="menuitemradio" aria-checked="true" data-lang="en">
+              <span>English <small>(EN)</small></span>
+              <span class="lang-check">✓</span>
+            </button>
+            <button class="lang-item" type="button" role="menuitemradio" aria-checked="false" data-lang="ko">
+              <span>한국어 <small>(KR)</small></span>
+              <span class="lang-check">✓</span>
+            </button>
+          </div>
+        </div>
+
+        <button class="icon-btn" id="themeBtn" type="button" aria-label="Toggle Theme"></button>
       </div>
     </div>
 
@@ -232,7 +326,7 @@
         <div class="card" id="sampleCard">
           <div class="label" data-i18n="todayK">TODAY’S SAMPLE</div>
           <h3 style="margin:0 0 16px; font-size:18px;" data-i18n="todayTitle">Top 3 Moves</h3>
-          
+
           <div class="list-item" data-i18n="today1">
             (Signal) 1 line: <span class="term" data-desc="The specific event causing immediate market price change">price-impact point</span> from official sources
           </div>
@@ -253,20 +347,20 @@
     <div class="feature-strip">
       <div class="card">
         <div class="label" data-i18n="formatK">FORMAT</div>
-        <div class="value" data-i18n="formatV">Daily 1-page Brief (7 key lines + 3 checkpoints)</div>
+        <div class="value" data-i18n="formatV">Daily 1-page Brief</div>
       </div>
       <div class="card">
         <div class="label" data-i18n="signalK">SIGNAL</div>
-        <div class="value" data-i18n="signalV">One-page decode: who / why / now (source transparency)</div>
+        <div class="value" data-i18n="signalV">One-page decode: Who / Why / Now</div>
       </div>
       <div class="card">
         <div class="label" data-i18n="statusK">STATUS</div>
-        <div class="value" data-i18n="statusV">Small invites · quality-first · feedback-driven</div>
+        <div class="value" data-i18n="statusV">Invite-only · Feedback-driven</div>
       </div>
       <div class="card">
         <div class="label" data-i18n="pK">PRICING</div>
-        <div style="font-size:24px; font-weight:800;">$5 <span style="font-size:14px; color:var(--text-muted)">/mo</span></div>
-        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;" data-i18n="priceNote">Beta Lock</div>
+        <div style="font-size:24px; font-weight:900;">$5 <span style="font-size:14px; color:var(--text-muted); font-weight:700;">/mo</span></div>
+        <div style="font-size:12px; color:var(--text-muted); margin-top:4px; font-weight:700;" data-i18n="priceNote">Beta Lock</div>
       </div>
     </div>
 
@@ -278,10 +372,10 @@
 
   <div class="modal-overlay" id="emailModal">
     <div class="modal-content">
-      <button class="close-btn" id="closeModal">×</button>
+      <button class="close-btn" id="closeModal" type="button" aria-label="Close">×</button>
       <h3 class="modal-title" data-i18n="modalTitle">Join the Private List</h3>
       <p class="modal-desc" data-i18n="modalDesc">We'll notify you when spots open up.</p>
-      
+
       <form id="waitlistForm">
         <input type="email" id="emailInput" class="input-field" placeholder="name@example.com" required aria-label="Email Address">
         <button type="submit" class="btn btn-primary" style="width:100%" id="submitBtn">Join Now</button>
@@ -290,10 +384,10 @@
   </div>
 
   <script>
-    // ⬇️ [유지] 기존 구글 앱스 스크립트 URL
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuxLWJSR0awKZUTJqkRzkf6o3740FYyh5xTy8G3PIyc_u390FtE_KacM-HJu5cnCER/exec"; 
+    // 유지: 구글 앱스 스크립트 URL
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuxLWJSR0awKZUTJqkRzkf6o3740FYyh5xTy8G3PIyc_u390FtE_KacM-HJu5cnCER/exec";
 
-    // 다국어 딕셔너리 (HTML 태그 포함 - 툴팁 기능 유지)
+    // i18n
     const I18N = {
       en: {
         status: "Private Preview",
@@ -302,16 +396,20 @@
         sub: "Less noise, more signal. We decode what actually moves today—market, tech, creators—reframed for investors.",
         ctaWait: "Join the waitlist",
         ctaSample: "View sample",
-        todayK: "TODAY’S SAMPLE", todayTitle: "Top 3 Moves",
-        // 툴팁 적용 (영어)
+        todayK: "TODAY’S SAMPLE",
+        todayTitle: "Top 3 Moves",
         today1: '(Signal) 1 line: <span class="term" data-desc="The specific event causing immediate market price change">price-impact point</span> from official sources',
         today2: '(Signal) 1 line: <span class="term" data-desc="Keywords spiking >300% in niche communities (Reddit/Discord)">fastest-rising keyword</span> in chatter',
         today3: "(Action) 3 checkpoints to verify tomorrow",
         todayNote: "* Full version includes source links.",
-        formatK: "FORMAT", formatV: "Daily 1-page Brief",
-        signalK: "SIGNAL", signalV: "One-page decode: Who / Why / Now",
-        statusK: "STATUS", statusV: "Invite-only · Feedback-driven",
-        pK: "PRICING", priceNote: "Early Beta Lock",
+        formatK: "FORMAT",
+        formatV: "Daily 1-page Brief",
+        signalK: "SIGNAL",
+        signalV: "One-page decode: Who / Why / Now",
+        statusK: "STATUS",
+        statusV: "Invite-only · Feedback-driven",
+        pK: "PRICING",
+        priceNote: "Early Beta Lock",
         footerLeft: "© AtlasAxiom · Private Preview",
         footerRight: "Next: Email form → GitHub → Deploy",
         modalTitle: "Join the Private List",
@@ -321,19 +419,23 @@
         status: "Private Preview",
         h1a: "하루 3분,",
         h1b: "고신호 브리핑.",
-        sub: "과잉 정보는 줄이고, “오늘 실제로 움직이는 신호”만 정리합니다. (시장·테크·크리에이터 이슈를 투자 관점으로 재구성)",
+        sub: "과잉 정보는 줄이고, (오늘 실제로 움직이는 신호)만 정리합니다. (시장·테크·크리에이터 이슈를 투자 관점으로 재구성)",
         ctaWait: "대기자 명단 참여",
         ctaSample: "샘플 보기",
-        todayK: "오늘의 샘플", todayTitle: "Top 3 Moves",
-        // 툴팁 적용 (한글)
+        todayK: "오늘의 샘플",
+        todayTitle: "Top 3 Moves",
         today1: '(Signal) 공식 발표의 <span class="term" data-desc="시장 가격 변동을 즉시 유발하는 핵심 뉴스 포인트">가격 영향 포인트</span> 1줄',
         today2: '(Signal) 커뮤니티 <span class="term" data-desc="레딧/디스코드 등에서 언급량이 300% 이상 급증한 키워드">급상승 키워드</span> 1줄',
         today3: "(Action) 내일 확인할 체크포인트 3개",
         todayNote: "* 정식 버전: 소스 링크 포함",
-        formatK: "FORMAT", formatV: "매일 1장 브리핑",
-        signalK: "SIGNAL", signalV: "“누가/왜/지금” 한 장 요약",
-        statusK: "STATUS", statusV: "초대 전용 · 피드백 기반",
-        pK: "PRICING", priceNote: "얼리버드 가격 고정",
+        formatK: "FORMAT",
+        formatV: "매일 1장 브리핑",
+        signalK: "SIGNAL",
+        signalV: "(누가/왜/지금) 한 장 요약",
+        statusK: "STATUS",
+        statusV: "초대 전용 · 피드백 기반",
+        pK: "PRICING",
+        priceNote: "얼리버드 가격 고정",
         footerLeft: "© AtlasAxiom · Private Preview",
         footerRight: "Next: 이메일 폼 → GitHub → 배포",
         modalTitle: "비공개 리스트 가입",
@@ -341,78 +443,131 @@
       }
     };
 
-    // 저장소 (Local Storage)
-    const store = { get(k, d){ return localStorage.getItem(k) ?? d; }, set(k, v){ localStorage.setItem(k, v); } };
+    // local storage
+    const store = {
+      get(k, d){ return localStorage.getItem(k) ?? d; },
+      set(k, v){ localStorage.setItem(k, v); }
+    };
 
-    // 언어 적용 함수 (HTML 태그 인식을 위해 innerHTML 사용)
-    function applyI18n(lang){
-      const dict = I18N[lang] || I18N.en;
-      document.querySelectorAll("[data-i18n]").forEach(el=>{
-        const key = el.getAttribute("data-i18n");
-        if (dict[key] !== undefined) {
-          el.innerHTML = dict[key]; // HTML 태그(툴팁) 렌더링
-          attachTooltipEvents(); // 툴팁 이벤트 다시 연결
-        }
-      });
-    }
+    // theme icons
+    const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+    const sunSVG  = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
 
-    // 아이콘 SVG 데이터
-    const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
-    const sunSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
-
-    // UI 업데이트 함수
-    function updateUI(){
-      const lang  = store.get("atlas_lang", "en");
-      const theme = store.get("atlas_theme", "dark");
-      
-      document.documentElement.setAttribute("data-theme", theme);
-      document.documentElement.lang = (lang === "ko") ? "ko" : "en";
-      
-      // 테마 아이콘 변경
-      const themeBtn = document.getElementById("themeBtn");
-      if (themeBtn) {
-        themeBtn.innerHTML = (theme === "dark") ? sunSVG : moonSVG;
-      }
-      
-      applyI18n(lang);
-    }
-
-    // 툴팁 터치 이벤트 (모바일용)
     function attachTooltipEvents() {
       document.querySelectorAll('.term').forEach(item => {
-        // 기존 리스너 제거 방지 (새로 생성된 요소라 괜찮음)
         item.onclick = (e) => {
-          e.stopPropagation(); // 클릭 전파 방지
+          e.stopPropagation();
           const isActive = item.classList.contains('active');
-          // 다른 툴팁 모두 끄기
           document.querySelectorAll('.term').forEach(t => t.classList.remove('active'));
-          // 현재 툴팁 토글
           if (!isActive) item.classList.add('active');
         };
       });
     }
 
-    // 빈 곳 누르면 툴팁 닫기
     document.addEventListener('click', () => {
       document.querySelectorAll('.term').forEach(t => t.classList.remove('active'));
+      closeLangMenu();
     });
 
-    // --- Modal & Form Logic ---
+    function applyI18n(lang){
+      const dict = I18N[lang] || I18N.en;
+      document.querySelectorAll("[data-i18n]").forEach(el=>{
+        const key = el.getAttribute("data-i18n");
+        if (dict[key] !== undefined) el.innerHTML = dict[key];
+      });
+      attachTooltipEvents();
+    }
+
+    // (NEW) language menu logic
+    const langWrap  = document.getElementById("langWrap");
+    const langBtn   = document.getElementById("langBtn");
+    const langLabel = document.getElementById("langLabel");
+    const langMenu  = document.getElementById("langMenu");
+
+    function openLangMenu(){
+      if (!langWrap) return;
+      langWrap.classList.add("open");
+      langBtn?.setAttribute("aria-expanded", "true");
+    }
+    function closeLangMenu(){
+      if (!langWrap) return;
+      langWrap.classList.remove("open");
+      langBtn?.setAttribute("aria-expanded", "false");
+    }
+    function toggleLangMenu(){
+      if (!langWrap) return;
+      const isOpen = langWrap.classList.contains("open");
+      isOpen ? closeLangMenu() : openLangMenu();
+    }
+
+    function setLanguage(code){
+      store.set("atlas_lang", code);
+      updateUI();
+      closeLangMenu();
+    }
+
+    // stop closing when clicking inside menu
+    langWrap?.addEventListener("click", (e) => e.stopPropagation());
+
+    langBtn?.addEventListener("click", () => {
+      toggleLangMenu();
+    });
+
+    langMenu?.querySelectorAll(".lang-item").forEach(btn=>{
+      btn.addEventListener("click", () => {
+        const code = btn.getAttribute("data-lang");
+        if (code) setLanguage(code);
+      });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeLangMenu();
+    });
+
+    function syncLangUI(lang){
+      // label
+      if (langLabel) langLabel.textContent = (lang === "ko") ? "KR" : "EN";
+
+      // menu checks
+      document.querySelectorAll(".lang-item").forEach(el=>{
+        const code = el.getAttribute("data-lang");
+        const active = (code === lang);
+        el.setAttribute("aria-checked", active ? "true" : "false");
+      });
+
+      // html lang attribute
+      document.documentElement.lang = (lang === "ko") ? "ko" : "en";
+    }
+
+    function updateUI(){
+      const lang  = store.get("atlas_lang", "en");
+      const theme = store.get("atlas_theme", "dark");
+
+      document.documentElement.setAttribute("data-theme", theme);
+
+      const themeBtn = document.getElementById("themeBtn");
+      if (themeBtn) themeBtn.innerHTML = (theme === "dark") ? sunSVG : moonSVG;
+
+      syncLangUI(lang);
+      applyI18n(lang);
+    }
+
+    // Modal & Form
     const modal = document.getElementById("emailModal");
     const form = document.getElementById("waitlistForm");
     const submitBtn = document.getElementById("submitBtn");
 
-    document.getElementById("waitBtn").addEventListener("click", () => { modal.classList.add("open"); });
-    document.getElementById("closeModal").addEventListener("click", () => { modal.classList.remove("open"); });
-    modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("open"); });
+    document.getElementById("waitBtn")?.addEventListener("click", () => { modal?.classList.add("open"); });
+    document.getElementById("closeModal")?.addEventListener("click", () => { modal?.classList.remove("open"); });
+    modal?.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("open"); });
 
-    form.addEventListener("submit", (e) => {
+    form?.addEventListener("submit", (e) => {
       e.preventDefault();
-      const email = document.getElementById("emailInput").value;
+      const email = document.getElementById("emailInput")?.value || "";
       const lang = store.get("atlas_lang", "en");
 
       const originalText = submitBtn.innerText;
-      submitBtn.innerText = lang === "ko" ? "전송 중..." : "Sending...";
+      submitBtn.innerText = (lang === "ko") ? "전송 중..." : "Sending...";
       submitBtn.disabled = true;
 
       fetch(GOOGLE_SCRIPT_URL, {
@@ -422,35 +577,30 @@
         body: "email=" + encodeURIComponent(email)
       })
       .then(() => {
-        submitBtn.innerText = lang === "ko" ? "완료!" : "Joined!";
-        submitBtn.style.background = "#10b981"; 
-        document.getElementById("emailInput").value = "";
+        submitBtn.innerText = (lang === "ko") ? "완료!" : "Joined!";
+        submitBtn.style.background = "#10b981";
+        const input = document.getElementById("emailInput");
+        if (input) input.value = "";
+
         setTimeout(() => {
-          modal.classList.remove("open");
+          modal?.classList.remove("open");
           submitBtn.disabled = false;
           submitBtn.innerText = originalText;
-          submitBtn.style.background = ""; 
-          alert(lang === "ko" ? "대기자 명단에 등록되었습니다!" : "You have been added to the waitlist!");
-        }, 1500);
+          submitBtn.style.background = "";
+          alert((lang === "ko") ? "대기자 명단에 등록되었습니다!" : "You have been added to the waitlist!");
+        }, 1200);
       })
-      .catch(err => {
-        console.error(err);
+      .catch(() => {
         alert("Error. Please try again.");
         submitBtn.disabled = false;
         submitBtn.innerText = originalText;
       });
     });
 
-    // --- Button Events ---
-    document.getElementById("langBtn")?.addEventListener("click", ()=>{
-      const cur = store.get("atlas_lang", "en");
-      store.set("atlas_lang", cur === "en" ? "ko" : "en");
-      updateUI();
-    });
-
+    // Buttons
     document.getElementById("themeBtn")?.addEventListener("click", ()=>{
       const cur = store.get("atlas_theme", "dark");
-      store.set("atlas_theme", cur === "dark" ? "light" : "dark");
+      store.set("atlas_theme", (cur === "dark") ? "light" : "dark");
       updateUI();
     });
 
@@ -458,7 +608,7 @@
       document.getElementById("sampleCard")?.scrollIntoView({behavior:"smooth", block:"center"});
     });
 
-    // 초기 실행
+    // Init
     updateUI();
   </script>
 </body>
