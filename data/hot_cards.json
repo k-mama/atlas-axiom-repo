@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-01-30T09:36:26.197414",
+  "updated_at": "2026-01-30T10:32:28.786521",
   "cards": [
     {
       "id": "auto_0",
@@ -69,12 +69,12 @@
       "id": "auto_4",
       "type": "INFO",
       "ticker": "MKT",
-      "headline_en": "Canada records big jump in trade deficit in November as US exports fall",
+      "headline_en": "Beijer Ref Q4 2025 slides: Record margins and cash flow despite slowing growth",
       "summary_en": "1. Breaking news reported by Investing_News.\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] Canada records big jump in trade deficit in November as US exports fall (AI 번역 대기중)",
+      "headline_kr": "[속보] Beijer Ref Q4 2025 slides: Record margins and cash flow despite slowing growth (AI 번역 대기중)",
       "summary_kr": "1. Investing_News에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
       "source_links": [
-        "https://www.investing.com/news/economy-news/canada-records-big-jump-in-trade-deficit-in-november-as-us-exports-fall-4475057"
+        "https://www.investing.com/news/company-news/beijer-ref-q4-2025-slides-record-margins-and-cash-flow-despite-slowing-growth-93CH-4475364"
       ],
       "trust_score": 80,
       "risk_flag": false,
@@ -85,12 +85,12 @@
       "id": "auto_5",
       "type": "INFO",
       "ticker": "MKT",
-      "headline_en": "Apple delivers best iPhone quarterly sales performance in over four years",
+      "headline_en": "BofA’s Hartnett says markets at extreme optimism, new sell signal issued",
       "summary_en": "1. Breaking news reported by Investing_News.\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] Apple delivers best iPhone quarterly sales performance in over four years (AI 번역 대기중)",
+      "headline_kr": "[속보] BofA’s Hartnett says markets at extreme optimism, new sell signal issued (AI 번역 대기중)",
       "summary_kr": "1. Investing_News에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
       "source_links": [
-        "https://www.investing.com/news/earnings/apple-reports-best-iphone-quarterly-sales-performance-in-over-four-years-4474527"
+        "https://www.investing.com/news/stock-market-news/bofas-hartnett-sees-markets-at-extreme-optimism-issues-sell-signal-4475325"
       ],
       "trust_score": 80,
       "risk_flag": false,
