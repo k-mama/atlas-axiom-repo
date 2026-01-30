@@ -6,7 +6,7 @@
   <title>AtlasAxiom | Private Signal Brief</title>
 
   <style>
-    /* --- 디자인 스타일 (Dark Tech Theme) --- */
+    /* --- 1. 디자인 변수 (Dark Tech Theme) --- */
     :root {
       --bg: #0b1121;
       --bg-grad: radial-gradient(circle at 15% 0%, #1e293b 0%, #0b1121 75%);
@@ -51,18 +51,25 @@
 
     .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
 
-    /* Nav */
+    /* --- 2. 상단 네비게이션 & 아이콘 --- */
     .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
     .logo { font-size: 16px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
     .logo::before { content: ''; display: inline-block; width: 12px; height: 12px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary-glow); }
-    .toggles { display: flex; gap: 10px; align-items: center; }
-    .status-pill { font-size: 12px; font-weight: 600; color: var(--primary); background: var(--card-bg); border: 1px solid var(--card-border); padding: 6px 12px; border-radius: 99px; backdrop-filter: blur(4px); }
     
-    .icon-btn { background: transparent; border: none; cursor: pointer; color: var(--text-muted); font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 8px; }
-    .icon-btn:hover { color: var(--text-main); background: rgba(125,125,125,0.1); }
-    .icon-btn span.active { color: var(--primary); font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }
+    .toggles { display: flex; gap: 12px; align-items: center; }
+    .status-pill { font-size: 12px; font-weight: 600; color: var(--primary); background: var(--card-bg); border: 1px solid var(--card-border); padding: 6px 12px; border-radius: 99px; backdrop-filter: blur(4px); margin-right: 8px;}
+    
+    /* 아이콘 버튼 스타일 */
+    .icon-btn { 
+      background: transparent; border: none; cursor: pointer; color: var(--text-muted); 
+      padding: 8px; border-radius: 50%; 
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .icon-btn:hover { color: var(--text-main); background: rgba(125,125,125,0.1); transform: scale(1.1); }
+    .icon-btn svg { width: 20px; height: 20px; stroke-width: 2px; }
 
-    /* Hero */
+    /* --- 3. Hero 섹션 --- */
     .hero-split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-bottom: 60px; min-height: 50vh; }
     .hero-text { text-align: left; }
     h1 { font-size: 48px; line-height: 1.1; margin: 0 0 24px; letter-spacing: -0.03em; font-weight: 800; }
@@ -70,7 +77,7 @@
     .sub { font-size: 18px; color: var(--text-muted); max-width: 580px; margin-bottom: 32px; line-height: 1.6; }
     .cta-group { display: flex; gap: 12px; flex-wrap: wrap; }
 
-    /* Buttons */
+    /* 버튼 스타일 */
     .btn { cursor: pointer; padding: 14px 28px; border-radius: 99px; font-size: 15px; font-weight: 700; border: none; display: inline-flex; align-items: center; justify-content: center; }
     .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 20px var(--primary-glow); }
     [data-theme="light"] .btn-primary { color: #fff; }
@@ -79,18 +86,76 @@
     .btn-secondary { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border); backdrop-filter: blur(5px); }
     .btn-secondary:hover { border-color: var(--text-muted); transform: translateY(-2px); }
 
-    /* Cards */
+    /* 카드 스타일 */
     .card { background: var(--card-bg); border: 1px solid var(--card-border); padding: 24px; border-radius: 20px; backdrop-filter: blur(12px); display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease; }
     .card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
     .label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; }
     .value { font-size: 15px; font-weight: 500; color: var(--text-main); }
 
-    /* Feature Strip */
+    /* --- 4. 툴팁(용어 설명) 스타일 (Mobile Friendly) --- */
+    .term {
+      border-bottom: 1px dashed var(--primary); /* 점선 밑줄 */
+      cursor: help;
+      position: relative;
+      color: var(--text-main);
+      font-weight: 600;
+    }
+    
+    /* 설명 말풍선 */
+    .term::after {
+      content: attr(data-desc); /* HTML 속성에서 설명 가져오기 */
+      position: absolute;
+      bottom: 130%; /* 글자 위로 띄우기 */
+      left: 50%;
+      transform: translateX(-50%);
+      
+      width: 200px;
+      padding: 10px;
+      background: rgba(15, 23, 42, 0.95);
+      color: #fff;
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 400;
+      border: 1px solid var(--primary);
+      border-radius: 8px;
+      text-align: center;
+      z-index: 100;
+      white-space: normal;
+      
+      /* 기본: 숨김 */
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      pointer-events: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+    /* 꼬리표 */
+    .term::before {
+      content: '';
+      position: absolute;
+      bottom: 110%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: var(--primary) transparent transparent transparent;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease;
+    }
+
+    /* PC: 마우스 올림 / 모바일: 터치 활성화 */
+    .term:hover::after, .term.active::after,
+    .term:hover::before, .term.active::before {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Feature Strip & Footer */
     .feature-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
     .list-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 14px; color: var(--text-muted); }
     .list-item::before { content: "•"; color: var(--primary); font-size: 18px; line-height: 1; }
     
-    /* Footer */
     .footer { margin-top: 80px; border-top: 1px solid var(--line); padding-top: 24px; display: flex; justify-content: space-between; color: var(--text-muted); font-size: 13px; }
 
     /* Modal */
@@ -134,8 +199,17 @@
       <div class="logo">ATLASAXIOM</div>
       <div class="toggles">
         <div class="status-pill" data-i18n="status">Private Preview</div>
-        <button class="icon-btn" id="langBtn"><span class="active">EN</span> / KR</button>
-        <button class="icon-btn" id="themeBtn"><span class="active">Dark</span> / Light</button>
+        
+        <button class="icon-btn" id="langBtn" aria-label="Change Language">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn" id="themeBtn" aria-label="Toggle Theme">
+          </button>
       </div>
     </div>
 
@@ -158,9 +232,17 @@
         <div class="card" id="sampleCard">
           <div class="label" data-i18n="todayK">TODAY’S SAMPLE</div>
           <h3 style="margin:0 0 16px; font-size:18px;" data-i18n="todayTitle">Top 3 Moves</h3>
-          <div class="list-item" data-i18n="today1">(Signal) 1 line: the price-impact point from official / major sources</div>
-          <div class="list-item" data-i18n="today2">(Signal) 1 line: the fastest-rising keyword in community/social chatter</div>
-          <div class="list-item" data-i18n="today3">(Action) 3 checkpoints to verify tomorrow</div>
+          
+          <div class="list-item" data-i18n="today1">
+            (Signal) 1 line: <span class="term" data-desc="The specific event causing immediate market price change">price-impact point</span> from official sources
+          </div>
+          <div class="list-item" data-i18n="today2">
+            (Signal) 1 line: <span class="term" data-desc="Keywords spiking >300% in niche communities (Reddit/Discord)">fastest-rising keyword</span> in chatter
+          </div>
+          <div class="list-item" data-i18n="today3">
+            (Action) 3 checkpoints to verify tomorrow
+          </div>
+
           <div style="margin-top:20px; font-size:12px; color:var(--text-muted); font-style:italic;" data-i18n="todayNote">
             * Next: add “source links/evidence” and personalization options.
           </div>
@@ -208,10 +290,10 @@
   </div>
 
   <script>
-    // ⬇️ [중요] 여기에 아까 복사해둔 '진짜 구글 앱스 스크립트 주소'를 붙여넣으세요!
+    // ⬇️ [유지] 기존 구글 앱스 스크립트 URL
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuxLWJSR0awKZUTJqkRzkf6o3740FYyh5xTy8G3PIyc_u390FtE_KacM-HJu5cnCER/exec"; 
 
-    // 다국어 딕셔너리
+    // 다국어 딕셔너리 (HTML 태그 포함 - 툴팁 기능 유지)
     const I18N = {
       en: {
         status: "Private Preview",
@@ -220,20 +302,20 @@
         sub: "Less noise, more signal. We decode what actually moves today—market, tech, creators—reframed for investors.",
         ctaWait: "Join the waitlist",
         ctaSample: "View sample",
+        todayK: "TODAY’S SAMPLE", todayTitle: "Top 3 Moves",
+        // 툴팁 적용 (영어)
+        today1: '(Signal) 1 line: <span class="term" data-desc="The specific event causing immediate market price change">price-impact point</span> from official sources',
+        today2: '(Signal) 1 line: <span class="term" data-desc="Keywords spiking >300% in niche communities (Reddit/Discord)">fastest-rising keyword</span> in chatter',
+        today3: "(Action) 3 checkpoints to verify tomorrow",
+        todayNote: "* Full version includes source links.",
         formatK: "FORMAT", formatV: "Daily 1-page Brief",
         signalK: "SIGNAL", signalV: "One-page decode: Who / Why / Now",
         statusK: "STATUS", statusV: "Invite-only · Feedback-driven",
-        todayK: "TODAY’S SAMPLE", todayTitle: "Top 3 Moves",
-        today1: "(Signal) 1 line: price-impact point from official sources",
-        today2: "(Signal) 1 line: fastest-rising keyword in chatter",
-        today3: "(Action) 3 checkpoints to verify tomorrow",
-        todayNote: "* Full version includes source links.",
         pK: "PRICING", priceNote: "Early Beta Lock",
         footerLeft: "© AtlasAxiom · Private Preview",
         footerRight: "Next: Email form → GitHub → Deploy",
         modalTitle: "Join the Private List",
-        modalDesc: "We'll notify you when spots open up.",
-        alertPay: "Next: Connect Stripe/Polar."
+        modalDesc: "We'll notify you when spots open up."
       },
       ko: {
         status: "Private Preview",
@@ -242,63 +324,80 @@
         sub: "과잉 정보는 줄이고, “오늘 실제로 움직이는 신호”만 정리합니다. (시장·테크·크리에이터 이슈를 투자 관점으로 재구성)",
         ctaWait: "대기자 명단 참여",
         ctaSample: "샘플 보기",
+        todayK: "오늘의 샘플", todayTitle: "Top 3 Moves",
+        // 툴팁 적용 (한글)
+        today1: '(Signal) 공식 발표의 <span class="term" data-desc="시장 가격 변동을 즉시 유발하는 핵심 뉴스 포인트">가격 영향 포인트</span> 1줄',
+        today2: '(Signal) 커뮤니티 <span class="term" data-desc="레딧/디스코드 등에서 언급량이 300% 이상 급증한 키워드">급상승 키워드</span> 1줄',
+        today3: "(Action) 내일 확인할 체크포인트 3개",
+        todayNote: "* 정식 버전: 소스 링크 포함",
         formatK: "FORMAT", formatV: "매일 1장 브리핑",
         signalK: "SIGNAL", signalV: "“누가/왜/지금” 한 장 요약",
         statusK: "STATUS", statusV: "초대 전용 · 피드백 기반",
-        todayK: "오늘의 샘플", todayTitle: "Top 3 Moves",
-        today1: "(Signal) 공식 발표의 “가격 영향 포인트” 1줄",
-        today2: "(Signal) 커뮤니티 급상승 키워드 1줄",
-        today3: "(Action) 내일 확인할 체크포인트 3개",
-        todayNote: "* 정식 버전: 소스 링크 포함",
         pK: "PRICING", priceNote: "얼리버드 가격 고정",
         footerLeft: "© AtlasAxiom · Private Preview",
         footerRight: "Next: 이메일 폼 → GitHub → 배포",
         modalTitle: "비공개 리스트 가입",
-        modalDesc: "초대장이 준비되면 알림을 드립니다.",
-        alertPay: "다음: 결제(Stripe/Polar) 연결 예정"
+        modalDesc: "초대장이 준비되면 알림을 드립니다."
       }
     };
 
-    // 저장소 (Local Storage) - 기본값 'en'으로 설정
+    // 저장소 (Local Storage)
     const store = { get(k, d){ return localStorage.getItem(k) ?? d; }, set(k, v){ localStorage.setItem(k, v); } };
 
-    // 언어 적용 함수
+    // 언어 적용 함수 (HTML 태그 인식을 위해 innerHTML 사용)
     function applyI18n(lang){
       const dict = I18N[lang] || I18N.en;
       document.querySelectorAll("[data-i18n]").forEach(el=>{
         const key = el.getAttribute("data-i18n");
-        if (dict[key] !== undefined) el.textContent = dict[key];
+        if (dict[key] !== undefined) {
+          el.innerHTML = dict[key]; // HTML 태그(툴팁) 렌더링
+          attachTooltipEvents(); // 툴팁 이벤트 다시 연결
+        }
       });
     }
 
-    // UI 업데이트 함수 (버튼 텍스트 변경 포함)
+    // 아이콘 SVG 데이터
+    const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+    const sunSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+
+    // UI 업데이트 함수
     function updateUI(){
-      const lang  = store.get("atlas_lang", "en"); // 저장된 값이 없으면 'en' 사용
+      const lang  = store.get("atlas_lang", "en");
       const theme = store.get("atlas_theme", "dark");
       
       document.documentElement.setAttribute("data-theme", theme);
       document.documentElement.lang = (lang === "ko") ? "ko" : "en";
       
-      // 언어 버튼 토글 시각화 (활성 언어 강조)
-      const langBtn = document.getElementById("langBtn");
+      // 테마 아이콘 변경
       const themeBtn = document.getElementById("themeBtn");
-      
-      if (langBtn) {
-        langBtn.innerHTML = (lang === "en") 
-          ? `<span class="active">EN</span> / KR` 
-          : `EN / <span class="active">KR</span>`;
-      }
-      
       if (themeBtn) {
-        themeBtn.innerHTML = (theme === "dark") 
-          ? `<span class="active">Dark</span> / Light` 
-          : `Dark / <span class="active">Light</span>`;
+        themeBtn.innerHTML = (theme === "dark") ? sunSVG : moonSVG;
       }
-
+      
       applyI18n(lang);
     }
 
-    // --- Modal Logic ---
+    // 툴팁 터치 이벤트 (모바일용)
+    function attachTooltipEvents() {
+      document.querySelectorAll('.term').forEach(item => {
+        // 기존 리스너 제거 방지 (새로 생성된 요소라 괜찮음)
+        item.onclick = (e) => {
+          e.stopPropagation(); // 클릭 전파 방지
+          const isActive = item.classList.contains('active');
+          // 다른 툴팁 모두 끄기
+          document.querySelectorAll('.term').forEach(t => t.classList.remove('active'));
+          // 현재 툴팁 토글
+          if (!isActive) item.classList.add('active');
+        };
+      });
+    }
+
+    // 빈 곳 누르면 툴팁 닫기
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.term').forEach(t => t.classList.remove('active'));
+    });
+
+    // --- Modal & Form Logic ---
     const modal = document.getElementById("emailModal");
     const form = document.getElementById("waitlistForm");
     const submitBtn = document.getElementById("submitBtn");
@@ -312,12 +411,10 @@
       const email = document.getElementById("emailInput").value;
       const lang = store.get("atlas_lang", "en");
 
-      // 버튼 상태 변경
       const originalText = submitBtn.innerText;
       submitBtn.innerText = lang === "ko" ? "전송 중..." : "Sending...";
       submitBtn.disabled = true;
 
-      // 구글 시트로 전송
       fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
@@ -328,7 +425,6 @@
         submitBtn.innerText = lang === "ko" ? "완료!" : "Joined!";
         submitBtn.style.background = "#10b981"; 
         document.getElementById("emailInput").value = "";
-        
         setTimeout(() => {
           modal.classList.remove("open");
           submitBtn.disabled = false;
@@ -345,7 +441,7 @@
       });
     });
 
-    // --- Events ---
+    // --- Button Events ---
     document.getElementById("langBtn")?.addEventListener("click", ()=>{
       const cur = store.get("atlas_lang", "en");
       store.set("atlas_lang", cur === "en" ? "ko" : "en");
