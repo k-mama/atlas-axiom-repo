@@ -1,165 +1,106 @@
 {
-  "updated_at": "2026-01-30T12:52:23.809968",
+  "updated_at_utc": "2026-01-30T21:26:47Z",
+  "channel": "us-stocks-ai",
   "cards": [
     {
-      "id": "auto_0",
-      "type": "INFO",
-      "ticker": "MKT",
-      "headline_en": "SEC Charges ADM and Three Former Executives with Accounting and Disclosure Fraud",
-      "summary_en": "1. Breaking news reported by SEC_Press.\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] SEC Charges ADM and Three Former Executives with Accounting and Disclosure Fraud (AI 번역 대기중)",
-      "summary_kr": "1. SEC_Press에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
-      "source_links": [
-        "https://www.sec.gov/newsroom/press-releases/2026-15-sec-charges-adm-three-former-executives-accounting-disclosure-fraud"
-      ],
-      "trust_score": 80,
-      "risk_flag": false,
-      "disclaimer_en": "This content is for informational purposes only and does not constitute financial advice.",
-      "disclaimer_kr": "본 정보는 투자 참고용이며, 투자 권유가 아닙니다. 투자의 책임은 본인에게 있습니다."
+      "id": "fallback-1",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
     },
     {
-      "id": "auto_1",
-      "type": "INFO",
-      "ticker": "MKT",
-      "headline_en": "SEC and CFTC Reschedule Joint Event on Harmonization, U.S. Financial Leadership in the Crypto Era",
-      "summary_en": "1. Breaking news reported by SEC_Press.\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] SEC and CFTC Reschedule Joint Event on Harmonization, U.S. Financial Leadership in the Crypto Era (AI 번역 대기중)",
-      "summary_kr": "1. SEC_Press에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
-      "source_links": [
-        "https://www.sec.gov/newsroom/press-releases/2026-14-sec-cftc-reschedule-joint-event-harmonization-us-financial-leadership-crypto-era"
-      ],
-      "trust_score": 80,
-      "risk_flag": false,
-      "disclaimer_en": "This content is for informational purposes only and does not constitute financial advice.",
-      "disclaimer_kr": "본 정보는 투자 참고용이며, 투자 권유가 아닙니다. 투자의 책임은 본인에게 있습니다."
+      "id": "fallback-2",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
     },
     {
-      "id": "auto_2",
-      "type": "INFO",
-      "ticker": "MKT",
-      "headline_en": "Microsoft tumbled 10% in a day and isn't recovering premarket. Here's why",
-      "summary_en": "1. Breaking news reported by CNBC_Tech.\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] Microsoft tumbled 10% in a day and isn't recovering premarket. Here's why (AI 번역 대기중)",
-      "summary_kr": "1. CNBC_Tech에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
-      "source_links": [
-        "https://www.cnbc.com/2026/01/30/microsoft-stock-price-market-ai-cloud-azure-earnings.html"
-      ],
-      "trust_score": 80,
-      "risk_flag": false,
-      "disclaimer_en": "This content is for informational purposes only and does not constitute financial advice.",
-      "disclaimer_kr": "본 정보는 투자 참고용이며, 투자 권유가 아닙니다. 투자의 책임은 본인에게 있습니다."
+      "id": "fallback-3",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
     },
     {
-      "id": "auto_3",
-      "type": "INFO",
-      "ticker": "MKT",
-      "headline_en": "CNBC Daily Open: We'll soon find out who the new Fed chair is",
-      "summary_en": "1. Breaking news reported by CNBC_Tech.\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] CNBC Daily Open: We'll soon find out who the new Fed chair is (AI 번역 대기중)",
-      "summary_kr": "1. CNBC_Tech에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
-      "source_links": [
-        "https://www.cnbc.com/2026/01/30/cnbc-daily-open-well-soon-find-out-who-the-new-fed-chair-is.html"
-      ],
-      "trust_score": 80,
-      "risk_flag": false,
-      "disclaimer_en": "This content is for informational purposes only and does not constitute financial advice.",
-      "disclaimer_kr": "본 정보는 투자 참고용이며, 투자 권유가 아닙니다. 투자의 책임은 본인에게 있습니다."
+      "id": "fallback-4",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
     },
     {
-      "id": "auto_4",
-      "type": "INFO",
-      "ticker": "MKT",
-      "headline_en": "IUX Records Significant $10.5 Trillion Annual Trading Volume, Strengthening Global Market Position",
-      "summary_en": "1. Breaking news reported by Investing_News.\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] IUX Records Significant $10.5 Trillion Annual Trading Volume, Strengthening Global Market Position (AI 번역 대기중)",
-      "summary_kr": "1. Investing_News에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
-      "source_links": [
-        "https://www.investing.com/news/company-news/iux-records-significant-105-trillion-annual-trading-volume-strengthening-global-market-position-4475823"
-      ],
-      "trust_score": 80,
-      "risk_flag": false,
-      "disclaimer_en": "This content is for informational purposes only and does not constitute financial advice.",
-      "disclaimer_kr": "본 정보는 투자 참고용이며, 투자 권유가 아닙니다. 투자의 책임은 본인에게 있습니다."
+      "id": "fallback-5",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
     },
     {
-      "id": "auto_5",
-      "type": "INFO",
-      "ticker": "MKT",
-      "headline_en": "Exclusive-China conditionally approves DeepSeek to buy Nvidia’s H200 chips - sources",
-      "summary_en": "1. Breaking news reported by Investing_News.\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] Exclusive-China conditionally approves DeepSeek to buy Nvidia’s H200 chips - sources (AI 번역 대기중)",
-      "summary_kr": "1. Investing_News에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
-      "source_links": [
-        "https://www.investing.com/news/stock-market-news/exclusivechina-conditionally-approves-deepseek-to-buy-nvidias-h200-chips--sources-4475138"
-      ],
-      "trust_score": 80,
-      "risk_flag": false,
-      "disclaimer_en": "This content is for informational purposes only and does not constitute financial advice.",
-      "disclaimer_kr": "본 정보는 투자 참고용이며, 투자 권유가 아닙니다. 투자의 책임은 본인에게 있습니다."
+      "id": "fallback-6",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
     },
     {
-      "id": "auto_6",
-      "type": "INFO",
-      "ticker": "MKT",
-      "headline_en": "After ICE Violence, CEOs Face The Risks Of Speaking Out Against Trump",
-      "summary_en": "1. Breaking news reported by YouTube (CNBC_Television).\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] After ICE Violence, CEOs Face The Risks Of Speaking Out Against Trump (AI 번역 대기중)",
-      "summary_kr": "1. YouTube (CNBC_Television)에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
-      "source_links": [
-        "https://www.youtube.com/watch?v=JU23rlaY13I"
-      ],
-      "trust_score": 80,
-      "risk_flag": false,
-      "disclaimer_en": "This content is for informational purposes only and does not constitute financial advice.",
-      "disclaimer_kr": "본 정보는 투자 참고용이며, 투자 권유가 아닙니다. 투자의 책임은 본인에게 있습니다."
+      "id": "fallback-7",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
     },
     {
-      "id": "auto_7",
-      "type": "INFO",
-      "ticker": "MKT",
-      "headline_en": "How GameStop Mania Changed The Stock Market",
-      "summary_en": "1. Breaking news reported by YouTube (CNBC_Television).\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] How GameStop Mania Changed The Stock Market (AI 번역 대기중)",
-      "summary_kr": "1. YouTube (CNBC_Television)에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
-      "source_links": [
-        "https://www.youtube.com/watch?v=F0UqCFbTNbc"
-      ],
-      "trust_score": 80,
-      "risk_flag": false,
-      "disclaimer_en": "This content is for informational purposes only and does not constitute financial advice.",
-      "disclaimer_kr": "본 정보는 투자 참고용이며, 투자 권유가 아닙니다. 투자의 책임은 본인에게 있습니다."
+      "id": "fallback-8",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
     },
     {
-      "id": "auto_8",
-      "type": "INFO",
-      "ticker": "MKT",
-      "headline_en": "AI Spending Delivers Mixed Results to Stocks | Bloomberg Tech 1/29/2026",
-      "summary_en": "1. Breaking news reported by YouTube (Bloomberg_Tech).\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] AI Spending Delivers Mixed Results to Stocks | Bloomberg Tech 1/29/2026 (AI 번역 대기중)",
-      "summary_kr": "1. YouTube (Bloomberg_Tech)에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
-      "source_links": [
-        "https://www.youtube.com/watch?v=7vYR7RPgWMo"
-      ],
-      "trust_score": 80,
-      "risk_flag": false,
-      "disclaimer_en": "This content is for informational purposes only and does not constitute financial advice.",
-      "disclaimer_kr": "본 정보는 투자 참고용이며, 투자 권유가 아닙니다. 투자의 책임은 본인에게 있습니다."
+      "id": "fallback-9",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
     },
     {
-      "id": "auto_9",
-      "type": "INFO",
-      "ticker": "MKT",
-      "headline_en": "Amazon Discovered Child Sex Abuse Content in AI Training Data",
-      "summary_en": "1. Breaking news reported by YouTube (Bloomberg_Tech).\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] Amazon Discovered Child Sex Abuse Content in AI Training Data (AI 번역 대기중)",
-      "summary_kr": "1. YouTube (Bloomberg_Tech)에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
-      "source_links": [
-        "https://www.youtube.com/watch?v=UoU6i7HzmxQ"
-      ],
-      "trust_score": 80,
-      "risk_flag": false,
-      "disclaimer_en": "This content is for informational purposes only and does not constitute financial advice.",
-      "disclaimer_kr": "본 정보는 투자 참고용이며, 투자 권유가 아닙니다. 투자의 책임은 본인에게 있습니다."
+      "id": "fallback-10",
+      "tier": "signal",
+      "tickers": [],
+      "headline": "Signal detected for market",
+      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
+      "keywords": [],
+      "sources": [],
+      "confidence": 0.5
     }
   ]
 }
