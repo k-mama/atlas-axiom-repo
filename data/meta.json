@@ -1,0 +1,82 @@
+{
+  "meta_version": "1.0",
+  "service": "AtlasAxiom",
+  "channel": "us-stocks-ai",
+  "primary_tickers": ["NVDA", "MSFT", "GOOGL", "AMD", "TSLA"],
+
+  "success": false,
+  "last_attempt_utc": null,
+  "last_success_utc": null,
+
+  "run": {
+    "run_id": null,
+    "run_type": null,
+    "environment": null,
+    "started_utc": null,
+    "finished_utc": null,
+    "duration_ms": null
+  },
+
+  "outputs": {
+    "hot_cards_path": "data/hot_cards.json",
+    "briefing_am_path": "data/briefing_am.json",
+    "briefing_pm_path": "data/briefing_pm.json",
+    "watchlist_meta_path": "data/watchlist_meta.json"
+  },
+
+  "stats": {
+    "collected_total": 0,
+    "signals_total": 0,
+    "cards_total": 0,
+    "entities_total": 0,
+    "tickers_total": 0
+  },
+
+  "sources": [
+    {
+      "id": "official_rss",
+      "tier": "A",
+      "enabled": true,
+      "status": "unknown",
+      "items_collected": 0,
+      "last_run_utc": null
+    },
+    {
+      "id": "youtube_rss",
+      "tier": "A",
+      "enabled": true,
+      "status": "unknown",
+      "items_collected": 0,
+      "last_run_utc": null
+    },
+    {
+      "id": "reddit_api",
+      "tier": "B",
+      "enabled": true,
+      "status": "unknown",
+      "items_collected": 0,
+      "last_run_utc": null
+    }
+  ],
+
+  "risk_policy": {
+    "raw_content_storage": "forbidden",
+    "allowed_fields": [
+      "source_type",
+      "source_name",
+      "url",
+      "timestamp",
+      "tickers",
+      "entities",
+      "keywords_top",
+      "sentiment",
+      "intensity",
+      "velocity",
+      "topic_cluster",
+      "confidence"
+    ],
+    "notes": "Store signals only. Never archive full post/article text, images, or transcripts. For Tier B/C store link + signal fields only."
+  },
+
+  "errors": []
+}
