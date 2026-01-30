@@ -6,24 +6,29 @@
   <title>AtlasAxiom | Private Signal Brief</title>
 
   <style>
-    /* --- 1. 디자인 변수 (Dark Tech Theme) --- */
+    /* --- 1) Theme Tokens --- */
     :root {
       --bg: #0b1121;
       --bg-grad: radial-gradient(circle at 15% 0%, #1e293b 0%, #0b1121 75%);
-      --card-bg: rgba(30, 41, 59, 0.4);
+      --card-bg: rgba(30, 41, 59, 0.40);
       --card-border: rgba(148, 163, 184, 0.15);
       --text-main: #f1f5f9;
       --text-muted: #94a3b8;
-      --primary: #38bdf8; /* Cyan/Sky Blue */
-      --primary-glow: rgba(56, 189, 248, 0.3);
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.30);
       --line: #334155;
       --grid-color: rgba(255, 255, 255, 0.03);
+
+      --danger: #fb7185;
+      --danger-bg: rgba(251, 113, 133, 0.12);
+      --success: #34d399;
+      --success-bg: rgba(52, 211, 153, 0.12);
     }
 
     [data-theme="light"] {
       --bg: #f8fafc;
       --bg-grad: radial-gradient(circle at 50% 0%, #e0f2fe 0%, #f8fafc 60%);
-      --card-bg: rgba(255, 255, 255, 0.8);
+      --card-bg: rgba(255, 255, 255, 0.85);
       --card-border: #cbd5e1;
       --text-main: #0f172a;
       --text-muted: #64748b;
@@ -31,16 +36,20 @@
       --primary-glow: rgba(2, 132, 199, 0.15);
       --line: #e2e8f0;
       --grid-color: rgba(0, 0, 0, 0.04);
+
+      --danger: #e11d48;
+      --danger-bg: rgba(225, 29, 72, 0.10);
+      --success: #059669;
+      --success-bg: rgba(5, 150, 105, 0.10);
     }
 
     * {
       box-sizing: border-box;
-      transition:
-        background 0.3s ease,
-        color 0.2s ease,
-        border-color 0.3s ease,
-        box-shadow 0.3s ease,
-        transform 0.3s ease;
+      transition: background 0.25s ease, color 0.2s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
     }
 
     body {
@@ -59,208 +68,309 @@
 
     .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
 
-    /* --- 2. 상단 네비게이션 & 아이콘 --- */
-    .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
-    .logo { font-size: 16px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-    .logo::before { content: ''; display: inline-block; width: 12px; height: 12px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary-glow); }
+    /* --- 2) Top Bar --- */
+    .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 40px; }
+    .logo {
+      font-size: 16px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-main);
+      display: flex; align-items: center; gap: 10px; white-space: nowrap;
+    }
+    .logo::before {
+      content: ''; display: inline-block; width: 12px; height: 12px; background: var(--primary);
+      border-radius: 50%; box-shadow: 0 0 10px var(--primary-glow);
+    }
 
-    .toggles { display: flex; gap: 12px; align-items: center; }
-    .status-pill { font-size: 12px; font-weight: 600; color: var(--primary); background: var(--card-bg); border: 1px solid var(--card-border); padding: 6px 12px; border-radius: 99px; backdrop-filter: blur(4px); margin-right: 8px;}
+    .toggles { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+    .status-pill {
+      font-size: 12px; font-weight: 700; color: var(--primary);
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      padding: 6px 12px; border-radius: 999px; backdrop-filter: blur(6px);
+      white-space: nowrap;
+    }
 
-    /* 아이콘 버튼 스타일 */
     .icon-btn {
       background: transparent; border: none; cursor: pointer; color: var(--text-muted);
-      padding: 8px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s ease;
+      padding: 8px; border-radius: 999px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     }
-    .icon-btn:hover { color: var(--text-main); background: rgba(125,125,125,0.1); transform: scale(1.1); }
+    .icon-btn:hover { color: var(--text-main); background: rgba(125,125,125,0.10); transform: translateY(-1px); }
+    .icon-btn:active { transform: translateY(0px); }
     .icon-btn svg { width: 20px; height: 20px; stroke-width: 2px; }
 
-    /* --- 3. Hero 섹션 --- */
+    /* Focus */
+    :focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--primary-glow);
+      border-radius: 10px;
+    }
+
+    /* Language Dropdown */
+    .lang-wrap { position: relative; }
+    .lang-pill {
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      backdrop-filter: blur(6px);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+    .lang-pill span { opacity: 0.9; }
+    .lang-menu {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      width: 180px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+      z-index: 1000;
+    }
+    .lang-wrap.open .lang-menu {
+      opacity: 1;
+      transform: translateY(0px);
+      pointer-events: all;
+    }
+    .lang-item {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 10px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .lang-item:hover { background: rgba(125,125,125,0.10); }
+    .lang-item small { color: var(--text-muted); font-weight: 600; }
+
+    /* --- 3) Hero --- */
     .hero-split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-bottom: 60px; min-height: 50vh; }
     .hero-text { text-align: left; }
-    h1 { font-size: 48px; line-height: 1.1; margin: 0 0 24px; letter-spacing: -0.03em; font-weight: 800; }
+    h1 { font-size: 48px; line-height: 1.1; margin: 0 0 24px; letter-spacing: -0.03em; font-weight: 900; }
     .highlight { background: linear-gradient(120deg, var(--primary), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px var(--primary-glow)); }
     .sub { font-size: 18px; color: var(--text-muted); max-width: 580px; margin-bottom: 32px; line-height: 1.6; }
     .cta-group { display: flex; gap: 12px; flex-wrap: wrap; }
 
-    /* 버튼 스타일 */
-    .btn { cursor: pointer; padding: 14px 28px; border-radius: 99px; font-size: 15px; font-weight: 700; border: none; display: inline-flex; align-items: center; justify-content: center; }
-    .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 20px var(--primary-glow); }
+    .btn {
+      cursor: pointer; padding: 14px 28px; border-radius: 999px;
+      font-size: 15px; font-weight: 800; border: none;
+      display: inline-flex; align-items: center; justify-content: center;
+      letter-spacing: -0.01em;
+    }
+    .btn-primary { background: var(--primary); color: #0f172a; box-shadow: 0 10px 35px -12px var(--primary-glow); }
     [data-theme="light"] .btn-primary { color: #fff; }
-    [data-theme="dark"] .btn-primary { color: #0f172a; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--primary-glow); }
-    .btn-secondary { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border); backdrop-filter: blur(5px); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 55px -18px var(--primary-glow); }
+    .btn-secondary { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border); backdrop-filter: blur(6px); }
     .btn-secondary:hover { border-color: var(--text-muted); transform: translateY(-2px); }
 
-    /* 카드 스타일 */
-    .card { background: var(--card-bg); border: 1px solid var(--card-border); padding: 24px; border-radius: 20px; backdrop-filter: blur(12px); display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease; }
-    .card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
-    .label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; }
-    .value { font-size: 15px; font-weight: 500; color: var(--text-main); }
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 24px;
+      border-radius: 22px;
+      backdrop-filter: blur(12px);
+      display: flex; flex-direction: column;
+    }
+    .card:hover { border-color: rgba(56,189,248,0.35); box-shadow: 0 16px 55px rgba(0,0,0,0.25); }
+    .label { font-size: 11px; font-weight: 900; letter-spacing: 0.12em; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; }
+    .value { font-size: 15px; font-weight: 600; color: var(--text-main); }
 
-    /* --- 4. 툴팁(용어 설명) 스타일 (Mobile Friendly) --- */
+    /* Tooltip Terms */
     .term {
       border-bottom: 1px dashed var(--primary);
       cursor: help;
       position: relative;
       color: var(--text-main);
-      font-weight: 600;
+      font-weight: 800;
     }
-
     .term::after {
       content: attr(data-desc);
       position: absolute;
       bottom: 130%;
       left: 50%;
       transform: translateX(-50%);
-
-      width: 200px;
-      padding: 10px;
-      background: rgba(15, 23, 42, 0.95);
+      width: 220px;
+      padding: 10px 12px;
+      background: rgba(15, 23, 42, 0.96);
       color: #fff;
       font-size: 13px;
       line-height: 1.4;
-      font-weight: 400;
-      border: 1px solid var(--primary);
-      border-radius: 8px;
+      font-weight: 600;
+      border: 1px solid rgba(56,189,248,0.7);
+      border-radius: 10px;
       text-align: center;
       z-index: 100;
       white-space: normal;
-
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.2s ease, visibility 0.2s ease;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.18s ease, visibility 0.18s ease;
       pointer-events: none;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.45);
     }
-
     .term::before {
       content: '';
       position: absolute;
-      bottom: 110%;
+      bottom: 112%;
       left: 50%;
-      margin-left: -5px;
-      border-width: 5px;
+      margin-left: -6px;
+      border-width: 6px;
       border-style: solid;
-      border-color: var(--primary) transparent transparent transparent;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.2s ease;
+      border-color: rgba(56,189,248,0.7) transparent transparent transparent;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.18s ease, visibility 0.18s ease;
     }
-
     .term:hover::after, .term.active::after,
     .term:hover::before, .term.active::before {
-      opacity: 1;
-      visibility: visible;
+      opacity: 1; visibility: visible;
     }
 
-    /* Feature Strip & Footer */
+    /* Feature Strip */
     .feature-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
     .list-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 14px; color: var(--text-muted); }
-    .list-item::before { content: "•"; color: var(--primary); font-size: 18px; line-height: 1; }
+    .list-item::before { content: "•"; color: var(--primary); font-size: 18px; line-height: 1; margin-top: -1px; }
 
-    .footer { margin-top: 80px; border-top: 1px solid var(--line); padding-top: 24px; display: flex; justify-content: space-between; color: var(--text-muted); font-size: 13px; }
+    .footer {
+      margin-top: 80px;
+      border-top: 1px solid var(--line);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
 
-    /* Modal */
+    /* --- Modal --- */
     .modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
+      position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
       display: flex; justify-content: center; align-items: center;
-      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-      z-index: 1000;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 2000;
+      padding: 18px;
     }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
 
     .modal-content {
       position: relative;
-      background: var(--card-bg); border: 1px solid var(--primary);
-      box-shadow: 0 0 30px var(--primary-glow);
-      padding: 30px; border-radius: 20px; width: 90%; max-width: 420px;
-      text-align: center; transform: scale(0.9); transition: transform 0.3s ease;
-      backdrop-filter: blur(14px);
+      background: var(--card-bg);
+      border: 1px solid rgba(56,189,248,0.45);
+      box-shadow: 0 0 40px rgba(56,189,248,0.18);
+      padding: 28px;
+      border-radius: 22px;
+      width: 100%;
+      max-width: 430px;
+      text-align: center;
+      transform: scale(0.97);
+      transition: transform 0.25s ease;
     }
     .modal-overlay.open .modal-content { transform: scale(1); }
-    .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
-    .modal-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 18px; }
 
-    .input-field {
-      width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--card-border);
-      background: rgba(0,0,0,0.2); color: var(--text-main); font-size: 15px; margin-bottom: 12px; outline: none;
-    }
-    [data-theme="light"] .input-field { background: rgba(255,255,255,0.6); }
-    .input-field:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(56,189,248,0.12); }
+    .modal-title { font-size: 20px; font-weight: 900; margin: 2px 0 10px; color: var(--text-main); letter-spacing: -0.02em; }
+    .modal-desc { font-size: 14px; color: var(--text-muted); margin: 0 0 18px; }
 
     .close-btn {
       position: absolute; top: 14px; right: 14px;
       width: 38px; height: 38px;
       border-radius: 12px;
       border: 1px solid var(--card-border);
-      background: rgba(0,0,0,0.18);
+      background: rgba(0,0,0,0.12);
       color: var(--text-muted);
       cursor: pointer;
-      font-size: 20px;
-      display: flex; align-items: center; justify-content: center;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 900;
     }
-    .close-btn:hover { color: var(--text-main); border-color: var(--text-muted); transform: scale(1.05); }
+    .close-btn:hover { color: var(--text-main); border-color: rgba(56,189,248,0.35); }
 
-    /* --- Email Error / Success Bubble (Modal inside) --- */
-    .field { width: 100%; text-align: left; }
-
-    .field-error {
-      margin-top: 10px;
-      padding: 10px 12px;
+    .input-field {
+      width: 100%;
+      padding: 12px 14px;
       border-radius: 12px;
-      border: 1px solid rgba(248,113,113,0.55);
-      background: rgba(248,113,113,0.12);
-      color: #fecaca;
-      font-size: 13px;
-      font-weight: 750;
-      display: none;
+      border: 1px solid var(--card-border);
+      background: rgba(0,0,0,0.18);
+      color: var(--text-main);
+      font-size: 15px;
+      outline: none;
     }
-    [data-theme="light"] .field-error{
-      color: #7f1d1d;
-      background: rgba(248,113,113,0.18);
-    }
-    .field-error.show { display: block; }
+    .input-field:focus { border-color: rgba(56,189,248,0.6); box-shadow: 0 0 0 3px var(--primary-glow); }
+    .input-field.error { border-color: rgba(251,113,133,0.75); box-shadow: 0 0 0 3px rgba(251,113,133,0.20); }
 
-    .field-ok {
+    /* Inline validation bubble (inside modal) */
+    .field-msg {
       margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(16,185,129,0.55);
-      background: rgba(16,185,129,0.12);
-      color: #bbf7d0;
-      font-size: 13px;
-      font-weight: 750;
       display: none;
+      text-align: left;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.35;
+      border: 1px solid rgba(251,113,133,0.45);
+      background: var(--danger-bg);
+      color: var(--text-main);
+      position: relative;
     }
-    [data-theme="light"] .field-ok{
-      color: #065f46;
-      background: rgba(16,185,129,0.16);
+    .field-msg.show { display: block; }
+    .field-msg .icon {
+      display: inline-flex;
+      width: 18px; height: 18px;
+      align-items: center; justify-content: center;
+      border-radius: 6px;
+      margin-right: 8px;
+      background: rgba(251,113,133,0.22);
+      border: 1px solid rgba(251,113,133,0.35);
+      font-weight: 900;
     }
-    .field-ok.show { display: block; }
 
-    .input-field.invalid {
-      border-color: rgba(248,113,113,0.9);
-      box-shadow: 0 0 0 4px rgba(248,113,113,0.18);
-    }
+    /* Modal actions spacing */
+    .modal-actions { margin-top: 16px; display: grid; gap: 10px; }
 
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-6px); }
-      50% { transform: translateX(6px); }
-      75% { transform: translateX(-4px); }
-      100% { transform: translateX(0); }
+    /* Toast */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(10px);
+      min-width: 260px;
+      max-width: 92vw;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 800;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 3000;
     }
-    .input-field.shake { animation: shake 0.35s ease; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0px); }
+    .toast.success { border-color: rgba(52,211,153,0.45); background: var(--success-bg); }
+    .toast.error { border-color: rgba(251,113,133,0.45); background: var(--danger-bg); }
 
+    /* Responsive */
     @media (max-width: 860px) {
-      .hero-split { grid-template-columns: 1fr; gap: 30px; }
+      .hero-split { grid-template-columns: 1fr; gap: 30px; min-height: auto; }
       .feature-strip { grid-template-columns: 1fr; }
       h1 { font-size: 36px; }
       .wrap { padding: 20px; }
+      .top { margin-bottom: 26px; }
     }
   </style>
 </head>
@@ -273,15 +383,29 @@
       <div class="toggles">
         <div class="status-pill" data-i18n="status">Private Preview</div>
 
-        <button class="icon-btn" id="langBtn" aria-label="Change Language">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-          </svg>
-        </button>
+        <!-- Language dropdown -->
+        <div class="lang-wrap" id="langWrap">
+          <button class="icon-btn lang-pill" id="langBtn" aria-label="Change Language" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <span id="langLabel">EN</span>
+          </button>
 
-        <button class="icon-btn" id="themeBtn" aria-label="Toggle Theme"></button>
+          <div class="lang-menu" role="menu" aria-label="Language menu">
+            <button class="lang-item" type="button" data-lang="en" role="menuitem">
+              English <small>EN</small>
+            </button>
+            <button class="lang-item" type="button" data-lang="ko" role="menuitem">
+              한국어 <small>KO</small>
+            </button>
+          </div>
+        </div>
+
+        <!-- Theme toggle -->
+        <button class="icon-btn" id="themeBtn" aria-label="Toggle Theme" type="button"></button>
       </div>
     </div>
 
@@ -297,15 +421,15 @@
         </p>
 
         <div class="cta-group">
-          <button class="btn btn-primary" id="waitBtn" data-i18n="ctaWait">Join the waitlist</button>
-          <button class="btn btn-secondary" id="sampleBtn" data-i18n="ctaSample">View sample</button>
+          <button class="btn btn-primary" id="waitBtn" data-i18n="ctaWait" type="button">Join the waitlist</button>
+          <button class="btn btn-secondary" id="sampleBtn" data-i18n="ctaSample" type="button">View sample</button>
         </div>
       </div>
 
       <div class="hero-visual">
         <div class="card" id="sampleCard">
           <div class="label" data-i18n="todayK">TODAY’S SAMPLE</div>
-          <h3 style="margin:0 0 16px; font-size:18px;" data-i18n="todayTitle">Top 3 Moves</h3>
+          <h3 style="margin:0 0 16px; font-size:18px; font-weight:900;" data-i18n="todayTitle">Top 3 Moves</h3>
 
           <div class="list-item" data-i18n="today1">
             (Signal) 1 line: <span class="term" data-desc="The specific event causing immediate market price change">price-impact point</span> from official sources
@@ -318,7 +442,7 @@
           </div>
 
           <div style="margin-top:20px; font-size:12px; color:var(--text-muted); font-style:italic;" data-i18n="todayNote">
-            * Next: add “source links/evidence” and personalization options.
+            * Full version includes source links.
           </div>
         </div>
       </div>
@@ -339,8 +463,8 @@
       </div>
       <div class="card">
         <div class="label" data-i18n="pK">PRICING</div>
-        <div style="font-size:24px; font-weight:800;">$5 <span style="font-size:14px; color:var(--text-muted)">/mo</span></div>
-        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;" data-i18n="priceNote">Beta Lock</div>
+        <div style="font-size:24px; font-weight:900;">$5 <span style="font-size:14px; color:var(--text-muted); font-weight:800;">/mo</span></div>
+        <div style="font-size:12px; color:var(--text-muted); margin-top:4px; font-weight:800;" data-i18n="priceNote">Beta Lock</div>
       </div>
     </div>
 
@@ -350,39 +474,47 @@
     </div>
   </div>
 
+  <!-- Modal -->
   <div class="modal-overlay" id="emailModal" aria-hidden="true">
     <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button class="close-btn" id="closeModal" aria-label="Close">×</button>
+      <button class="close-btn" id="closeModal" aria-label="Close" type="button">×</button>
 
       <h3 class="modal-title" id="modalTitle" data-i18n="modalTitle">Join the Private List</h3>
       <p class="modal-desc" data-i18n="modalDesc">We'll notify you when spots open up.</p>
 
+      <!-- ✅ 브라우저 기본 말풍선 방지: novalidate + type="text" -->
       <form id="waitlistForm" novalidate>
-        <div class="field">
-          <input
-            type="email"
-            id="emailInput"
-            class="input-field"
-            placeholder="name@example.com"
-            required
-            aria-label="Email Address"
-            autocomplete="email"
-            inputmode="email"
-          />
-          <div id="emailError" class="field-error" role="alert" aria-live="polite"></div>
-          <div id="emailOk" class="field-ok" role="status" aria-live="polite"></div>
+        <input
+          id="emailInput"
+          class="input-field"
+          type="text"
+          inputmode="email"
+          autocomplete="email"
+          placeholder="name@example.com"
+          aria-label="Email Address"
+        />
+
+        <!-- ✅ 우리가 원하는 오류 말풍선(인라인) -->
+        <div id="emailError" class="field-msg" role="status" aria-live="polite">
+          <span class="icon">!</span>
+          <span id="emailErrorText">Please enter a valid email.</span>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width:100%" id="submitBtn">Join Now</button>
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary" style="width:100%" id="submitBtn">Join Now</button>
+        </div>
       </form>
     </div>
   </div>
 
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
   <script>
-    // ⬇️ [유지] 기존 구글 앱스 스크립트 URL
+    // ✅ 기존 구글 앱스 스크립트 URL (유지)
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuxLWJSR0awKZUTJqkRzkf6o3740FYyh5xTy8G3PIyc_u390FtE_KacM-HJu5cnCER/exec";
 
-    // 다국어 딕셔너리 (HTML 태그 포함 - 툴팁 기능 유지)
+    // i18n
     const I18N = {
       en: {
         status: "Private Preview",
@@ -410,14 +542,13 @@
         modalTitle: "Join the Private List",
         modalDesc: "We'll notify you when spots open up.",
 
-        // Email validation messages
-        errEmailEmpty: "Please enter your email.",
-        errEmailSpace: "Email cannot contain spaces.",
-        errEmailSlash: "Email cannot include characters like / or \\",
-        errEmailFormat: "Invalid email format. Example: name@example.com",
-        errEmailTypoGmail: "Did you mean gmail.com?",
-        errNetwork: "Network error. Please try again.",
-        okJoined: "You're on the list. Thank you!"
+        emailPlaceholder: "name@example.com",
+        submit: "Join Now",
+        sending: "Sending…",
+        joined: "Joined!",
+        emailRequired: "Please enter your email address.",
+        emailInvalid: "Please enter a valid email address.",
+        tryAgain: "Something went wrong. Please try again."
       },
       ko: {
         status: "Private Preview",
@@ -445,59 +576,27 @@
         modalTitle: "비공개 리스트 가입",
         modalDesc: "초대장이 준비되면 알림을 드립니다.",
 
-        // Email validation messages
-        errEmailEmpty: "이메일을 입력해주세요.",
-        errEmailSpace: "이메일에 공백이 들어가면 안 돼요.",
-        errEmailSlash: "슬래시(/) 같은 문자는 이메일에 사용할 수 없어요.",
-        errEmailFormat: "이메일 형식이 올바르지 않아요. 예: name@example.com",
-        errEmailTypoGmail: "혹시 gmail.com 을(를) 입력하려고 하셨나요?",
-        errNetwork: "네트워크 오류입니다. 다시 시도해주세요.",
-        okJoined: "등록 완료! 대기자 명단에 추가되었습니다."
+        emailPlaceholder: "name@example.com",
+        submit: "지금 가입",
+        sending: "전송 중…",
+        joined: "완료!",
+        emailRequired: "이메일을 입력해 주세요.",
+        emailInvalid: "유효한 이메일 주소를 입력해 주세요.",
+        tryAgain: "오류가 발생했습니다. 다시 시도해 주세요."
       }
     };
 
-    // 저장소 (Local Storage)
+    // Storage
     const store = {
       get(k, d){ return localStorage.getItem(k) ?? d; },
       set(k, v){ localStorage.setItem(k, v); }
     };
 
-    function t(key){
-      const lang = store.get("atlas_lang", "en");
-      const dict = I18N[lang] || I18N.en;
-      return dict[key] ?? (I18N.en[key] ?? "");
-    }
+    // Icons
+    const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+    const sunSVG  = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
 
-    // 언어 적용 함수 (HTML 태그 인식을 위해 innerHTML 사용)
-    function applyI18n(lang){
-      const dict = I18N[lang] || I18N.en;
-      document.querySelectorAll("[data-i18n]").forEach(el=>{
-        const key = el.getAttribute("data-i18n");
-        if (dict[key] !== undefined) el.innerHTML = dict[key];
-      });
-      attachTooltipEvents();
-    }
-
-    // 아이콘 SVG 데이터
-    const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
-    const sunSVG  = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
-
-    // UI 업데이트 함수
-    function updateUI(){
-      const lang  = store.get("atlas_lang", "en");
-      const theme = store.get("atlas_theme", "dark");
-
-      document.documentElement.setAttribute("data-theme", theme);
-      document.documentElement.lang = (lang === "ko") ? "ko" : "en";
-
-      // 테마 아이콘 변경
-      const themeBtn = document.getElementById("themeBtn");
-      if (themeBtn) themeBtn.innerHTML = (theme === "dark") ? sunSVG : moonSVG;
-
-      applyI18n(lang);
-    }
-
-    // 툴팁 터치 이벤트 (모바일용)
+    // Tooltip (mobile tap)
     function attachTooltipEvents() {
       document.querySelectorAll('.term').forEach(item => {
         item.onclick = (e) => {
@@ -508,115 +607,132 @@
         };
       });
     }
-
-    // 빈 곳 누르면 툴팁 닫기
     document.addEventListener('click', () => {
       document.querySelectorAll('.term').forEach(t => t.classList.remove('active'));
     });
 
-    // --- Modal & Form Logic ---
+    // Apply i18n
+    function applyI18n(lang){
+      const dict = I18N[lang] || I18N.en;
+      document.querySelectorAll("[data-i18n]").forEach(el=>{
+        const key = el.getAttribute("data-i18n");
+        if (dict[key] !== undefined) el.innerHTML = dict[key];
+      });
+      attachTooltipEvents();
+
+      // modal controls
+      const emailInput = document.getElementById("emailInput");
+      const submitBtn = document.getElementById("submitBtn");
+      if (emailInput) emailInput.placeholder = dict.emailPlaceholder || "name@example.com";
+      if (submitBtn) submitBtn.innerText = dict.submit || "Join Now";
+    }
+
+    // UI update
+    function updateUI(){
+      const lang  = store.get("atlas_lang", "en");
+      const theme = store.get("atlas_theme", "dark");
+
+      document.documentElement.setAttribute("data-theme", theme);
+      document.documentElement.lang = (lang === "ko") ? "ko" : "en";
+
+      const themeBtn = document.getElementById("themeBtn");
+      if (themeBtn) themeBtn.innerHTML = (theme === "dark") ? sunSVG : moonSVG;
+
+      const langLabel = document.getElementById("langLabel");
+      if (langLabel) langLabel.textContent = (lang === "ko") ? "KO" : "EN";
+
+      applyI18n(lang);
+    }
+
+    // Toast
+    let toastTimer = null;
+    function showToast(message, type="success"){
+      const toast = document.getElementById("toast");
+      if (!toast) return;
+      toast.className = "toast " + (type === "error" ? "error" : "success");
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+    }
+
+    // Email validation (strict-ish)
+    function isValidEmail(email){
+      // common SaaS-friendly rule: reject spaces, require typical local part chars, require TLD
+      const re = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+      return re.test(email);
+    }
+
+    // Inline error helpers
+    function setEmailError(message){
+      const box = document.getElementById("emailError");
+      const txt = document.getElementById("emailErrorText");
+      const input = document.getElementById("emailInput");
+      if (txt) txt.textContent = message;
+      if (box) box.classList.add("show");
+      if (input) input.classList.add("error");
+    }
+    function clearEmailError(){
+      const box = document.getElementById("emailError");
+      const input = document.getElementById("emailInput");
+      if (box) box.classList.remove("show");
+      if (input) input.classList.remove("error");
+    }
+
+    // Modal open/close
     const modal = document.getElementById("emailModal");
     const form = document.getElementById("waitlistForm");
     const submitBtn = document.getElementById("submitBtn");
-    const emailInputEl = document.getElementById("emailInput");
-    const emailErrorEl = document.getElementById("emailError");
-    const emailOkEl = document.getElementById("emailOk");
+    const emailInput = document.getElementById("emailInput");
 
     function openModal(){
+      clearEmailError();
       modal.classList.add("open");
       modal.setAttribute("aria-hidden", "false");
-      clearEmailMessages();
-      setTimeout(()=> emailInputEl?.focus(), 50);
+      setTimeout(()=> emailInput?.focus(), 50);
     }
     function closeModal(){
       modal.classList.remove("open");
       modal.setAttribute("aria-hidden", "true");
-      clearEmailMessages();
-      if (emailInputEl) emailInputEl.value = "";
+      clearEmailError();
     }
 
     document.getElementById("waitBtn")?.addEventListener("click", openModal);
     document.getElementById("closeModal")?.addEventListener("click", closeModal);
-    modal?.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+    modal?.addEventListener("click", (e)=> { if (e.target === modal) closeModal(); });
+    document.addEventListener("keydown", (e)=> { if (e.key === "Escape" && modal?.classList.contains("open")) closeModal(); });
 
-    function showEmailError(msg){
-      if (emailOkEl) { emailOkEl.textContent = ""; emailOkEl.classList.remove("show"); }
-      if (emailErrorEl) {
-        emailErrorEl.textContent = msg;
-        emailErrorEl.classList.add("show");
+    // ✅ 타이핑할 때는 경고를 띄우지 않고, 이전 에러만 조용히 지움
+    emailInput?.addEventListener("input", () => {
+      if (document.getElementById("emailError")?.classList.contains("show")) {
+        clearEmailError();
       }
-      if (emailInputEl) {
-        emailInputEl.classList.add("invalid", "shake");
-        setTimeout(()=> emailInputEl.classList.remove("shake"), 420);
-        emailInputEl.focus();
-      }
-    }
-
-    function showEmailOk(msg){
-      if (emailErrorEl) { emailErrorEl.textContent = ""; emailErrorEl.classList.remove("show"); }
-      if (emailOkEl) {
-        emailOkEl.textContent = msg;
-        emailOkEl.classList.add("show");
-      }
-      if (emailInputEl) emailInputEl.classList.remove("invalid");
-    }
-
-    function clearEmailMessages(){
-      if (emailErrorEl) { emailErrorEl.textContent = ""; emailErrorEl.classList.remove("show"); }
-      if (emailOkEl) { emailOkEl.textContent = ""; emailOkEl.classList.remove("show"); }
-      if (emailInputEl) emailInputEl.classList.remove("invalid");
-    }
-
-    function validateEmailClient(raw){
-      const v = (raw || "").trim();
-
-      if (!v) return { ok:false, key:"errEmailEmpty" };
-      if (v.includes(" ")) return { ok:false, key:"errEmailSpace" };
-      if (/[\/\\]/.test(v)) return { ok:false, key:"errEmailSlash" };
-
-      // 실사용 기준의 기본 검사
-      const basic = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-      if (!basic.test(v)) return { ok:false, key:"errEmailFormat" };
-
-      const parts = v.split("@");
-      if (parts.length !== 2) return { ok:false, key:"errEmailFormat" };
-      const [local, domain] = parts;
-
-      if (!local || !domain) return { ok:false, key:"errEmailFormat" };
-      if (local.length > 64) return { ok:false, key:"errEmailFormat" };
-      if (domain.length > 255) return { ok:false, key:"errEmailFormat" };
-      if (domain.includes("..") || domain.startsWith(".") || domain.endsWith(".")) return { ok:false, key:"errEmailFormat" };
-
-      // 흔한 오타 체크
-      const typoMap = { "gmial.com": "gmail.com", "gamil.com": "gmail.com" };
-      const d = domain.toLowerCase();
-      if (typoMap[d] === "gmail.com") return { ok:false, key:"errEmailTypoGmail" };
-
-      return { ok:true, value: v.toLowerCase() };
-    }
-
-    emailInputEl?.addEventListener("input", clearEmailMessages);
-
-    emailInputEl?.addEventListener("blur", () => {
-      if (!modal.classList.contains("open")) return;
-      const r = validateEmailClient(emailInputEl.value);
-      if (!r.ok) showEmailError(t(r.key));
     });
 
+    // Submit handler (validate ONLY on submit)
     form?.addEventListener("submit", (e) => {
       e.preventDefault();
-      clearEmailMessages();
 
-      const check = validateEmailClient(emailInputEl?.value || "");
-      if (!check.ok) {
-        showEmailError(t(check.key));
+      const lang = store.get("atlas_lang", "en");
+      const dict = I18N[lang] || I18N.en;
+
+      const email = (emailInput?.value || "").trim();
+
+      // ✅ 여기서만 검증 (타이핑 중에는 X)
+      if (!email) {
+        setEmailError(dict.emailRequired);
+        return;
+      }
+      if (!isValidEmail(email)) {
+        setEmailError(dict.emailInvalid);
         return;
       }
 
-      const email = check.value;
+      clearEmailError();
 
       const originalText = submitBtn.innerText;
-      submitBtn.innerText = store.get("atlas_lang", "en") === "ko" ? "전송 중..." : "Sending...";
+      submitBtn.innerText = dict.sending;
       submitBtn.disabled = true;
 
       fetch(GOOGLE_SCRIPT_URL, {
@@ -626,48 +742,56 @@
         body: "email=" + encodeURIComponent(email)
       })
       .then(() => {
-        showEmailOk(t("okJoined"));
-
-        submitBtn.innerText = store.get("atlas_lang", "en") === "ko" ? "완료!" : "Joined!";
-        submitBtn.style.background = "#10b981";
-
-        if (emailInputEl) emailInputEl.value = "";
+        submitBtn.innerText = dict.joined;
+        showToast((lang === "ko") ? "대기자 명단에 등록되었습니다." : "You’ve been added to the waitlist.", "success");
+        emailInput.value = "";
 
         setTimeout(() => {
           submitBtn.disabled = false;
           submitBtn.innerText = originalText;
-          submitBtn.style.background = "";
           closeModal();
-        }, 1300);
+        }, 1000);
       })
-      .catch(err => {
-        console.error(err);
-        showEmailError(t("errNetwork"));
+      .catch(() => {
         submitBtn.disabled = false;
         submitBtn.innerText = originalText;
-        submitBtn.style.background = "";
+        showToast(dict.tryAgain, "error");
       });
     });
 
-    // --- Button Events ---
-    document.getElementById("langBtn")?.addEventListener("click", ()=>{
-      const cur = store.get("atlas_lang", "en");
-      store.set("atlas_lang", cur === "en" ? "ko" : "en");
-      updateUI();
-      clearEmailMessages();
+    // Buttons
+    document.getElementById("sampleBtn")?.addEventListener("click", ()=>{
+      document.getElementById("sampleCard")?.scrollIntoView({behavior:"smooth", block:"center"});
     });
 
+    // Language dropdown behavior
+    const langWrap = document.getElementById("langWrap");
+    const langBtn = document.getElementById("langBtn");
+
+    langBtn?.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      langWrap.classList.toggle("open");
+    });
+
+    langWrap?.querySelectorAll(".lang-item")?.forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const next = btn.getAttribute("data-lang") || "en";
+        store.set("atlas_lang", next);
+        langWrap.classList.remove("open");
+        updateUI();
+      });
+    });
+
+    document.addEventListener("click", ()=> langWrap?.classList.remove("open"));
+
+    // Theme toggle
     document.getElementById("themeBtn")?.addEventListener("click", ()=>{
       const cur = store.get("atlas_theme", "dark");
       store.set("atlas_theme", cur === "dark" ? "light" : "dark");
       updateUI();
     });
 
-    document.getElementById("sampleBtn")?.addEventListener("click", ()=>{
-      document.getElementById("sampleCard")?.scrollIntoView({behavior:"smooth", block:"center"});
-    });
-
-    // 초기 실행
+    // Initial
     updateUI();
   </script>
 </body>
