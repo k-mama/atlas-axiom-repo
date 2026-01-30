@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-01-30T10:32:28.786521",
+  "updated_at": "2026-01-30T11:26:50.492099",
   "cards": [
     {
       "id": "auto_0",
@@ -69,12 +69,12 @@
       "id": "auto_4",
       "type": "INFO",
       "ticker": "MKT",
-      "headline_en": "Beijer Ref Q4 2025 slides: Record margins and cash flow despite slowing growth",
+      "headline_en": "C3.ai stock price target lowered to $10 from $14 at BofA Securities",
       "summary_en": "1. Breaking news reported by Investing_News.\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] Beijer Ref Q4 2025 slides: Record margins and cash flow despite slowing growth (AI 번역 대기중)",
+      "headline_kr": "[속보] C3.ai stock price target lowered to $10 from $14 at BofA Securities (AI 번역 대기중)",
       "summary_kr": "1. Investing_News에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
       "source_links": [
-        "https://www.investing.com/news/company-news/beijer-ref-q4-2025-slides-record-margins-and-cash-flow-despite-slowing-growth-93CH-4475364"
+        "https://www.investing.com/news/analyst-ratings/c3ai-stock-price-target-lowered-to-10-from-14-at-bofa-securities-93CH-4475559"
       ],
       "trust_score": 80,
       "risk_flag": false,
@@ -85,12 +85,12 @@
       "id": "auto_5",
       "type": "INFO",
       "ticker": "MKT",
-      "headline_en": "BofA’s Hartnett says markets at extreme optimism, new sell signal issued",
+      "headline_en": "BofA Securities raises MongoDB stock price target to $500 on Atlas growth",
       "summary_en": "1. Breaking news reported by Investing_News.\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] BofA’s Hartnett says markets at extreme optimism, new sell signal issued (AI 번역 대기중)",
+      "headline_kr": "[속보] BofA Securities raises MongoDB stock price target to $500 on Atlas growth (AI 번역 대기중)",
       "summary_kr": "1. Investing_News에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
       "source_links": [
-        "https://www.investing.com/news/stock-market-news/bofas-hartnett-sees-markets-at-extreme-optimism-issues-sell-signal-4475325"
+        "https://www.investing.com/news/analyst-ratings/bofa-securities-raises-mongodb-stock-price-target-to-500-on-atlas-growth-93CH-4475558"
       ],
       "trust_score": 80,
       "risk_flag": false,
