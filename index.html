@@ -6,50 +6,39 @@
   <title>AtlasAxiom | Private Signal Brief</title>
 
   <style>
-    /* --- 1) Theme Tokens --- */
     :root {
       --bg: #0b1121;
       --bg-grad: radial-gradient(circle at 15% 0%, #1e293b 0%, #0b1121 75%);
-      --card-bg: rgba(30, 41, 59, 0.40);
-      --card-border: rgba(148, 163, 184, 0.15);
+      --card-bg: rgba(30, 41, 59, 0.42);
+      --card-border: rgba(148, 163, 184, 0.16);
       --text-main: #f1f5f9;
       --text-muted: #94a3b8;
       --primary: #38bdf8;
-      --primary-glow: rgba(56, 189, 248, 0.30);
+      --primary-glow: rgba(56, 189, 248, 0.28);
       --line: #334155;
       --grid-color: rgba(255, 255, 255, 0.03);
-
-      --danger: #fb7185;
-      --danger-bg: rgba(251, 113, 133, 0.12);
-      --success: #34d399;
-      --success-bg: rgba(52, 211, 153, 0.12);
+      --danger: #ff3b30;
+      --success: #10b981;
+      --shadow: rgba(0,0,0,0.45);
     }
 
     [data-theme="light"] {
       --bg: #f8fafc;
       --bg-grad: radial-gradient(circle at 50% 0%, #e0f2fe 0%, #f8fafc 60%);
-      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-bg: rgba(255, 255, 255, 0.86);
       --card-border: #cbd5e1;
       --text-main: #0f172a;
       --text-muted: #64748b;
       --primary: #0284c7;
-      --primary-glow: rgba(2, 132, 199, 0.15);
+      --primary-glow: rgba(2, 132, 199, 0.14);
       --line: #e2e8f0;
       --grid-color: rgba(0, 0, 0, 0.04);
-
-      --danger: #e11d48;
-      --danger-bg: rgba(225, 29, 72, 0.10);
-      --success: #059669;
-      --success-bg: rgba(5, 150, 105, 0.10);
+      --shadow: rgba(0,0,0,0.18);
     }
 
     * {
       box-sizing: border-box;
-      transition: background 0.25s ease, color 0.2s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * { transition: none !important; }
+      transition: background 0.25s ease, color 0.18s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
     }
 
     body {
@@ -68,133 +57,244 @@
 
     .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
 
-    /* --- 2) Top Bar --- */
-    .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 40px; }
+    /* Top */
+    .top { display:flex; align-items:center; justify-content:space-between; margin-bottom: 40px; gap: 16px; }
     .logo {
-      font-size: 16px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-main);
-      display: flex; align-items: center; gap: 10px; white-space: nowrap;
+      font-size: 16px; font-weight: 850; letter-spacing: -0.02em;
+      color: var(--text-main);
+      display:flex; align-items:center; gap: 10px;
+      user-select: none;
     }
-    .logo::before {
-      content: ''; display: inline-block; width: 12px; height: 12px; background: var(--primary);
-      border-radius: 50%; box-shadow: 0 0 10px var(--primary-glow);
+    .logo::before{
+      content:'';
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 12px var(--primary-glow);
+      display:inline-block;
     }
 
-    .toggles { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+    .toggles { display:flex; gap: 12px; align-items:center; position: relative; }
     .status-pill {
-      font-size: 12px; font-weight: 700; color: var(--primary);
-      background: var(--card-bg); border: 1px solid var(--card-border);
-      padding: 6px 12px; border-radius: 999px; backdrop-filter: blur(6px);
+      font-size: 12px;
+      font-weight: 650;
+      color: var(--primary);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 7px 12px;
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
       white-space: nowrap;
+    }
+    .status-pill .ver {
+      margin-left: 8px;
+      color: var(--text-muted);
+      font-weight: 700;
+      letter-spacing: 0.02em;
     }
 
     .icon-btn {
-      background: transparent; border: none; cursor: pointer; color: var(--text-muted);
-      padding: 8px; border-radius: 999px;
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      color: var(--text-muted);
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display:flex; align-items:center; justify-content:center;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
     }
-    .icon-btn:hover { color: var(--text-main); background: rgba(125,125,125,0.10); transform: translateY(-1px); }
-    .icon-btn:active { transform: translateY(0px); }
+    .icon-btn:hover {
+      color: var(--text-main);
+      background: rgba(125,125,125,0.10);
+      transform: translateY(-1px);
+      border-color: rgba(125,125,125,0.16);
+    }
     .icon-btn svg { width: 20px; height: 20px; stroke-width: 2px; }
 
-    /* Focus */
-    :focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 3px var(--primary-glow);
-      border-radius: 10px;
-    }
-
-    /* Language Dropdown */
-    .lang-wrap { position: relative; }
-    .lang-pill {
-      border: 1px solid var(--card-border);
-      background: var(--card-bg);
-      backdrop-filter: blur(6px);
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 13px;
-      color: var(--text-main);
-    }
-    .lang-pill span { opacity: 0.9; }
-    .lang-menu {
+    /* Language menu */
+    .menu {
       position: absolute;
-      right: 0;
-      top: calc(100% + 10px);
-      width: 180px;
+      top: 46px;
+      right: 52px; /* aligns under globe */
+      min-width: 180px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      backdrop-filter: blur(10px);
       border-radius: 14px;
+      box-shadow: 0 16px 40px -18px var(--shadow);
+      backdrop-filter: blur(10px);
       padding: 8px;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.35);
-      opacity: 0;
-      transform: translateY(-6px);
-      pointer-events: none;
-      z-index: 1000;
+      display: none;
+      z-index: 50;
     }
-    .lang-wrap.open .lang-menu {
-      opacity: 1;
-      transform: translateY(0px);
-      pointer-events: all;
+    .menu.open { display: block; }
+    .menuHead {
+      padding: 8px 10px 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: .10em;
+      text-transform: uppercase;
     }
-    .lang-item {
+    .menuItem {
       width: 100%;
-      border: none;
+      border: 1px solid transparent;
       background: transparent;
       color: var(--text-main);
-      font-weight: 700;
-      font-size: 13px;
       padding: 10px 10px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
+      border-radius: 12px;
+      display:flex;
+      align-items:center;
       justify-content: space-between;
       cursor: pointer;
+      font-size: 14px;
+      font-weight: 650;
     }
-    .lang-item:hover { background: rgba(125,125,125,0.10); }
-    .lang-item small { color: var(--text-muted); font-weight: 600; }
+    .menuItem:hover {
+      background: rgba(125,125,125,0.10);
+      border-color: rgba(125,125,125,0.12);
+    }
+    .check {
+      opacity: 0;
+      color: var(--primary);
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      font-weight: 800;
+    }
+    .menuItem.active .check { opacity: 1; }
 
-    /* --- 3) Hero --- */
-    .hero-split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-bottom: 60px; min-height: 50vh; }
-    .hero-text { text-align: left; }
-    h1 { font-size: 48px; line-height: 1.1; margin: 0 0 24px; letter-spacing: -0.03em; font-weight: 900; }
-    .highlight { background: linear-gradient(120deg, var(--primary), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px var(--primary-glow)); }
-    .sub { font-size: 18px; color: var(--text-muted); max-width: 580px; margin-bottom: 32px; line-height: 1.6; }
-    .cta-group { display: flex; gap: 12px; flex-wrap: wrap; }
+    /* Hero */
+    .hero-split {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 44px;
+      align-items:center;
+      margin-bottom: 60px;
+      min-height: 50vh;
+    }
+
+    h1 {
+      font-size: 50px;
+      line-height: 1.08;
+      margin: 0 0 18px;
+      letter-spacing: -0.035em;
+      font-weight: 900;
+    }
+    .highlight {
+      background: linear-gradient(120deg, var(--primary), #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 14px var(--primary-glow));
+    }
+    .sub {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 620px;
+      margin: 0 0 18px;
+      line-height: 1.65;
+    }
+
+    .sourceRow {
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 12px 0 26px;
+    }
+    .chip {
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      border: 1px solid var(--card-border);
+      background: rgba(0,0,0,0.08);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      backdrop-filter: blur(6px);
+    }
+    [data-theme="light"] .chip { background: rgba(255,255,255,0.55); }
+    .chip .badge {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--primary);
+      border: 1px solid rgba(56,189,248,0.25);
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+
+    .cta-group { display:flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 
     .btn {
-      cursor: pointer; padding: 14px 28px; border-radius: 999px;
-      font-size: 15px; font-weight: 800; border: none;
-      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 800;
+      border: none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
       letter-spacing: -0.01em;
     }
-    .btn-primary { background: var(--primary); color: #0f172a; box-shadow: 0 10px 35px -12px var(--primary-glow); }
+    .btn-primary {
+      background: var(--primary);
+      box-shadow: 0 8px 28px -12px var(--primary-glow);
+    }
+    [data-theme="dark"] .btn-primary { color: #0f172a; }
     [data-theme="light"] .btn-primary { color: #fff; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 55px -18px var(--primary-glow); }
-    .btn-secondary { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border); backdrop-filter: blur(6px); }
-    .btn-secondary:hover { border-color: var(--text-muted); transform: translateY(-2px); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px -14px var(--primary-glow); }
+
+    .btn-secondary {
+      background: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+    }
+    .btn-secondary:hover { border-color: rgba(148,163,184,0.35); transform: translateY(-2px); }
+
+    .trustline {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: .01em;
+    }
 
     /* Cards */
     .card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       padding: 24px;
-      border-radius: 22px;
+      border-radius: 20px;
       backdrop-filter: blur(12px);
-      display: flex; flex-direction: column;
+      display:flex;
+      flex-direction: column;
+      box-shadow: 0 14px 40px -30px var(--shadow);
     }
-    .card:hover { border-color: rgba(56,189,248,0.35); box-shadow: 0 16px 55px rgba(0,0,0,0.25); }
-    .label { font-size: 11px; font-weight: 900; letter-spacing: 0.12em; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; }
-    .value { font-size: 15px; font-weight: 600; color: var(--text-main); }
+    .card:hover {
+      border-color: rgba(56,189,248,0.35);
+      transform: translateY(-4px);
+      box-shadow: 0 18px 50px -32px var(--shadow);
+    }
 
-    /* Tooltip Terms */
+    .label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .value { font-size: 15px; font-weight: 550; color: var(--text-main); }
+
+    /* Tooltip term */
     .term {
       border-bottom: 1px dashed var(--primary);
       cursor: help;
       position: relative;
       color: var(--text-main);
-      font-weight: 800;
+      font-weight: 750;
     }
+
     .term::after {
       content: attr(data-desc);
       position: absolute;
@@ -202,21 +302,22 @@
       left: 50%;
       transform: translateX(-50%);
       width: 220px;
-      padding: 10px 12px;
-      background: rgba(15, 23, 42, 0.96);
+      padding: 10px 11px;
+      background: rgba(15, 23, 42, 0.95);
       color: #fff;
       font-size: 13px;
       line-height: 1.4;
-      font-weight: 600;
-      border: 1px solid rgba(56,189,248,0.7);
+      font-weight: 500;
+      border: 1px solid rgba(56,189,248,0.55);
       border-radius: 10px;
       text-align: center;
       z-index: 100;
       white-space: normal;
-      opacity: 0; visibility: hidden;
-      transition: opacity 0.18s ease, visibility 0.18s ease;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
       pointer-events: none;
-      box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+      box-shadow: 0 10px 30px -18px rgba(0,0,0,0.55);
     }
     .term::before {
       content: '';
@@ -226,75 +327,94 @@
       margin-left: -6px;
       border-width: 6px;
       border-style: solid;
-      border-color: rgba(56,189,248,0.7) transparent transparent transparent;
-      opacity: 0; visibility: hidden;
-      transition: opacity 0.18s ease, visibility 0.18s ease;
+      border-color: rgba(56,189,248,0.55) transparent transparent transparent;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
     }
     .term:hover::after, .term.active::after,
     .term:hover::before, .term.active::before {
-      opacity: 1; visibility: visible;
+      opacity: 1;
+      visibility: visible;
     }
 
-    /* Feature Strip */
-    .feature-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
-    .list-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 14px; color: var(--text-muted); }
-    .list-item::before { content: "•"; color: var(--primary); font-size: 18px; line-height: 1; margin-top: -1px; }
+    /* Sample list */
+    .list-item {
+      display:flex;
+      align-items:flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .list-item::before {
+      content: "•";
+      color: var(--primary);
+      font-size: 18px;
+      line-height: 1;
+      margin-top: 1px;
+    }
 
+    .miniHead {
+      margin: 6px 0 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    .feature-strip {
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    /* Footer */
     .footer {
       margin-top: 80px;
       border-top: 1px solid var(--line);
       padding-top: 24px;
-      display: flex;
-      justify-content: space-between;
+      display:flex;
+      justify-content:space-between;
       gap: 12px;
       color: var(--text-muted);
       font-size: 13px;
-      flex-wrap: wrap;
     }
 
-    /* --- Modal --- */
+    /* Modal */
     .modal-overlay {
       position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.68);
       backdrop-filter: blur(6px);
-      display: flex; justify-content: center; align-items: center;
-      opacity: 0; pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
       transition: opacity 0.25s ease;
       z-index: 2000;
-      padding: 18px;
     }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
 
     .modal-content {
       position: relative;
       background: var(--card-bg);
-      border: 1px solid rgba(56,189,248,0.45);
-      box-shadow: 0 0 40px rgba(56,189,248,0.18);
+      border: 1px solid rgba(56,189,248,0.35);
+      box-shadow: 0 0 42px -18px var(--primary-glow);
       padding: 28px;
-      border-radius: 22px;
-      width: 100%;
-      max-width: 430px;
-      text-align: center;
-      transform: scale(0.97);
+      border-radius: 20px;
+      width: 92%;
+      max-width: 420px;
+      text-align: left;
+      transform: scale(0.96);
       transition: transform 0.25s ease;
     }
     .modal-overlay.open .modal-content { transform: scale(1); }
 
-    .modal-title { font-size: 20px; font-weight: 900; margin: 2px 0 10px; color: var(--text-main); letter-spacing: -0.02em; }
+    .modal-title { font-size: 20px; font-weight: 900; margin: 0 0 8px; color: var(--text-main); }
     .modal-desc { font-size: 14px; color: var(--text-muted); margin: 0 0 18px; }
-
-    .close-btn {
-      position: absolute; top: 14px; right: 14px;
-      width: 38px; height: 38px;
-      border-radius: 12px;
-      border: 1px solid var(--card-border);
-      background: rgba(0,0,0,0.12);
-      color: var(--text-muted);
-      cursor: pointer;
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 18px; font-weight: 900;
-    }
-    .close-btn:hover { color: var(--text-main); border-color: rgba(56,189,248,0.35); }
 
     .input-field {
       width: 100%;
@@ -306,71 +426,62 @@
       font-size: 15px;
       outline: none;
     }
-    .input-field:focus { border-color: rgba(56,189,248,0.6); box-shadow: 0 0 0 3px var(--primary-glow); }
-    .input-field.error { border-color: rgba(251,113,133,0.75); box-shadow: 0 0 0 3px rgba(251,113,133,0.20); }
+    [data-theme="light"] .input-field { background: rgba(255,255,255,0.70); }
+    .input-field:focus { border-color: rgba(56,189,248,0.55); box-shadow: 0 0 0 4px rgba(56,189,248,0.10); }
 
-    /* Inline validation bubble (inside modal) */
-    .field-msg {
-      margin-top: 10px;
+    .inline-error {
       display: none;
-      text-align: left;
-      border-radius: 12px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--danger);
+      background: rgba(255, 59, 48, 0.08);
+      border: 1px solid rgba(255, 59, 48, 0.25);
       padding: 10px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 1.35;
-      border: 1px solid rgba(251,113,133,0.45);
-      background: var(--danger-bg);
-      color: var(--text-main);
-      position: relative;
+      border-radius: 12px;
     }
-    .field-msg.show { display: block; }
-    .field-msg .icon {
-      display: inline-flex;
-      width: 18px; height: 18px;
-      align-items: center; justify-content: center;
-      border-radius: 6px;
-      margin-right: 8px;
-      background: rgba(251,113,133,0.22);
-      border: 1px solid rgba(251,113,133,0.35);
-      font-weight: 900;
+    .inline-error.show { display: block; }
+
+    .modal-actions { margin-top: 14px; display:flex; gap: 10px; align-items:center; justify-content: flex-end; }
+    .modal-trust { margin-top: 10px; font-size: 12px; color: var(--text-muted); }
+
+    .close-btn {
+      position: absolute;
+      top: 12px; right: 12px;
+      width: 34px; height: 34px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-size: 18px;
+    }
+    .close-btn:hover { background: rgba(125,125,125,0.10); color: var(--text-main); border-color: rgba(125,125,125,0.12); }
+
+    /* Success flash */
+    .success-flash {
+      border-color: rgba(16,185,129,0.75) !important;
+      box-shadow: 0 0 0 4px rgba(16,185,129,0.12) !important;
+      transition: none !important;
     }
 
-    /* Modal actions spacing */
-    .modal-actions { margin-top: 16px; display: grid; gap: 10px; }
-
-    /* Toast */
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 22px;
-      transform: translateX(-50%) translateY(10px);
-      min-width: 260px;
-      max-width: 92vw;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(10px);
-      border-radius: 14px;
-      padding: 12px 14px;
-      color: var(--text-main);
-      font-size: 13px;
-      font-weight: 800;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-      opacity: 0;
-      pointer-events: none;
-      z-index: 3000;
+    /* Shake */
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-4px); }
+      40% { transform: translateX(4px); }
+      60% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+      100% { transform: translateX(0); }
     }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0px); }
-    .toast.success { border-color: rgba(52,211,153,0.45); background: var(--success-bg); }
-    .toast.error { border-color: rgba(251,113,133,0.45); background: var(--danger-bg); }
+    .shake { animation: shake 260ms ease; }
 
-    /* Responsive */
     @media (max-width: 860px) {
-      .hero-split { grid-template-columns: 1fr; gap: 30px; min-height: auto; }
-      .feature-strip { grid-template-columns: 1fr; }
-      h1 { font-size: 36px; }
+      .hero-split { grid-template-columns: 1fr; gap: 28px; }
+      h1 { font-size: 38px; }
       .wrap { padding: 20px; }
-      .top { margin-bottom: 26px; }
+      .feature-strip { grid-template-columns: 1fr; }
+      .menu { right: 52px; }
     }
   </style>
 </head>
@@ -381,31 +492,41 @@
       <div class="logo">ATLASAXIOM</div>
 
       <div class="toggles">
-        <div class="status-pill" data-i18n="status">Private Preview</div>
+        <div class="status-pill" data-i18n="status">Private Preview <span class="ver">v0.1</span></div>
 
-        <!-- Language dropdown -->
-        <div class="lang-wrap" id="langWrap">
-          <button class="icon-btn lang-pill" id="langBtn" aria-label="Change Language" type="button">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="2" y1="12" x2="22" y2="12"></line>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-            </svg>
-            <span id="langLabel">EN</span>
+        <button class="icon-btn" id="langBtn" aria-label="Language">
+          <!-- globe -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+        </button>
+
+        <button class="icon-btn" id="themeBtn" aria-label="Theme"></button>
+
+        <div class="menu" id="langMenu" role="menu" aria-label="Language menu">
+          <div class="menuHead" data-i18n="langHead">Language</div>
+
+          <button class="menuItem" type="button" data-lang="en" role="menuitem">
+            <span data-i18n="langEN">English</span>
+            <span class="check">
+              <!-- check -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+            </span>
           </button>
 
-          <div class="lang-menu" role="menu" aria-label="Language menu">
-            <button class="lang-item" type="button" data-lang="en" role="menuitem">
-              English <small>EN</small>
-            </button>
-            <button class="lang-item" type="button" data-lang="ko" role="menuitem">
-              한국어 <small>KO</small>
-            </button>
-          </div>
+          <button class="menuItem" type="button" data-lang="ko" role="menuitem">
+            <span data-i18n="langKR">한국어</span>
+            <span class="check">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+            </span>
+          </button>
         </div>
-
-        <!-- Theme toggle -->
-        <button class="icon-btn" id="themeBtn" aria-label="Toggle Theme" type="button"></button>
       </div>
     </div>
 
@@ -420,16 +541,29 @@
           Less noise, more signal. We decode what actually moves today—market, tech, creators—reframed for investors.
         </p>
 
+        <div class="sourceRow">
+          <div class="chip"><span data-i18n="chip1">Official wires</span> <span class="badge" data-i18n="verified">Verified</span></div>
+          <div class="chip" data-i18n="chip2">Social pulse (X)</div>
+          <div class="chip" data-i18n="chip3">Community (Reddit)</div>
+          <div class="chip" data-i18n="chip4">Papers (open)</div>
+        </div>
+
         <div class="cta-group">
-          <button class="btn btn-primary" id="waitBtn" data-i18n="ctaWait" type="button">Join the waitlist</button>
-          <button class="btn btn-secondary" id="sampleBtn" data-i18n="ctaSample" type="button">View sample</button>
+          <button class="btn btn-primary" id="waitBtn" type="button" data-i18n="ctaWait">Join the waitlist</button>
+          <button class="btn btn-secondary" id="sampleBtn" type="button" data-i18n="ctaSample">View sample</button>
+        </div>
+
+        <div class="trustline" data-i18n="trustline">
+          No spam · Unsubscribe anytime · GDPR-ready
         </div>
       </div>
 
       <div class="hero-visual">
         <div class="card" id="sampleCard">
           <div class="label" data-i18n="todayK">TODAY’S SAMPLE</div>
-          <h3 style="margin:0 0 16px; font-size:18px; font-weight:900;" data-i18n="todayTitle">Top 3 Moves</h3>
+          <h3 style="margin:0 0 10px; font-size:18px;" data-i18n="todayTitle">Top 3 Moves</h3>
+
+          <div class="miniHead" data-i18n="whatHead">What you get</div>
 
           <div class="list-item" data-i18n="today1">
             (Signal) 1 line: <span class="term" data-desc="The specific event causing immediate market price change">price-impact point</span> from official sources
@@ -441,7 +575,7 @@
             (Action) 3 checkpoints to verify tomorrow
           </div>
 
-          <div style="margin-top:20px; font-size:12px; color:var(--text-muted); font-style:italic;" data-i18n="todayNote">
+          <div style="margin-top:16px; font-size:12px; color:var(--text-muted); font-style:italic;" data-i18n="todayNote">
             * Full version includes source links.
           </div>
         </div>
@@ -455,16 +589,18 @@
       </div>
       <div class="card">
         <div class="label" data-i18n="signalK">SIGNAL</div>
-        <div class="value" data-i18n="signalV">One-page decode: who / why / now (source transparency)</div>
+        <div class="value" data-i18n="signalV">One-page decode: Who / Why / Now (source transparency)</div>
       </div>
       <div class="card">
         <div class="label" data-i18n="statusK">STATUS</div>
-        <div class="value" data-i18n="statusV">Small invites · quality-first · feedback-driven</div>
+        <div class="value" data-i18n="statusV">Invite-only · Quality-first · Feedback-driven</div>
       </div>
       <div class="card">
         <div class="label" data-i18n="pK">PRICING</div>
-        <div style="font-size:24px; font-weight:900;">$5 <span style="font-size:14px; color:var(--text-muted); font-weight:800;">/mo</span></div>
-        <div style="font-size:12px; color:var(--text-muted); margin-top:4px; font-weight:800;" data-i18n="priceNote">Beta Lock</div>
+        <div style="font-size:24px; font-weight:900;">
+          $5 <span style="font-size:14px; color:var(--text-muted); font-weight:700;">/mo</span>
+        </div>
+        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;" data-i18n="priceNote">Early beta lock</div>
       </div>
     </div>
 
@@ -476,264 +612,344 @@
 
   <!-- Modal -->
   <div class="modal-overlay" id="emailModal" aria-hidden="true">
-    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <button class="close-btn" id="closeModal" aria-label="Close" type="button">×</button>
+    <div class="modal-content" role="dialog" aria-modal="true" aria-label="Waitlist">
+      <button class="close-btn" id="closeModal" aria-label="Close">×</button>
 
-      <h3 class="modal-title" id="modalTitle" data-i18n="modalTitle">Join the Private List</h3>
+      <h3 class="modal-title" data-i18n="modalTitle">Join the Private List</h3>
       <p class="modal-desc" data-i18n="modalDesc">We'll notify you when spots open up.</p>
 
-      <!-- ✅ 브라우저 기본 말풍선 방지: novalidate + type="text" -->
       <form id="waitlistForm" novalidate>
         <input
-          id="emailInput"
-          class="input-field"
           type="text"
           inputmode="email"
           autocomplete="email"
+          id="emailInput"
+          class="input-field"
           placeholder="name@example.com"
           aria-label="Email Address"
         />
 
-        <!-- ✅ 우리가 원하는 오류 말풍선(인라인) -->
-        <div id="emailError" class="field-msg" role="status" aria-live="polite">
-          <span class="icon">!</span>
-          <span id="emailErrorText">Please enter a valid email.</span>
-        </div>
+        <div class="inline-error" id="emailError" role="status" aria-live="polite"></div>
 
         <div class="modal-actions">
-          <button type="submit" class="btn btn-primary" style="width:100%" id="submitBtn">Join Now</button>
+          <button type="submit" class="btn btn-primary" style="width:100%" id="submitBtn" data-i18n="submitBtn">
+            Join Now
+          </button>
+        </div>
+
+        <div class="modal-trust" data-i18n="modalTrust">
+          No spam · Unsubscribe anytime · GDPR-ready
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Toast -->
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
   <script>
-    // ✅ 기존 구글 앱스 스크립트 URL (유지)
+    // === Google Apps Script URL (keep yours) ===
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuxLWJSR0awKZUTJqkRzkf6o3740FYyh5xTy8G3PIyc_u390FtE_KacM-HJu5cnCER/exec";
 
-    // i18n
+    // === Icons ===
+    const moonSVG = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    `;
+    const sunSVG = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    `;
+
+    // === I18N (innerHTML to keep tooltips) ===
     const I18N = {
       en: {
-        status: "Private Preview",
+        status: `Private Preview <span class="ver">v0.1</span>`,
         h1a: "3 minutes a day,",
         h1b: "highest-signal brief.",
         sub: "Less noise, more signal. We decode what actually moves today—market, tech, creators—reframed for investors.",
+        chip1: "Official wires",
+        verified: "Verified",
+        chip2: "Social pulse (X)",
+        chip3: "Community (Reddit)",
+        chip4: "Papers (open)",
         ctaWait: "Join the waitlist",
         ctaSample: "View sample",
+        trustline: "No spam · Unsubscribe anytime · GDPR-ready",
         todayK: "TODAY’S SAMPLE",
         todayTitle: "Top 3 Moves",
+        whatHead: "What you get",
         today1: '(Signal) 1 line: <span class="term" data-desc="The specific event causing immediate market price change">price-impact point</span> from official sources',
         today2: '(Signal) 1 line: <span class="term" data-desc="Keywords spiking >300% in niche communities (Reddit/Discord)">fastest-rising keyword</span> in chatter',
         today3: "(Action) 3 checkpoints to verify tomorrow",
         todayNote: "* Full version includes source links.",
         formatK: "FORMAT",
-        formatV: "Daily 1-page Brief",
+        formatV: "Daily 1-page Brief (7 key lines + 3 checkpoints)",
         signalK: "SIGNAL",
-        signalV: "One-page decode: Who / Why / Now",
+        signalV: "One-page decode: Who / Why / Now (source transparency)",
         statusK: "STATUS",
-        statusV: "Invite-only · Feedback-driven",
+        statusV: "Invite-only · Quality-first · Feedback-driven",
         pK: "PRICING",
-        priceNote: "Early Beta Lock",
+        priceNote: "Early beta lock",
         footerLeft: "© AtlasAxiom · Private Preview",
         footerRight: "Next: Email form → GitHub → Deploy",
         modalTitle: "Join the Private List",
         modalDesc: "We'll notify you when spots open up.",
-
-        emailPlaceholder: "name@example.com",
-        submit: "Join Now",
-        sending: "Sending…",
+        submitBtn: "Join Now",
+        modalTrust: "No spam · Unsubscribe anytime · GDPR-ready",
+        langHead: "Language",
+        langEN: "English",
+        langKR: "Korean",
+        errEmpty: "Please enter your email address.",
+        errInvalid: "Please enter a valid email address.",
+        sending: "Sending...",
         joined: "Joined!",
-        emailRequired: "Please enter your email address.",
-        emailInvalid: "Please enter a valid email address.",
-        tryAgain: "Something went wrong. Please try again."
+        joinedAlert: "You have been added to the waitlist!"
       },
       ko: {
-        status: "Private Preview",
+        status: `Private Preview <span class="ver">v0.1</span>`,
         h1a: "하루 3분,",
         h1b: "고신호 브리핑.",
         sub: "과잉 정보는 줄이고, “오늘 실제로 움직이는 신호”만 정리합니다. (시장·테크·크리에이터 이슈를 투자 관점으로 재구성)",
+        chip1: "공식 채널",
+        verified: "검증",
+        chip2: "소셜 펄스 (X)",
+        chip3: "커뮤니티 (Reddit)",
+        chip4: "논문 (무료)",
         ctaWait: "대기자 명단 참여",
         ctaSample: "샘플 보기",
+        trustline: "스팸 없음 · 언제든 해지 · GDPR 대응",
         todayK: "오늘의 샘플",
         todayTitle: "Top 3 Moves",
+        whatHead: "받는 것",
         today1: '(Signal) 공식 발표의 <span class="term" data-desc="시장 가격 변동을 즉시 유발하는 핵심 뉴스 포인트">가격 영향 포인트</span> 1줄',
         today2: '(Signal) 커뮤니티 <span class="term" data-desc="레딧/디스코드 등에서 언급량이 300% 이상 급증한 키워드">급상승 키워드</span> 1줄',
         today3: "(Action) 내일 확인할 체크포인트 3개",
         todayNote: "* 정식 버전: 소스 링크 포함",
         formatK: "FORMAT",
-        formatV: "매일 1장 브리핑",
+        formatV: "매일 1장 브리핑 (핵심 7줄 + 체크포인트 3개)",
         signalK: "SIGNAL",
-        signalV: "“누가/왜/지금” 한 장 요약",
+        signalV: "“누가/왜/지금” 한 장 요약 (소스 투명성)",
         statusK: "STATUS",
-        statusV: "초대 전용 · 피드백 기반",
+        statusV: "초대 전용 · 품질 우선 · 피드백 기반",
         pK: "PRICING",
-        priceNote: "얼리버드 가격 고정",
+        priceNote: "베타 얼리 락",
         footerLeft: "© AtlasAxiom · Private Preview",
         footerRight: "Next: 이메일 폼 → GitHub → 배포",
         modalTitle: "비공개 리스트 가입",
-        modalDesc: "초대장이 준비되면 알림을 드립니다.",
-
-        emailPlaceholder: "name@example.com",
-        submit: "지금 가입",
-        sending: "전송 중…",
+        modalDesc: "자리가 열리면 바로 알려드릴게요.",
+        submitBtn: "지금 가입",
+        modalTrust: "스팸 없음 · 언제든 해지 · GDPR 대응",
+        langHead: "언어",
+        langEN: "English",
+        langKR: "한국어",
+        errEmpty: "이메일 주소를 입력해주세요.",
+        errInvalid: "올바른 이메일 주소 형식으로 입력해주세요.",
+        sending: "전송 중...",
         joined: "완료!",
-        emailRequired: "이메일을 입력해 주세요.",
-        emailInvalid: "유효한 이메일 주소를 입력해 주세요.",
-        tryAgain: "오류가 발생했습니다. 다시 시도해 주세요."
+        joinedAlert: "대기자 명단에 등록되었습니다!"
       }
     };
 
-    // Storage
     const store = {
       get(k, d){ return localStorage.getItem(k) ?? d; },
       set(k, v){ localStorage.setItem(k, v); }
     };
 
-    // Icons
-    const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
-    const sunSVG  = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
-
-    // Tooltip (mobile tap)
-    function attachTooltipEvents() {
-      document.querySelectorAll('.term').forEach(item => {
+    // === Tooltip events (mobile tap) ===
+    function attachTooltipEvents(){
+      document.querySelectorAll(".term").forEach(item => {
         item.onclick = (e) => {
           e.stopPropagation();
-          const isActive = item.classList.contains('active');
-          document.querySelectorAll('.term').forEach(t => t.classList.remove('active'));
-          if (!isActive) item.classList.add('active');
+          const isActive = item.classList.contains("active");
+          document.querySelectorAll(".term").forEach(t => t.classList.remove("active"));
+          if (!isActive) item.classList.add("active");
         };
       });
     }
-    document.addEventListener('click', () => {
-      document.querySelectorAll('.term').forEach(t => t.classList.remove('active'));
+    document.addEventListener("click", () => {
+      document.querySelectorAll(".term").forEach(t => t.classList.remove("active"));
     });
 
-    // Apply i18n
+    // === I18N apply ===
     function applyI18n(lang){
       const dict = I18N[lang] || I18N.en;
-      document.querySelectorAll("[data-i18n]").forEach(el=>{
+      document.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.getAttribute("data-i18n");
         if (dict[key] !== undefined) el.innerHTML = dict[key];
       });
       attachTooltipEvents();
-
-      // modal controls
-      const emailInput = document.getElementById("emailInput");
-      const submitBtn = document.getElementById("submitBtn");
-      if (emailInput) emailInput.placeholder = dict.emailPlaceholder || "name@example.com";
-      if (submitBtn) submitBtn.innerText = dict.submit || "Join Now";
     }
 
-    // UI update
-    function updateUI(){
-      const lang  = store.get("atlas_lang", "en");
-      const theme = store.get("atlas_theme", "dark");
-
+    // === Theme apply ===
+    function applyTheme(theme){
       document.documentElement.setAttribute("data-theme", theme);
-      document.documentElement.lang = (lang === "ko") ? "ko" : "en";
-
+      store.set("atlas_theme", theme);
       const themeBtn = document.getElementById("themeBtn");
       if (themeBtn) themeBtn.innerHTML = (theme === "dark") ? sunSVG : moonSVG;
+    }
 
-      const langLabel = document.getElementById("langLabel");
-      if (langLabel) langLabel.textContent = (lang === "ko") ? "KO" : "EN";
-
+    // === Language apply ===
+    function applyLanguage(lang){
+      store.set("atlas_lang", lang);
+      document.documentElement.lang = (lang === "ko") ? "ko" : "en";
       applyI18n(lang);
+      syncLangMenu();
     }
 
-    // Toast
-    let toastTimer = null;
-    function showToast(message, type="success"){
-      const toast = document.getElementById("toast");
-      if (!toast) return;
-      toast.className = "toast " + (type === "error" ? "error" : "success");
-      toast.textContent = message;
-      toast.classList.add("show");
-
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+    // === Language menu sync (check mark) ===
+    function syncLangMenu(){
+      const lang = store.get("atlas_lang", "en");
+      document.querySelectorAll("#langMenu .menuItem").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+      });
     }
 
-    // Email validation (strict-ish)
-    function isValidEmail(email){
-      // common SaaS-friendly rule: reject spaces, require typical local part chars, require TLD
-      const re = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-      return re.test(email);
+    // === Menu open/close ===
+    const langBtn = document.getElementById("langBtn");
+    const langMenu = document.getElementById("langMenu");
+
+    function openLangMenu(){
+      if (!langMenu) return;
+      langMenu.classList.add("open");
+      syncLangMenu();
+    }
+    function closeLangMenu(){
+      if (!langMenu) return;
+      langMenu.classList.remove("open");
+    }
+    function toggleLangMenu(){
+      if (!langMenu) return;
+      langMenu.classList.contains("open") ? closeLangMenu() : openLangMenu();
     }
 
-    // Inline error helpers
-    function setEmailError(message){
-      const box = document.getElementById("emailError");
-      const txt = document.getElementById("emailErrorText");
-      const input = document.getElementById("emailInput");
-      if (txt) txt.textContent = message;
-      if (box) box.classList.add("show");
-      if (input) input.classList.add("error");
-    }
-    function clearEmailError(){
-      const box = document.getElementById("emailError");
-      const input = document.getElementById("emailInput");
-      if (box) box.classList.remove("show");
-      if (input) input.classList.remove("error");
-    }
+    // close menu on outside click
+    document.addEventListener("click", (e) => {
+      if (!langMenu || !langBtn) return;
+      const inside = langMenu.contains(e.target) || langBtn.contains(e.target);
+      if (!inside) closeLangMenu();
+    });
 
-    // Modal open/close
+    // ESC closes menu & modal
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeLangMenu();
+        closeModal();
+      }
+    });
+
+    // === Modal logic ===
     const modal = document.getElementById("emailModal");
     const form = document.getElementById("waitlistForm");
     const submitBtn = document.getElementById("submitBtn");
     const emailInput = document.getElementById("emailInput");
+    const emailError = document.getElementById("emailError");
 
     function openModal(){
-      clearEmailError();
+      if (!modal) return;
       modal.classList.add("open");
       modal.setAttribute("aria-hidden", "false");
-      setTimeout(()=> emailInput?.focus(), 50);
+      hideError();
+      setTimeout(() => emailInput?.focus(), 120);
     }
     function closeModal(){
+      if (!modal) return;
       modal.classList.remove("open");
       modal.setAttribute("aria-hidden", "true");
-      clearEmailError();
+      hideError();
+      resetSubmitButton();
     }
 
+    function showError(msg){
+      if (!emailError) return;
+      emailError.textContent = msg;
+      emailError.classList.add("show");
+
+      if (emailInput){
+        emailInput.classList.add("shake");
+        setTimeout(() => emailInput.classList.remove("shake"), 280);
+      }
+    }
+    function hideError(){
+      if (!emailError) return;
+      emailError.textContent = "";
+      emailError.classList.remove("show");
+    }
+
+    function resetSubmitButton(){
+      if (!submitBtn) return;
+      submitBtn.disabled = false;
+      submitBtn.style.background = "";
+      submitBtn.textContent = (I18N[store.get("atlas_lang","en")] || I18N.en).submitBtn;
+    }
+
+    // === Email validation (submit only) ===
+    function isValidEmail(email){
+      // Practical validation, avoids browser bubble
+      const trimmed = String(email || "").trim();
+      if (!trimmed) return false;
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+      return re.test(trimmed);
+    }
+
+    // === Button bindings ===
     document.getElementById("waitBtn")?.addEventListener("click", openModal);
     document.getElementById("closeModal")?.addEventListener("click", closeModal);
-    modal?.addEventListener("click", (e)=> { if (e.target === modal) closeModal(); });
-    document.addEventListener("keydown", (e)=> { if (e.key === "Escape" && modal?.classList.contains("open")) closeModal(); });
+    modal?.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
 
-    // ✅ 타이핑할 때는 경고를 띄우지 않고, 이전 에러만 조용히 지움
-    emailInput?.addEventListener("input", () => {
-      if (document.getElementById("emailError")?.classList.contains("show")) {
-        clearEmailError();
-      }
+    document.getElementById("sampleBtn")?.addEventListener("click", ()=> {
+      document.getElementById("sampleCard")?.scrollIntoView({ behavior: "smooth", block: "center" });
     });
 
-    // Submit handler (validate ONLY on submit)
+    langBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleLangMenu();
+    });
+
+    document.querySelectorAll("#langMenu .menuItem")?.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const lang = btn.getAttribute("data-lang") || "en";
+        applyLanguage(lang);
+        closeLangMenu();
+      });
+    });
+
+    document.getElementById("themeBtn")?.addEventListener("click", () => {
+      const cur = store.get("atlas_theme", "dark");
+      const next = (cur === "dark") ? "light" : "dark";
+      applyTheme(next);
+    });
+
+    // === Form submit (no browser bubble, inline error only) ===
     form?.addEventListener("submit", (e) => {
       e.preventDefault();
+      hideError();
 
       const lang = store.get("atlas_lang", "en");
       const dict = I18N[lang] || I18N.en;
 
-      const email = (emailInput?.value || "").trim();
+      const email = String(emailInput?.value || "").trim();
 
-      // ✅ 여기서만 검증 (타이핑 중에는 X)
       if (!email) {
-        setEmailError(dict.emailRequired);
+        showError(dict.errEmpty);
         return;
       }
       if (!isValidEmail(email)) {
-        setEmailError(dict.emailInvalid);
+        showError(dict.errInvalid);
         return;
       }
 
-      clearEmailError();
-
-      const originalText = submitBtn.innerText;
-      submitBtn.innerText = dict.sending;
+      // UI: sending state
+      const originalText = dict.submitBtn;
       submitBtn.disabled = true;
+      submitBtn.textContent = dict.sending;
 
       fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
@@ -742,57 +958,40 @@
         body: "email=" + encodeURIComponent(email)
       })
       .then(() => {
-        submitBtn.innerText = dict.joined;
-        showToast((lang === "ko") ? "대기자 명단에 등록되었습니다." : "You’ve been added to the waitlist.", "success");
-        emailInput.value = "";
+        submitBtn.textContent = dict.joined;
+        submitBtn.style.background = "var(--success)";
+
+        if (emailInput) {
+          emailInput.classList.add("success-flash");
+          setTimeout(() => emailInput.classList.remove("success-flash"), 800);
+          emailInput.value = "";
+        }
 
         setTimeout(() => {
-          submitBtn.disabled = false;
-          submitBtn.innerText = originalText;
           closeModal();
-        }, 1000);
+          alert(dict.joinedAlert);
+          // restore
+          submitBtn.style.background = "";
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }, 900);
       })
       .catch(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerText = originalText;
-        showToast(dict.tryAgain, "error");
+        // network error only
+        showError("Error. Please try again.");
+        resetSubmitButton();
       });
     });
 
-    // Buttons
-    document.getElementById("sampleBtn")?.addEventListener("click", ()=>{
-      document.getElementById("sampleCard")?.scrollIntoView({behavior:"smooth", block:"center"});
-    });
+    // === Init (Default: English) ===
+    const initLang = store.get("atlas_lang", "en");   // default EN
+    const initTheme = store.get("atlas_theme", "dark");
+    applyTheme(initTheme);
+    applyLanguage(initLang);
 
-    // Language dropdown behavior
-    const langWrap = document.getElementById("langWrap");
-    const langBtn = document.getElementById("langBtn");
-
-    langBtn?.addEventListener("click", (e)=>{
-      e.stopPropagation();
-      langWrap.classList.toggle("open");
-    });
-
-    langWrap?.querySelectorAll(".lang-item")?.forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        const next = btn.getAttribute("data-lang") || "en";
-        store.set("atlas_lang", next);
-        langWrap.classList.remove("open");
-        updateUI();
-      });
-    });
-
-    document.addEventListener("click", ()=> langWrap?.classList.remove("open"));
-
-    // Theme toggle
-    document.getElementById("themeBtn")?.addEventListener("click", ()=>{
-      const cur = store.get("atlas_theme", "dark");
-      store.set("atlas_theme", cur === "dark" ? "light" : "dark");
-      updateUI();
-    });
-
-    // Initial
-    updateUI();
+    // ensure theme icon rendered even before first toggle
+    const themeBtn = document.getElementById("themeBtn");
+    if (themeBtn && !themeBtn.innerHTML) themeBtn.innerHTML = (initTheme === "dark") ? sunSVG : moonSVG;
   </script>
 </body>
 </html>
