@@ -193,33 +193,43 @@
       line-height: 1.65;
     }
 
+    /* ✅ Sources chips (one-line, compact) */
     .sourceRow {
       display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 12px 0 26px;
+      gap: 8px;
+      flex-wrap: nowrap;              /* never wrap */
+      overflow-x: auto;               /* if too narrow, scroll instead of wrap */
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;          /* Firefox hide */
+      margin: 12px 0 22px;
+      padding-bottom: 2px;
     }
+    .sourceRow::-webkit-scrollbar { display: none; } /* Chrome/Safari hide */
+
     .chip {
       display:inline-flex;
       align-items:center;
       gap: 8px;
       border: 1px solid var(--card-border);
       background: rgba(0,0,0,0.08);
-      padding: 8px 12px;
+      padding: 6px 10px;              /* tighter */
       border-radius: 999px;
-      font-size: 12px;
+      font-size: 11px;                /* tighter */
       color: var(--text-muted);
       white-space: nowrap;
       backdrop-filter: blur(6px);
+      flex: 0 0 auto;                 /* don't shrink */
     }
     [data-theme="light"] .chip { background: rgba(255,255,255,0.55); }
+
     .chip .badge {
-      font-size: 11px;
-      font-weight: 800;
+      font-size: 10px;
+      font-weight: 900;
       color: var(--primary);
       border: 1px solid rgba(56,189,248,0.25);
-      padding: 3px 8px;
+      padding: 2px 7px;
       border-radius: 999px;
+      letter-spacing: 0.01em;
     }
 
     .cta-group { display:flex; gap: 12px; flex-wrap: wrap; align-items: center; }
@@ -542,10 +552,10 @@
         </p>
 
         <div class="sourceRow">
-          <div class="chip"><span data-i18n="chip1">Official wires</span> <span class="badge" data-i18n="verified">Verified</span></div>
-          <div class="chip" data-i18n="chip2">Social pulse (X)</div>
-          <div class="chip" data-i18n="chip3">Community (Reddit)</div>
-          <div class="chip" data-i18n="chip4">Papers (open)</div>
+          <div class="chip"><span data-i18n="chip1">Official</span> <span class="badge" data-i18n="verified">Verified</span></div>
+          <div class="chip" data-i18n="chip2">X Pulse</div>
+          <div class="chip" data-i18n="chip3">Reddit</div>
+          <div class="chip" data-i18n="chip4">Papers</div>
         </div>
 
         <div class="cta-group">
@@ -675,11 +685,11 @@
         h1a: "3 minutes a day,",
         h1b: "highest-signal brief.",
         sub: "Less noise, more signal. We decode what actually moves today—market, tech, creators—reframed for investors.",
-        chip1: "Official wires",
+        chip1: "Official",
         verified: "Verified",
-        chip2: "Social pulse (X)",
-        chip3: "Community (Reddit)",
-        chip4: "Papers (open)",
+        chip2: "X Pulse",
+        chip3: "Reddit",
+        chip4: "Papers",
         ctaWait: "Join the waitlist",
         ctaSample: "View sample",
         trustline: "No spam · Unsubscribe anytime · GDPR-ready",
@@ -718,11 +728,11 @@
         h1a: "하루 3분,",
         h1b: "고신호 브리핑.",
         sub: "과잉 정보는 줄이고, “오늘 실제로 움직이는 신호”만 정리합니다. (시장·테크·크리에이터 이슈를 투자 관점으로 재구성)",
-        chip1: "공식 채널",
+        chip1: "공식",
         verified: "검증",
-        chip2: "소셜 펄스 (X)",
-        chip3: "커뮤니티 (Reddit)",
-        chip4: "논문 (무료)",
+        chip2: "X",
+        chip3: "Reddit",
+        chip4: "논문",
         ctaWait: "대기자 명단 참여",
         ctaSample: "샘플 보기",
         trustline: "스팸 없음 · 언제든 해지 · GDPR 대응",
@@ -892,7 +902,6 @@
 
     // === Email validation (submit only) ===
     function isValidEmail(email){
-      // Practical validation, avoids browser bubble
       const trimmed = String(email || "").trim();
       if (!trimmed) return false;
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
@@ -977,7 +986,6 @@
         }, 900);
       })
       .catch(() => {
-        // network error only
         showError("Error. Please try again.");
         resetSubmitButton();
       });
