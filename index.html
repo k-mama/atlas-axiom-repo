@@ -6,6 +6,7 @@
   <title>AtlasAxiom | Private Signal Brief</title>
 
   <style>
+    /* --- 1. 디자인 변수 (Dark Tech Theme) --- */
     :root {
       --bg: #0b1121;
       --bg-grad: radial-gradient(circle at 15% 0%, #1e293b 0%, #0b1121 75%);
@@ -13,20 +14,16 @@
       --card-border: rgba(148, 163, 184, 0.15);
       --text-main: #f1f5f9;
       --text-muted: #94a3b8;
-      --primary: #38bdf8;
+      --primary: #38bdf8; /* Cyan/Sky Blue */
       --primary-glow: rgba(56, 189, 248, 0.3);
       --line: #334155;
       --grid-color: rgba(255, 255, 255, 0.03);
-
-      --menu-bg: rgba(15, 23, 42, 0.95);
-      --menu-border: rgba(56, 189, 248, 0.25);
-      --menu-hover: rgba(56, 189, 248, 0.12);
     }
 
     [data-theme="light"] {
       --bg: #f8fafc;
       --bg-grad: radial-gradient(circle at 50% 0%, #e0f2fe 0%, #f8fafc 60%);
-      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-bg: rgba(255, 255, 255, 0.8);
       --card-border: #cbd5e1;
       --text-main: #0f172a;
       --text-muted: #64748b;
@@ -34,13 +31,17 @@
       --primary-glow: rgba(2, 132, 199, 0.15);
       --line: #e2e8f0;
       --grid-color: rgba(0, 0, 0, 0.04);
-
-      --menu-bg: rgba(255,255,255,0.98);
-      --menu-border: rgba(2, 132, 199, 0.25);
-      --menu-hover: rgba(2, 132, 199, 0.10);
     }
 
-    * { box-sizing: border-box; transition: background 0.25s ease, color 0.2s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease; }
+    * {
+      box-sizing: border-box;
+      transition:
+        background 0.3s ease,
+        color 0.2s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
+    }
 
     body {
       margin: 0;
@@ -58,90 +59,25 @@
 
     .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
 
-    /* Top */
+    /* --- 2. 상단 네비게이션 & 아이콘 --- */
     .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 40px; }
     .logo { font-size: 16px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
     .logo::before { content: ''; display: inline-block; width: 12px; height: 12px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 10px var(--primary-glow); }
 
     .toggles { display: flex; gap: 12px; align-items: center; }
-    .status-pill {
-      font-size: 12px; font-weight: 600; color: var(--primary);
-      background: var(--card-bg); border: 1px solid var(--card-border);
-      padding: 6px 12px; border-radius: 999px; backdrop-filter: blur(6px);
-      margin-right: 4px;
-    }
+    .status-pill { font-size: 12px; font-weight: 600; color: var(--primary); background: var(--card-bg); border: 1px solid var(--card-border); padding: 6px 12px; border-radius: 99px; backdrop-filter: blur(4px); margin-right: 8px;}
 
-    /* Icon Button */
+    /* 아이콘 버튼 스타일 */
     .icon-btn {
       background: transparent; border: none; cursor: pointer; color: var(--text-muted);
       padding: 8px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
     }
-    .icon-btn:hover { color: var(--text-main); background: rgba(125,125,125,0.10); transform: scale(1.06); }
+    .icon-btn:hover { color: var(--text-main); background: rgba(125,125,125,0.1); transform: scale(1.1); }
     .icon-btn svg { width: 20px; height: 20px; stroke-width: 2px; }
 
-    /* Language (Globe + label + menu) */
-    .lang-wrap { position: relative; }
-    .lang-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      padding: 8px 12px;
-      border-radius: 999px;
-      cursor: pointer;
-      backdrop-filter: blur(6px);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
-    .lang-btn:hover { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-glow); }
-    .lang-btn svg { width: 18px; height: 18px; }
-    .lang-label { min-width: 22px; text-align: center; }
-
-    .lang-menu {
-      position: absolute;
-      top: calc(100% + 10px);
-      right: 0;
-      min-width: 180px;
-      background: var(--menu-bg);
-      border: 1px solid var(--menu-border);
-      border-radius: 14px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-      padding: 8px;
-      backdrop-filter: blur(10px);
-      opacity: 0;
-      transform: translateY(-6px);
-      pointer-events: none;
-      z-index: 999;
-    }
-    .lang-wrap.open .lang-menu {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-    .lang-item {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 10px;
-      border-radius: 10px;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      color: var(--text-main);
-      font-size: 13px;
-      font-weight: 650;
-      text-align: left;
-    }
-    .lang-item:hover { background: var(--menu-hover); }
-    .lang-item small { color: var(--text-muted); font-weight: 600; }
-    .lang-check { opacity: 0; }
-    .lang-item[aria-checked="true"] .lang-check { opacity: 1; color: var(--primary); }
-
-    /* Hero */
+    /* --- 3. Hero 섹션 --- */
     .hero-split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; margin-bottom: 60px; min-height: 50vh; }
     .hero-text { text-align: left; }
     h1 { font-size: 48px; line-height: 1.1; margin: 0 0 24px; letter-spacing: -0.03em; font-weight: 800; }
@@ -149,72 +85,79 @@
     .sub { font-size: 18px; color: var(--text-muted); max-width: 580px; margin-bottom: 32px; line-height: 1.6; }
     .cta-group { display: flex; gap: 12px; flex-wrap: wrap; }
 
-    .btn { cursor: pointer; padding: 14px 28px; border-radius: 999px; font-size: 15px; font-weight: 800; border: none; display: inline-flex; align-items: center; justify-content: center; }
+    /* 버튼 스타일 */
+    .btn { cursor: pointer; padding: 14px 28px; border-radius: 99px; font-size: 15px; font-weight: 700; border: none; display: inline-flex; align-items: center; justify-content: center; }
     .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 20px var(--primary-glow); }
+    [data-theme="light"] .btn-primary { color: #fff; }
     [data-theme="dark"] .btn-primary { color: #0f172a; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px var(--primary-glow); }
-    .btn-secondary { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border); backdrop-filter: blur(6px); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--primary-glow); }
+    .btn-secondary { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border); backdrop-filter: blur(5px); }
     .btn-secondary:hover { border-color: var(--text-muted); transform: translateY(-2px); }
 
-    .card { background: var(--card-bg); border: 1px solid var(--card-border); padding: 24px; border-radius: 20px; backdrop-filter: blur(12px); display: flex; flex-direction: column; }
+    /* 카드 스타일 */
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); padding: 24px; border-radius: 20px; backdrop-filter: blur(12px); display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease; }
     .card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
+    .label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; }
+    .value { font-size: 15px; font-weight: 500; color: var(--text-main); }
 
-    .label { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; color: var(--primary); text-transform: uppercase; margin-bottom: 12px; }
-    .value { font-size: 15px; font-weight: 600; color: var(--text-main); }
-
-    /* Tooltip terms */
+    /* --- 4. 툴팁(용어 설명) 스타일 (Mobile Friendly) --- */
     .term {
       border-bottom: 1px dashed var(--primary);
       cursor: help;
       position: relative;
       color: var(--text-main);
-      font-weight: 800;
+      font-weight: 600;
     }
+
     .term::after {
       content: attr(data-desc);
       position: absolute;
       bottom: 130%;
       left: 50%;
       transform: translateX(-50%);
-      width: 220px;
-      padding: 10px 12px;
+
+      width: 200px;
+      padding: 10px;
       background: rgba(15, 23, 42, 0.95);
       color: #fff;
       font-size: 13px;
       line-height: 1.4;
-      font-weight: 600;
+      font-weight: 400;
       border: 1px solid var(--primary);
-      border-radius: 10px;
+      border-radius: 8px;
       text-align: center;
       z-index: 100;
       white-space: normal;
+
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.18s ease, visibility 0.18s ease;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
       pointer-events: none;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.45);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
+
     .term::before {
       content: '';
       position: absolute;
       bottom: 110%;
       left: 50%;
-      margin-left: -6px;
-      border-width: 6px;
+      margin-left: -5px;
+      border-width: 5px;
       border-style: solid;
       border-color: var(--primary) transparent transparent transparent;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.18s ease;
+      transition: opacity 0.2s ease;
     }
+
     .term:hover::after, .term.active::after,
     .term:hover::before, .term.active::before {
       opacity: 1;
       visibility: visible;
     }
 
+    /* Feature Strip & Footer */
     .feature-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
-
     .list-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 14px; color: var(--text-muted); }
     .list-item::before { content: "•"; color: var(--primary); font-size: 18px; line-height: 1; }
 
@@ -222,45 +165,96 @@
 
     /* Modal */
     .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.70);
-      backdrop-filter: blur(6px);
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
       display: flex; justify-content: center; align-items: center;
-      opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
       z-index: 1000;
     }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
+
     .modal-content {
       position: relative;
-      background: var(--card-bg);
-      border: 1px solid var(--primary);
+      background: var(--card-bg); border: 1px solid var(--primary);
       box-shadow: 0 0 30px var(--primary-glow);
-      padding: 30px; border-radius: 20px; width: 92%; max-width: 420px;
-      text-align: center;
-      transform: scale(0.95);
-      transition: transform 0.25s ease;
+      padding: 30px; border-radius: 20px; width: 90%; max-width: 420px;
+      text-align: center; transform: scale(0.9); transition: transform 0.3s ease;
+      backdrop-filter: blur(14px);
     }
     .modal-overlay.open .modal-content { transform: scale(1); }
-    .modal-title { font-size: 20px; font-weight: 900; margin-bottom: 10px; color: var(--text-main); }
-    .modal-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; font-weight: 650; }
+    .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
+    .modal-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 18px; }
+
     .input-field {
       width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--card-border);
-      background: rgba(0,0,0,0.18); color: var(--text-main); font-size: 15px; margin-bottom: 16px; outline: none;
+      background: rgba(0,0,0,0.2); color: var(--text-main); font-size: 15px; margin-bottom: 12px; outline: none;
     }
-    [data-theme="light"] .input-field { background: rgba(2,132,199,0.05); }
-    .input-field:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-glow); }
+    [data-theme="light"] .input-field { background: rgba(255,255,255,0.6); }
+    .input-field:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(56,189,248,0.12); }
+
     .close-btn {
-      position: absolute; top: 12px; right: 12px;
+      position: absolute; top: 14px; right: 14px;
       width: 38px; height: 38px;
       border-radius: 12px;
       border: 1px solid var(--card-border);
-      background: transparent;
+      background: rgba(0,0,0,0.18);
       color: var(--text-muted);
       cursor: pointer;
       font-size: 20px;
-      display: inline-flex; align-items: center; justify-content: center;
+      display: flex; align-items: center; justify-content: center;
     }
-    .close-btn:hover { color: var(--text-main); border-color: var(--primary); }
+    .close-btn:hover { color: var(--text-main); border-color: var(--text-muted); transform: scale(1.05); }
+
+    /* --- Email Error / Success Bubble (Modal inside) --- */
+    .field { width: 100%; text-align: left; }
+
+    .field-error {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(248,113,113,0.55);
+      background: rgba(248,113,113,0.12);
+      color: #fecaca;
+      font-size: 13px;
+      font-weight: 750;
+      display: none;
+    }
+    [data-theme="light"] .field-error{
+      color: #7f1d1d;
+      background: rgba(248,113,113,0.18);
+    }
+    .field-error.show { display: block; }
+
+    .field-ok {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(16,185,129,0.55);
+      background: rgba(16,185,129,0.12);
+      color: #bbf7d0;
+      font-size: 13px;
+      font-weight: 750;
+      display: none;
+    }
+    [data-theme="light"] .field-ok{
+      color: #065f46;
+      background: rgba(16,185,129,0.16);
+    }
+    .field-ok.show { display: block; }
+
+    .input-field.invalid {
+      border-color: rgba(248,113,113,0.9);
+      box-shadow: 0 0 0 4px rgba(248,113,113,0.18);
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      50% { transform: translateX(6px); }
+      75% { transform: translateX(-4px); }
+      100% { transform: translateX(0); }
+    }
+    .input-field.shake { animation: shake 0.35s ease; }
 
     @media (max-width: 860px) {
       .hero-split { grid-template-columns: 1fr; gap: 30px; }
@@ -279,31 +273,15 @@
       <div class="toggles">
         <div class="status-pill" data-i18n="status">Private Preview</div>
 
-        <!-- (NEW) Globe + current language label + menu -->
-        <div class="lang-wrap" id="langWrap">
-          <button class="lang-btn" id="langBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="langMenu">
-            <!-- globe -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="2" y1="12" x2="22" y2="12"></line>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-            </svg>
-            <span class="lang-label" id="langLabel">EN</span>
-          </button>
+        <button class="icon-btn" id="langBtn" aria-label="Change Language">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+        </button>
 
-          <div class="lang-menu" id="langMenu" role="menu" aria-label="Language menu">
-            <button class="lang-item" type="button" role="menuitemradio" aria-checked="true" data-lang="en">
-              <span>English <small>(EN)</small></span>
-              <span class="lang-check">✓</span>
-            </button>
-            <button class="lang-item" type="button" role="menuitemradio" aria-checked="false" data-lang="ko">
-              <span>한국어 <small>(KR)</small></span>
-              <span class="lang-check">✓</span>
-            </button>
-          </div>
-        </div>
-
-        <button class="icon-btn" id="themeBtn" type="button" aria-label="Toggle Theme"></button>
+        <button class="icon-btn" id="themeBtn" aria-label="Toggle Theme"></button>
       </div>
     </div>
 
@@ -313,9 +291,11 @@
           <span data-i18n="h1a">3 minutes a day,</span><br>
           <span class="highlight" data-i18n="h1b">highest-signal brief.</span>
         </h1>
+
         <p class="sub" data-i18n="sub">
           Less noise, more signal. We decode what actually moves today—market, tech, creators—reframed for investors.
         </p>
+
         <div class="cta-group">
           <button class="btn btn-primary" id="waitBtn" data-i18n="ctaWait">Join the waitlist</button>
           <button class="btn btn-secondary" id="sampleBtn" data-i18n="ctaSample">View sample</button>
@@ -347,20 +327,20 @@
     <div class="feature-strip">
       <div class="card">
         <div class="label" data-i18n="formatK">FORMAT</div>
-        <div class="value" data-i18n="formatV">Daily 1-page Brief</div>
+        <div class="value" data-i18n="formatV">Daily 1-page Brief (7 key lines + 3 checkpoints)</div>
       </div>
       <div class="card">
         <div class="label" data-i18n="signalK">SIGNAL</div>
-        <div class="value" data-i18n="signalV">One-page decode: Who / Why / Now</div>
+        <div class="value" data-i18n="signalV">One-page decode: who / why / now (source transparency)</div>
       </div>
       <div class="card">
         <div class="label" data-i18n="statusK">STATUS</div>
-        <div class="value" data-i18n="statusV">Invite-only · Feedback-driven</div>
+        <div class="value" data-i18n="statusV">Small invites · quality-first · feedback-driven</div>
       </div>
       <div class="card">
         <div class="label" data-i18n="pK">PRICING</div>
-        <div style="font-size:24px; font-weight:900;">$5 <span style="font-size:14px; color:var(--text-muted); font-weight:700;">/mo</span></div>
-        <div style="font-size:12px; color:var(--text-muted); margin-top:4px; font-weight:700;" data-i18n="priceNote">Beta Lock</div>
+        <div style="font-size:24px; font-weight:800;">$5 <span style="font-size:14px; color:var(--text-muted)">/mo</span></div>
+        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;" data-i18n="priceNote">Beta Lock</div>
       </div>
     </div>
 
@@ -370,24 +350,39 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="emailModal">
-    <div class="modal-content">
-      <button class="close-btn" id="closeModal" type="button" aria-label="Close">×</button>
-      <h3 class="modal-title" data-i18n="modalTitle">Join the Private List</h3>
+  <div class="modal-overlay" id="emailModal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="close-btn" id="closeModal" aria-label="Close">×</button>
+
+      <h3 class="modal-title" id="modalTitle" data-i18n="modalTitle">Join the Private List</h3>
       <p class="modal-desc" data-i18n="modalDesc">We'll notify you when spots open up.</p>
 
-      <form id="waitlistForm">
-        <input type="email" id="emailInput" class="input-field" placeholder="name@example.com" required aria-label="Email Address">
+      <form id="waitlistForm" novalidate>
+        <div class="field">
+          <input
+            type="email"
+            id="emailInput"
+            class="input-field"
+            placeholder="name@example.com"
+            required
+            aria-label="Email Address"
+            autocomplete="email"
+            inputmode="email"
+          />
+          <div id="emailError" class="field-error" role="alert" aria-live="polite"></div>
+          <div id="emailOk" class="field-ok" role="status" aria-live="polite"></div>
+        </div>
+
         <button type="submit" class="btn btn-primary" style="width:100%" id="submitBtn">Join Now</button>
       </form>
     </div>
   </div>
 
   <script>
-    // 유지: 구글 앱스 스크립트 URL
+    // ⬇️ [유지] 기존 구글 앱스 스크립트 URL
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuxLWJSR0awKZUTJqkRzkf6o3740FYyh5xTy8G3PIyc_u390FtE_KacM-HJu5cnCER/exec";
 
-    // i18n
+    // 다국어 딕셔너리 (HTML 태그 포함 - 툴팁 기능 유지)
     const I18N = {
       en: {
         status: "Private Preview",
@@ -413,13 +408,22 @@
         footerLeft: "© AtlasAxiom · Private Preview",
         footerRight: "Next: Email form → GitHub → Deploy",
         modalTitle: "Join the Private List",
-        modalDesc: "We'll notify you when spots open up."
+        modalDesc: "We'll notify you when spots open up.",
+
+        // Email validation messages
+        errEmailEmpty: "Please enter your email.",
+        errEmailSpace: "Email cannot contain spaces.",
+        errEmailSlash: "Email cannot include characters like / or \\",
+        errEmailFormat: "Invalid email format. Example: name@example.com",
+        errEmailTypoGmail: "Did you mean gmail.com?",
+        errNetwork: "Network error. Please try again.",
+        okJoined: "You're on the list. Thank you!"
       },
       ko: {
         status: "Private Preview",
         h1a: "하루 3분,",
         h1b: "고신호 브리핑.",
-        sub: "과잉 정보는 줄이고, (오늘 실제로 움직이는 신호)만 정리합니다. (시장·테크·크리에이터 이슈를 투자 관점으로 재구성)",
+        sub: "과잉 정보는 줄이고, “오늘 실제로 움직이는 신호”만 정리합니다. (시장·테크·크리에이터 이슈를 투자 관점으로 재구성)",
         ctaWait: "대기자 명단 참여",
         ctaSample: "샘플 보기",
         todayK: "오늘의 샘플",
@@ -431,7 +435,7 @@
         formatK: "FORMAT",
         formatV: "매일 1장 브리핑",
         signalK: "SIGNAL",
-        signalV: "(누가/왜/지금) 한 장 요약",
+        signalV: "“누가/왜/지금” 한 장 요약",
         statusK: "STATUS",
         statusV: "초대 전용 · 피드백 기반",
         pK: "PRICING",
@@ -439,20 +443,61 @@
         footerLeft: "© AtlasAxiom · Private Preview",
         footerRight: "Next: 이메일 폼 → GitHub → 배포",
         modalTitle: "비공개 리스트 가입",
-        modalDesc: "초대장이 준비되면 알림을 드립니다."
+        modalDesc: "초대장이 준비되면 알림을 드립니다.",
+
+        // Email validation messages
+        errEmailEmpty: "이메일을 입력해주세요.",
+        errEmailSpace: "이메일에 공백이 들어가면 안 돼요.",
+        errEmailSlash: "슬래시(/) 같은 문자는 이메일에 사용할 수 없어요.",
+        errEmailFormat: "이메일 형식이 올바르지 않아요. 예: name@example.com",
+        errEmailTypoGmail: "혹시 gmail.com 을(를) 입력하려고 하셨나요?",
+        errNetwork: "네트워크 오류입니다. 다시 시도해주세요.",
+        okJoined: "등록 완료! 대기자 명단에 추가되었습니다."
       }
     };
 
-    // local storage
+    // 저장소 (Local Storage)
     const store = {
       get(k, d){ return localStorage.getItem(k) ?? d; },
       set(k, v){ localStorage.setItem(k, v); }
     };
 
-    // theme icons
-    const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
-    const sunSVG  = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+    function t(key){
+      const lang = store.get("atlas_lang", "en");
+      const dict = I18N[lang] || I18N.en;
+      return dict[key] ?? (I18N.en[key] ?? "");
+    }
 
+    // 언어 적용 함수 (HTML 태그 인식을 위해 innerHTML 사용)
+    function applyI18n(lang){
+      const dict = I18N[lang] || I18N.en;
+      document.querySelectorAll("[data-i18n]").forEach(el=>{
+        const key = el.getAttribute("data-i18n");
+        if (dict[key] !== undefined) el.innerHTML = dict[key];
+      });
+      attachTooltipEvents();
+    }
+
+    // 아이콘 SVG 데이터
+    const moonSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+    const sunSVG  = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+
+    // UI 업데이트 함수
+    function updateUI(){
+      const lang  = store.get("atlas_lang", "en");
+      const theme = store.get("atlas_theme", "dark");
+
+      document.documentElement.setAttribute("data-theme", theme);
+      document.documentElement.lang = (lang === "ko") ? "ko" : "en";
+
+      // 테마 아이콘 변경
+      const themeBtn = document.getElementById("themeBtn");
+      if (themeBtn) themeBtn.innerHTML = (theme === "dark") ? sunSVG : moonSVG;
+
+      applyI18n(lang);
+    }
+
+    // 툴팁 터치 이벤트 (모바일용)
     function attachTooltipEvents() {
       document.querySelectorAll('.term').forEach(item => {
         item.onclick = (e) => {
@@ -464,110 +509,114 @@
       });
     }
 
+    // 빈 곳 누르면 툴팁 닫기
     document.addEventListener('click', () => {
       document.querySelectorAll('.term').forEach(t => t.classList.remove('active'));
-      closeLangMenu();
     });
 
-    function applyI18n(lang){
-      const dict = I18N[lang] || I18N.en;
-      document.querySelectorAll("[data-i18n]").forEach(el=>{
-        const key = el.getAttribute("data-i18n");
-        if (dict[key] !== undefined) el.innerHTML = dict[key];
-      });
-      attachTooltipEvents();
-    }
-
-    // (NEW) language menu logic
-    const langWrap  = document.getElementById("langWrap");
-    const langBtn   = document.getElementById("langBtn");
-    const langLabel = document.getElementById("langLabel");
-    const langMenu  = document.getElementById("langMenu");
-
-    function openLangMenu(){
-      if (!langWrap) return;
-      langWrap.classList.add("open");
-      langBtn?.setAttribute("aria-expanded", "true");
-    }
-    function closeLangMenu(){
-      if (!langWrap) return;
-      langWrap.classList.remove("open");
-      langBtn?.setAttribute("aria-expanded", "false");
-    }
-    function toggleLangMenu(){
-      if (!langWrap) return;
-      const isOpen = langWrap.classList.contains("open");
-      isOpen ? closeLangMenu() : openLangMenu();
-    }
-
-    function setLanguage(code){
-      store.set("atlas_lang", code);
-      updateUI();
-      closeLangMenu();
-    }
-
-    // stop closing when clicking inside menu
-    langWrap?.addEventListener("click", (e) => e.stopPropagation());
-
-    langBtn?.addEventListener("click", () => {
-      toggleLangMenu();
-    });
-
-    langMenu?.querySelectorAll(".lang-item").forEach(btn=>{
-      btn.addEventListener("click", () => {
-        const code = btn.getAttribute("data-lang");
-        if (code) setLanguage(code);
-      });
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeLangMenu();
-    });
-
-    function syncLangUI(lang){
-      // label
-      if (langLabel) langLabel.textContent = (lang === "ko") ? "KR" : "EN";
-
-      // menu checks
-      document.querySelectorAll(".lang-item").forEach(el=>{
-        const code = el.getAttribute("data-lang");
-        const active = (code === lang);
-        el.setAttribute("aria-checked", active ? "true" : "false");
-      });
-
-      // html lang attribute
-      document.documentElement.lang = (lang === "ko") ? "ko" : "en";
-    }
-
-    function updateUI(){
-      const lang  = store.get("atlas_lang", "en");
-      const theme = store.get("atlas_theme", "dark");
-
-      document.documentElement.setAttribute("data-theme", theme);
-
-      const themeBtn = document.getElementById("themeBtn");
-      if (themeBtn) themeBtn.innerHTML = (theme === "dark") ? sunSVG : moonSVG;
-
-      syncLangUI(lang);
-      applyI18n(lang);
-    }
-
-    // Modal & Form
+    // --- Modal & Form Logic ---
     const modal = document.getElementById("emailModal");
     const form = document.getElementById("waitlistForm");
     const submitBtn = document.getElementById("submitBtn");
+    const emailInputEl = document.getElementById("emailInput");
+    const emailErrorEl = document.getElementById("emailError");
+    const emailOkEl = document.getElementById("emailOk");
 
-    document.getElementById("waitBtn")?.addEventListener("click", () => { modal?.classList.add("open"); });
-    document.getElementById("closeModal")?.addEventListener("click", () => { modal?.classList.remove("open"); });
-    modal?.addEventListener("click", (e) => { if (e.target === modal) modal.classList.remove("open"); });
+    function openModal(){
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      clearEmailMessages();
+      setTimeout(()=> emailInputEl?.focus(), 50);
+    }
+    function closeModal(){
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      clearEmailMessages();
+      if (emailInputEl) emailInputEl.value = "";
+    }
+
+    document.getElementById("waitBtn")?.addEventListener("click", openModal);
+    document.getElementById("closeModal")?.addEventListener("click", closeModal);
+    modal?.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+
+    function showEmailError(msg){
+      if (emailOkEl) { emailOkEl.textContent = ""; emailOkEl.classList.remove("show"); }
+      if (emailErrorEl) {
+        emailErrorEl.textContent = msg;
+        emailErrorEl.classList.add("show");
+      }
+      if (emailInputEl) {
+        emailInputEl.classList.add("invalid", "shake");
+        setTimeout(()=> emailInputEl.classList.remove("shake"), 420);
+        emailInputEl.focus();
+      }
+    }
+
+    function showEmailOk(msg){
+      if (emailErrorEl) { emailErrorEl.textContent = ""; emailErrorEl.classList.remove("show"); }
+      if (emailOkEl) {
+        emailOkEl.textContent = msg;
+        emailOkEl.classList.add("show");
+      }
+      if (emailInputEl) emailInputEl.classList.remove("invalid");
+    }
+
+    function clearEmailMessages(){
+      if (emailErrorEl) { emailErrorEl.textContent = ""; emailErrorEl.classList.remove("show"); }
+      if (emailOkEl) { emailOkEl.textContent = ""; emailOkEl.classList.remove("show"); }
+      if (emailInputEl) emailInputEl.classList.remove("invalid");
+    }
+
+    function validateEmailClient(raw){
+      const v = (raw || "").trim();
+
+      if (!v) return { ok:false, key:"errEmailEmpty" };
+      if (v.includes(" ")) return { ok:false, key:"errEmailSpace" };
+      if (/[\/\\]/.test(v)) return { ok:false, key:"errEmailSlash" };
+
+      // 실사용 기준의 기본 검사
+      const basic = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      if (!basic.test(v)) return { ok:false, key:"errEmailFormat" };
+
+      const parts = v.split("@");
+      if (parts.length !== 2) return { ok:false, key:"errEmailFormat" };
+      const [local, domain] = parts;
+
+      if (!local || !domain) return { ok:false, key:"errEmailFormat" };
+      if (local.length > 64) return { ok:false, key:"errEmailFormat" };
+      if (domain.length > 255) return { ok:false, key:"errEmailFormat" };
+      if (domain.includes("..") || domain.startsWith(".") || domain.endsWith(".")) return { ok:false, key:"errEmailFormat" };
+
+      // 흔한 오타 체크
+      const typoMap = { "gmial.com": "gmail.com", "gamil.com": "gmail.com" };
+      const d = domain.toLowerCase();
+      if (typoMap[d] === "gmail.com") return { ok:false, key:"errEmailTypoGmail" };
+
+      return { ok:true, value: v.toLowerCase() };
+    }
+
+    emailInputEl?.addEventListener("input", clearEmailMessages);
+
+    emailInputEl?.addEventListener("blur", () => {
+      if (!modal.classList.contains("open")) return;
+      const r = validateEmailClient(emailInputEl.value);
+      if (!r.ok) showEmailError(t(r.key));
+    });
 
     form?.addEventListener("submit", (e) => {
       e.preventDefault();
-      const email = document.getElementById("emailInput")?.value || "";
-      const lang = store.get("atlas_lang", "en");
+      clearEmailMessages();
+
+      const check = validateEmailClient(emailInputEl?.value || "");
+      if (!check.ok) {
+        showEmailError(t(check.key));
+        return;
+      }
+
+      const email = check.value;
 
       const originalText = submitBtn.innerText;
-      submitBtn.innerText = (lang === "ko") ? "전송 중..." : "Sending...";
+      submitBtn.innerText = store.get("atlas_lang", "en") === "ko" ? "전송 중..." : "Sending...";
       submitBtn.disabled = true;
 
       fetch(GOOGLE_SCRIPT_URL, {
@@ -577,30 +626,40 @@
         body: "email=" + encodeURIComponent(email)
       })
       .then(() => {
-        submitBtn.innerText = (lang === "ko") ? "완료!" : "Joined!";
+        showEmailOk(t("okJoined"));
+
+        submitBtn.innerText = store.get("atlas_lang", "en") === "ko" ? "완료!" : "Joined!";
         submitBtn.style.background = "#10b981";
-        const input = document.getElementById("emailInput");
-        if (input) input.value = "";
+
+        if (emailInputEl) emailInputEl.value = "";
 
         setTimeout(() => {
-          modal?.classList.remove("open");
           submitBtn.disabled = false;
           submitBtn.innerText = originalText;
           submitBtn.style.background = "";
-          alert((lang === "ko") ? "대기자 명단에 등록되었습니다!" : "You have been added to the waitlist!");
-        }, 1200);
+          closeModal();
+        }, 1300);
       })
-      .catch(() => {
-        alert("Error. Please try again.");
+      .catch(err => {
+        console.error(err);
+        showEmailError(t("errNetwork"));
         submitBtn.disabled = false;
         submitBtn.innerText = originalText;
+        submitBtn.style.background = "";
       });
     });
 
-    // Buttons
+    // --- Button Events ---
+    document.getElementById("langBtn")?.addEventListener("click", ()=>{
+      const cur = store.get("atlas_lang", "en");
+      store.set("atlas_lang", cur === "en" ? "ko" : "en");
+      updateUI();
+      clearEmailMessages();
+    });
+
     document.getElementById("themeBtn")?.addEventListener("click", ()=>{
       const cur = store.get("atlas_theme", "dark");
-      store.set("atlas_theme", (cur === "dark") ? "light" : "dark");
+      store.set("atlas_theme", cur === "dark" ? "light" : "dark");
       updateUI();
     });
 
@@ -608,7 +667,7 @@
       document.getElementById("sampleCard")?.scrollIntoView({behavior:"smooth", block:"center"});
     });
 
-    // Init
+    // 초기 실행
     updateUI();
   </script>
 </body>
