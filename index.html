@@ -36,11 +36,7 @@
       --shadow: rgba(0,0,0,0.18);
     }
 
-    * {
-      box-sizing: border-box;
-      transition: background 0.25s ease, color 0.18s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
-    }
-
+    * { box-sizing: border-box; transition: background 0.25s ease, color 0.18s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease; }
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -57,7 +53,6 @@
 
     .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
 
-    /* Top */
     .top { display:flex; align-items:center; justify-content:space-between; margin-bottom: 40px; gap: 16px; }
     .logo {
       font-size: 16px; font-weight: 850; letter-spacing: -0.02em;
@@ -111,11 +106,10 @@
     }
     .icon-btn svg { width: 20px; height: 20px; stroke-width: 2px; }
 
-    /* Language menu */
     .menu {
       position: absolute;
       top: 46px;
-      right: 52px; /* aligns under globe */
+      right: 52px;
       min-width: 180px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -148,21 +142,10 @@
       font-size: 14px;
       font-weight: 650;
     }
-    .menuItem:hover {
-      background: rgba(125,125,125,0.10);
-      border-color: rgba(125,125,125,0.12);
-    }
-    .check {
-      opacity: 0;
-      color: var(--primary);
-      display:flex;
-      align-items:center;
-      gap: 8px;
-      font-weight: 800;
-    }
+    .menuItem:hover { background: rgba(125,125,125,0.10); border-color: rgba(125,125,125,0.12); }
+    .check { opacity: 0; color: var(--primary); display:flex; align-items:center; gap: 8px; font-weight: 800; }
     .menuItem.active .check { opacity: 1; }
 
-    /* Hero */
     .hero-split {
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -172,39 +155,27 @@
       min-height: 50vh;
     }
 
-    h1 {
-      font-size: 50px;
-      line-height: 1.08;
-      margin: 0 0 18px;
-      letter-spacing: -0.035em;
-      font-weight: 900;
-    }
+    h1 { font-size: 50px; line-height: 1.08; margin: 0 0 18px; letter-spacing: -0.035em; font-weight: 900; }
     .highlight {
       background: linear-gradient(120deg, var(--primary), #a78bfa);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       filter: drop-shadow(0 0 14px var(--primary-glow));
     }
-    .sub {
-      font-size: 18px;
-      color: var(--text-muted);
-      max-width: 620px;
-      margin: 0 0 18px;
-      line-height: 1.65;
-    }
+    .sub { font-size: 18px; color: var(--text-muted); max-width: 620px; margin: 0 0 18px; line-height: 1.65; }
 
-    /* ✅ Sources chips (one-line, compact) */
+    /* Sources chips (one-line, compact) */
     .sourceRow {
       display:flex;
       gap: 8px;
-      flex-wrap: nowrap;              /* never wrap */
-      overflow-x: auto;               /* if too narrow, scroll instead of wrap */
+      flex-wrap: nowrap;
+      overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;          /* Firefox hide */
+      scrollbar-width: none;
       margin: 12px 0 22px;
       padding-bottom: 2px;
     }
-    .sourceRow::-webkit-scrollbar { display: none; } /* Chrome/Safari hide */
+    .sourceRow::-webkit-scrollbar { display: none; }
 
     .chip {
       display:inline-flex;
@@ -212,16 +183,15 @@
       gap: 8px;
       border: 1px solid var(--card-border);
       background: rgba(0,0,0,0.08);
-      padding: 6px 10px;              /* tighter */
+      padding: 6px 10px;
       border-radius: 999px;
-      font-size: 11px;                /* tighter */
+      font-size: 11px;
       color: var(--text-muted);
       white-space: nowrap;
       backdrop-filter: blur(6px);
-      flex: 0 0 auto;                 /* don't shrink */
+      flex: 0 0 auto;
     }
     [data-theme="light"] .chip { background: rgba(255,255,255,0.55); }
-
     .chip .badge {
       font-size: 10px;
       font-weight: 900;
@@ -233,7 +203,6 @@
     }
 
     .cta-group { display:flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-
     .btn {
       cursor: pointer;
       padding: 14px 28px;
@@ -246,10 +215,7 @@
       justify-content:center;
       letter-spacing: -0.01em;
     }
-    .btn-primary {
-      background: var(--primary);
-      box-shadow: 0 8px 28px -12px var(--primary-glow);
-    }
+    .btn-primary { background: var(--primary); box-shadow: 0 8px 28px -12px var(--primary-glow); }
     [data-theme="dark"] .btn-primary { color: #0f172a; }
     [data-theme="light"] .btn-primary { color: #fff; }
     .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px -14px var(--primary-glow); }
@@ -262,14 +228,8 @@
     }
     .btn-secondary:hover { border-color: rgba(148,163,184,0.35); transform: translateY(-2px); }
 
-    .trustline {
-      margin-top: 10px;
-      font-size: 12px;
-      color: var(--text-muted);
-      letter-spacing: .01em;
-    }
+    .trustline { margin-top: 10px; font-size: 12px; color: var(--text-muted); letter-spacing: .01em; }
 
-    /* Cards */
     .card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -286,17 +246,41 @@
       box-shadow: 0 18px 50px -32px var(--shadow);
     }
 
+    /* ✅ Label row with "Updated ..." at right */
+    .labelRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
     .label {
       font-size: 11px;
       font-weight: 800;
       letter-spacing: 0.11em;
       color: var(--primary);
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin: 0;
     }
+    .updated {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 650;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+    .updated .dot{
+      display:inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(56,189,248,0.9);
+      box-shadow: 0 0 10px var(--primary-glow);
+      margin-right: 8px;
+      transform: translateY(-1px);
+    }
+
     .value { font-size: 15px; font-weight: 550; color: var(--text-main); }
 
-    /* Tooltip term */
     .term {
       border-bottom: 1px dashed var(--primary);
       cursor: help;
@@ -343,12 +327,8 @@
       transition: opacity 0.2s ease, visibility 0.2s ease;
     }
     .term:hover::after, .term.active::after,
-    .term:hover::before, .term.active::before {
-      opacity: 1;
-      visibility: visible;
-    }
+    .term:hover::before, .term.active::before { opacity: 1; visibility: visible; }
 
-    /* Sample list */
     .list-item {
       display:flex;
       align-items:flex-start;
@@ -374,14 +354,8 @@
       font-weight: 800;
     }
 
-    .feature-strip {
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-top: 20px;
-    }
+    .feature-strip { display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
 
-    /* Footer */
     .footer {
       margin-top: 80px;
       border-top: 1px solid var(--line);
@@ -393,7 +367,6 @@
       font-size: 13px;
     }
 
-    /* Modal */
     .modal-overlay {
       position: fixed; inset: 0;
       background: rgba(0, 0, 0, 0.68);
@@ -468,14 +441,8 @@
     }
     .close-btn:hover { background: rgba(125,125,125,0.10); color: var(--text-main); border-color: rgba(125,125,125,0.12); }
 
-    /* Success flash */
-    .success-flash {
-      border-color: rgba(16,185,129,0.75) !important;
-      box-shadow: 0 0 0 4px rgba(16,185,129,0.12) !important;
-      transition: none !important;
-    }
+    .success-flash { border-color: rgba(16,185,129,0.75) !important; box-shadow: 0 0 0 4px rgba(16,185,129,0.12) !important; transition: none !important; }
 
-    /* Shake */
     @keyframes shake {
       0% { transform: translateX(0); }
       20% { transform: translateX(-4px); }
@@ -505,7 +472,6 @@
         <div class="status-pill" data-i18n="status">Private Preview <span class="ver">v0.1</span></div>
 
         <button class="icon-btn" id="langBtn" aria-label="Language">
-          <!-- globe -->
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="2" y1="12" x2="22" y2="12"></line>
@@ -521,7 +487,6 @@
           <button class="menuItem" type="button" data-lang="en" role="menuitem">
             <span data-i18n="langEN">English</span>
             <span class="check">
-              <!-- check -->
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 6 9 17l-5-5"></path>
               </svg>
@@ -570,7 +535,11 @@
 
       <div class="hero-visual">
         <div class="card" id="sampleCard">
-          <div class="label" data-i18n="todayK">TODAY’S SAMPLE</div>
+          <div class="labelRow">
+            <div class="label" data-i18n="todayK">TODAY’S SAMPLE</div>
+            <div class="updated" id="updatedText"><span class="dot"></span>Updated just now</div>
+          </div>
+
           <h3 style="margin:0 0 10px; font-size:18px;" data-i18n="todayTitle">Top 3 Moves</h3>
 
           <div class="miniHead" data-i18n="whatHead">What you get</div>
@@ -620,7 +589,6 @@
     </div>
   </div>
 
-  <!-- Modal -->
   <div class="modal-overlay" id="emailModal" aria-hidden="true">
     <div class="modal-content" role="dialog" aria-modal="true" aria-label="Waitlist">
       <button class="close-btn" id="closeModal" aria-label="Close">×</button>
@@ -629,15 +597,8 @@
       <p class="modal-desc" data-i18n="modalDesc">We'll notify you when spots open up.</p>
 
       <form id="waitlistForm" novalidate>
-        <input
-          type="text"
-          inputmode="email"
-          autocomplete="email"
-          id="emailInput"
-          class="input-field"
-          placeholder="name@example.com"
-          aria-label="Email Address"
-        />
+        <input type="text" inputmode="email" autocomplete="email" id="emailInput" class="input-field"
+          placeholder="name@example.com" aria-label="Email Address" />
 
         <div class="inline-error" id="emailError" role="status" aria-live="polite"></div>
 
@@ -647,18 +608,18 @@
           </button>
         </div>
 
-        <div class="modal-trust" data-i18n="modalTrust">
-          No spam · Unsubscribe anytime · GDPR-ready
-        </div>
+        <div class="modal-trust" data-i18n="modalTrust">No spam · Unsubscribe anytime · GDPR-ready</div>
       </form>
     </div>
   </div>
 
   <script>
-    // === Google Apps Script URL (keep yours) ===
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuxLWJSR0awKZUTJqkRzkf6o3740FYyh5xTy8G3PIyc_u390FtE_KacM-HJu5cnCER/exec";
 
-    // === Icons ===
+    // ✅ Set the last update time here (ISO). Example: "2026-01-30T03:12:00Z"
+    // If you don't have a server time yet, leaving it "now" still works for UX.
+    let lastUpdatedISO = new Date().toISOString();
+
     const moonSVG = `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
@@ -678,7 +639,6 @@
       </svg>
     `;
 
-    // === I18N (innerHTML to keep tooltips) ===
     const I18N = {
       en: {
         status: `Private Preview <span class="ver">v0.1</span>`,
@@ -721,7 +681,10 @@
         errInvalid: "Please enter a valid email address.",
         sending: "Sending...",
         joined: "Joined!",
-        joinedAlert: "You have been added to the waitlist!"
+        joinedAlert: "You have been added to the waitlist!",
+        updatedJustNow: "Updated just now",
+        updatedMinAgo: (m) => `Updated ${m}m ago`,
+        updatedHrAgo: (h) => `Updated ${h}h ago`
       },
       ko: {
         status: `Private Preview <span class="ver">v0.1</span>`,
@@ -764,16 +727,15 @@
         errInvalid: "올바른 이메일 주소 형식으로 입력해주세요.",
         sending: "전송 중...",
         joined: "완료!",
-        joinedAlert: "대기자 명단에 등록되었습니다!"
+        joinedAlert: "대기자 명단에 등록되었습니다!",
+        updatedJustNow: "방금 업데이트",
+        updatedMinAgo: (m) => `${m}분 전 업데이트`,
+        updatedHrAgo: (h) => `${h}시간 전 업데이트`
       }
     };
 
-    const store = {
-      get(k, d){ return localStorage.getItem(k) ?? d; },
-      set(k, v){ localStorage.setItem(k, v); }
-    };
+    const store = { get(k, d){ return localStorage.getItem(k) ?? d; }, set(k, v){ localStorage.setItem(k, v); } };
 
-    // === Tooltip events (mobile tap) ===
     function attachTooltipEvents(){
       document.querySelectorAll(".term").forEach(item => {
         item.onclick = (e) => {
@@ -784,11 +746,8 @@
         };
       });
     }
-    document.addEventListener("click", () => {
-      document.querySelectorAll(".term").forEach(t => t.classList.remove("active"));
-    });
+    document.addEventListener("click", () => { document.querySelectorAll(".term").forEach(t => t.classList.remove("active")); });
 
-    // === I18N apply ===
     function applyI18n(lang){
       const dict = I18N[lang] || I18N.en;
       document.querySelectorAll("[data-i18n]").forEach(el => {
@@ -796,9 +755,9 @@
         if (dict[key] !== undefined) el.innerHTML = dict[key];
       });
       attachTooltipEvents();
+      refreshUpdatedText(); // keep timestamp localized
     }
 
-    // === Theme apply ===
     function applyTheme(theme){
       document.documentElement.setAttribute("data-theme", theme);
       store.set("atlas_theme", theme);
@@ -806,7 +765,6 @@
       if (themeBtn) themeBtn.innerHTML = (theme === "dark") ? sunSVG : moonSVG;
     }
 
-    // === Language apply ===
     function applyLanguage(lang){
       store.set("atlas_lang", lang);
       document.documentElement.lang = (lang === "ko") ? "ko" : "en";
@@ -814,7 +772,6 @@
       syncLangMenu();
     }
 
-    // === Language menu sync (check mark) ===
     function syncLangMenu(){
       const lang = store.get("atlas_lang", "en");
       document.querySelectorAll("#langMenu .menuItem").forEach(btn => {
@@ -822,38 +779,53 @@
       });
     }
 
-    // === Menu open/close ===
     const langBtn = document.getElementById("langBtn");
     const langMenu = document.getElementById("langMenu");
 
-    function openLangMenu(){
-      if (!langMenu) return;
-      langMenu.classList.add("open");
-      syncLangMenu();
-    }
-    function closeLangMenu(){
-      if (!langMenu) return;
-      langMenu.classList.remove("open");
-    }
-    function toggleLangMenu(){
-      if (!langMenu) return;
-      langMenu.classList.contains("open") ? closeLangMenu() : openLangMenu();
-    }
+    function closeLangMenu(){ langMenu?.classList.remove("open"); }
+    function toggleLangMenu(){ langMenu?.classList.toggle("open"); syncLangMenu(); }
 
-    // close menu on outside click
     document.addEventListener("click", (e) => {
       if (!langMenu || !langBtn) return;
       const inside = langMenu.contains(e.target) || langBtn.contains(e.target);
       if (!inside) closeLangMenu();
     });
 
-    // ESC closes menu & modal
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         closeLangMenu();
         closeModal();
       }
     });
+
+    // ✅ Updated label logic
+    function toHumanUpdatedText(msDiff){
+      const lang = store.get("atlas_lang", "en");
+      const dict = I18N[lang] || I18N.en;
+
+      const sec = Math.floor(msDiff / 1000);
+      if (sec < 60) return dict.updatedJustNow;
+
+      const min = Math.floor(sec / 60);
+      if (min < 60) return dict.updatedMinAgo(min);
+
+      const hr = Math.floor(min / 60);
+      return dict.updatedHrAgo(hr);
+    }
+
+    function refreshUpdatedText(){
+      const el = document.getElementById("updatedText");
+      if (!el) return;
+
+      const last = new Date(lastUpdatedISO).getTime();
+      const now = Date.now();
+      const diff = Math.max(0, now - last);
+
+      el.innerHTML = `<span class="dot"></span>${toHumanUpdatedText(diff)}`;
+    }
+
+    // update every 30s for “live” feeling
+    setInterval(refreshUpdatedText, 30000);
 
     // === Modal logic ===
     const modal = document.getElementById("emailModal");
@@ -863,52 +835,39 @@
     const emailError = document.getElementById("emailError");
 
     function openModal(){
-      if (!modal) return;
-      modal.classList.add("open");
-      modal.setAttribute("aria-hidden", "false");
+      modal?.classList.add("open");
+      modal?.setAttribute("aria-hidden", "false");
       hideError();
       setTimeout(() => emailInput?.focus(), 120);
     }
     function closeModal(){
-      if (!modal) return;
-      modal.classList.remove("open");
-      modal.setAttribute("aria-hidden", "true");
+      modal?.classList.remove("open");
+      modal?.setAttribute("aria-hidden", "true");
       hideError();
       resetSubmitButton();
     }
 
     function showError(msg){
-      if (!emailError) return;
       emailError.textContent = msg;
       emailError.classList.add("show");
-
-      if (emailInput){
-        emailInput.classList.add("shake");
-        setTimeout(() => emailInput.classList.remove("shake"), 280);
-      }
+      emailInput?.classList.add("shake");
+      setTimeout(() => emailInput?.classList.remove("shake"), 280);
     }
-    function hideError(){
-      if (!emailError) return;
-      emailError.textContent = "";
-      emailError.classList.remove("show");
-    }
+    function hideError(){ emailError.textContent = ""; emailError.classList.remove("show"); }
 
     function resetSubmitButton(){
-      if (!submitBtn) return;
+      const dict = I18N[store.get("atlas_lang","en")] || I18N.en;
       submitBtn.disabled = false;
       submitBtn.style.background = "";
-      submitBtn.textContent = (I18N[store.get("atlas_lang","en")] || I18N.en).submitBtn;
+      submitBtn.textContent = dict.submitBtn;
     }
 
-    // === Email validation (submit only) ===
     function isValidEmail(email){
       const trimmed = String(email || "").trim();
       if (!trimmed) return false;
-      const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-      return re.test(trimmed);
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(trimmed);
     }
 
-    // === Button bindings ===
     document.getElementById("waitBtn")?.addEventListener("click", openModal);
     document.getElementById("closeModal")?.addEventListener("click", closeModal);
     modal?.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
@@ -917,10 +876,7 @@
       document.getElementById("sampleCard")?.scrollIntoView({ behavior: "smooth", block: "center" });
     });
 
-    langBtn?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggleLangMenu();
-    });
+    langBtn?.addEventListener("click", (e) => { e.stopPropagation(); toggleLangMenu(); });
 
     document.querySelectorAll("#langMenu .menuItem")?.forEach(btn => {
       btn.addEventListener("click", () => {
@@ -932,30 +888,20 @@
 
     document.getElementById("themeBtn")?.addEventListener("click", () => {
       const cur = store.get("atlas_theme", "dark");
-      const next = (cur === "dark") ? "light" : "dark";
-      applyTheme(next);
+      applyTheme(cur === "dark" ? "light" : "dark");
     });
 
-    // === Form submit (no browser bubble, inline error only) ===
     form?.addEventListener("submit", (e) => {
       e.preventDefault();
       hideError();
 
       const lang = store.get("atlas_lang", "en");
       const dict = I18N[lang] || I18N.en;
-
       const email = String(emailInput?.value || "").trim();
 
-      if (!email) {
-        showError(dict.errEmpty);
-        return;
-      }
-      if (!isValidEmail(email)) {
-        showError(dict.errInvalid);
-        return;
-      }
+      if (!email) return showError(dict.errEmpty);
+      if (!isValidEmail(email)) return showError(dict.errInvalid);
 
-      // UI: sending state
       const originalText = dict.submitBtn;
       submitBtn.disabled = true;
       submitBtn.textContent = dict.sending;
@@ -969,17 +915,15 @@
       .then(() => {
         submitBtn.textContent = dict.joined;
         submitBtn.style.background = "var(--success)";
+        emailInput.value = "";
 
-        if (emailInput) {
-          emailInput.classList.add("success-flash");
-          setTimeout(() => emailInput.classList.remove("success-flash"), 800);
-          emailInput.value = "";
-        }
+        // ✅ simulate "fresh update" after join (optional). comment out if you don't want.
+        lastUpdatedISO = new Date().toISOString();
+        refreshUpdatedText();
 
         setTimeout(() => {
           closeModal();
           alert(dict.joinedAlert);
-          // restore
           submitBtn.style.background = "";
           submitBtn.textContent = originalText;
           submitBtn.disabled = false;
@@ -991,15 +935,17 @@
       });
     });
 
-    // === Init (Default: English) ===
-    const initLang = store.get("atlas_lang", "en");   // default EN
+    // Init
+    const initLang = store.get("atlas_lang", "en");
     const initTheme = store.get("atlas_theme", "dark");
     applyTheme(initTheme);
     applyLanguage(initLang);
 
-    // ensure theme icon rendered even before first toggle
     const themeBtn = document.getElementById("themeBtn");
     if (themeBtn && !themeBtn.innerHTML) themeBtn.innerHTML = (initTheme === "dark") ? sunSVG : moonSVG;
+
+    // first paint for updated text
+    refreshUpdatedText();
   </script>
 </body>
 </html>
