@@ -158,10 +158,13 @@
     h1 { font-size: 50px; line-height: 1.08; margin: 0 0 18px; letter-spacing: -0.035em; font-weight: 900; }
     .highlight {
       background: linear-gradient(120deg, var(--primary), #a78bfa);
-      -webkit-background-clip: text;
+      background-clip: text;          /* ✅ 표준 */
+      -webkit-background-clip: text;  /* ✅ 웹킷 */
+      color: transparent;             /* ✅ 표준 */
       -webkit-text-fill-color: transparent;
       filter: drop-shadow(0 0 14px var(--primary-glow));
     }
+
     .sub { font-size: 18px; color: var(--text-muted); max-width: 620px; margin: 0 0 18px; line-height: 1.65; }
 
     /* Sources chips (one-line, compact) */
