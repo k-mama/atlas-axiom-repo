@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-01-30T06:45:31.197092",
+  "updated_at": "2026-01-30T07:38:51.056043",
   "cards": [
     {
       "id": "auto_0",
@@ -69,12 +69,12 @@
       "id": "auto_4",
       "type": "INFO",
       "ticker": "MKT",
-      "headline_en": "Asia stocks slip tracking Wall St slide, set for monthly gains; Tokyo CPI in focus",
+      "headline_en": "Earnings call transcript: Lixil Group Q3 2025 earnings beat EPS forecasts",
       "summary_en": "1. Breaking news reported by Investing_News.\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] Asia stocks slip tracking Wall St slide, set for monthly gains; Tokyo CPI in focus (AI 번역 대기중)",
+      "headline_kr": "[속보] Earnings call transcript: Lixil Group Q3 2025 earnings beat EPS forecasts (AI 번역 대기중)",
       "summary_kr": "1. Investing_News에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
       "source_links": [
-        "https://www.investing.com/news/stock-market-news/asia-stocks-slip-tracking-wall-st-slide-set-for-monthly-gains-tokyo-cpi-in-focus-4475088"
+        "https://www.investing.com/news/transcripts/earnings-call-transcript-lixil-group-q3-2025-earnings-beat-eps-forecasts-93CH-4475159"
       ],
       "trust_score": 80,
       "risk_flag": false,
@@ -85,12 +85,12 @@
       "id": "auto_5",
       "type": "INFO",
       "ticker": "MKT",
-      "headline_en": "US lifts some Venezuela sanctions to ease oil sales",
+      "headline_en": "Europa Metals to delist from AIM after failed acquisition talks",
       "summary_en": "1. Breaking news reported by Investing_News.\n2. Click link to verify original source.\n3. AI analysis module connecting soon.",
-      "headline_kr": "[속보] US lifts some Venezuela sanctions to ease oil sales (AI 번역 대기중)",
+      "headline_kr": "[속보] Europa Metals to delist from AIM after failed acquisition talks (AI 번역 대기중)",
       "summary_kr": "1. Investing_News에서 보도된 속보입니다.\n2. 클릭하여 원문을 확인하세요.\n3. AI 분석 모듈이 곧 연결됩니다.",
       "source_links": [
-        "https://www.investing.com/news/commodities-news/us-eases-sanctions-on-venezuelan-oil-industry-4474749"
+        "https://www.investing.com/news/company-news/europa-metals-to-delist-from-aim-after-failed-acquisition-talks-93CH-4475158"
       ],
       "trust_score": 80,
       "risk_flag": false,
