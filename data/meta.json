@@ -10,15 +10,15 @@
     "TSLA"
   ],
   "success": true,
-  "last_attempt_utc": "2026-02-08T12:28:33Z",
-  "last_success_utc": "2026-02-08T12:28:34Z",
+  "last_attempt_utc": "2026-02-08T22:36:48Z",
+  "last_success_utc": "2026-02-08T22:36:49Z",
   "run": {
-    "run_id": "20260208T122833Z-6421",
+    "run_id": "20260208T223648Z-4576",
     "run_type": "manual",
     "environment": "local",
-    "started_utc": "2026-02-08T12:28:33Z",
-    "finished_utc": "2026-02-08T12:28:34Z",
-    "duration_ms": 1095
+    "started_utc": "2026-02-08T22:36:48Z",
+    "finished_utc": "2026-02-08T22:36:49Z",
+    "duration_ms": 1106
   },
   "outputs": {
     "hot_cards_path": "data/hot_cards.json",
@@ -41,7 +41,7 @@
       "enabled": true,
       "status": "ok",
       "items_collected": 6,
-      "last_run_utc": "2026-02-08T12:28:34Z"
+      "last_run_utc": "2026-02-08T22:36:49Z"
     },
     {
       "id": "youtube_rss",
@@ -49,7 +49,7 @@
       "enabled": true,
       "status": "ok",
       "items_collected": 4,
-      "last_run_utc": "2026-02-08T12:28:34Z"
+      "last_run_utc": "2026-02-08T22:36:49Z"
     },
     {
       "id": "reddit_api",
@@ -57,7 +57,7 @@
       "enabled": true,
       "status": "ok",
       "items_collected": 0,
-      "last_run_utc": "2026-02-08T12:28:34Z"
+      "last_run_utc": "2026-02-08T22:36:49Z"
     }
   ],
   "risk_policy": {
