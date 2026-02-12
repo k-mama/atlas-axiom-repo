@@ -1,5 +1,5 @@
 {
-  "updated_at_utc": "2026-02-12T02:03:00Z",
+  "updated_at_utc": "2026-02-12T04:55:44Z",
   "channel": "us-stocks-ai",
   "cards": [
     {
@@ -74,26 +74,6 @@
     },
     {
       "id": "fallback-8",
-      "tier": "signal",
-      "tickers": [],
-      "headline": "Signal detected for market",
-      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
-      "keywords": [],
-      "sources": [],
-      "confidence": 0.5
-    },
-    {
-      "id": "fallback-9",
-      "tier": "signal",
-      "tickers": [],
-      "headline": "Signal detected for market",
-      "why_it_matters": "A new high-signal indicator was detected. Verify source link and watch for follow-through.",
-      "keywords": [],
-      "sources": [],
-      "confidence": 0.5
-    },
-    {
-      "id": "fallback-10",
       "tier": "signal",
       "tickers": [],
       "headline": "Signal detected for market",
